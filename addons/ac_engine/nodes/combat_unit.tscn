@@ -1,0 +1,268 @@
+[gd_scene load_steps=60 format=3 uid="uid://dsd6i8bwvsp78"]
+
+[ext_resource type="Texture2D" uid="uid://jtu4tcv8beq4" path="res://addons/ac_engine/images/combat_unit/attack/0_Golem_Slashing_000.png" id="1_k3obu"]
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_unit.gd" id="1_u4dd5"]
+[ext_resource type="Texture2D" uid="uid://civk0iklykygx" path="res://addons/ac_engine/images/combat_unit/attack/0_Golem_Slashing_001.png" id="2_byiay"]
+[ext_resource type="Texture2D" uid="uid://cjhyisiu51b06" path="res://addons/ac_engine/images/combat_unit/attack/0_Golem_Slashing_002.png" id="3_bx5bp"]
+[ext_resource type="Texture2D" uid="uid://d25i8wiam7ea1" path="res://addons/ac_engine/images/combat_unit/attack/0_Golem_Slashing_003.png" id="4_f3ixo"]
+[ext_resource type="Texture2D" uid="uid://v4lgdagtl20c" path="res://addons/ac_engine/images/combat_unit/attack/0_Golem_Slashing_004.png" id="5_lxyya"]
+[ext_resource type="Texture2D" uid="uid://cjgqup1wkqvs7" path="res://addons/ac_engine/images/combat_unit/attack/0_Golem_Slashing_005.png" id="6_lkdvf"]
+[ext_resource type="Texture2D" uid="uid://cs83f716d1co0" path="res://addons/ac_engine/images/combat_unit/attack/0_Golem_Slashing_006.png" id="7_1lff0"]
+[ext_resource type="Texture2D" uid="uid://bxb6loxn3f6gw" path="res://addons/ac_engine/images/combat_unit/attack/0_Golem_Slashing_007.png" id="8_1jl3s"]
+[ext_resource type="Texture2D" uid="uid://dsw0tmljggtq6" path="res://addons/ac_engine/images/combat_unit/attack/0_Golem_Slashing_008.png" id="9_de7ro"]
+[ext_resource type="Texture2D" uid="uid://cl6o2pht7fceu" path="res://addons/ac_engine/images/combat_unit/attack/0_Golem_Slashing_009.png" id="10_fv71k"]
+[ext_resource type="Texture2D" uid="uid://c7l2ecfumxqvu" path="res://addons/ac_engine/images/combat_unit/attack/0_Golem_Slashing_010.png" id="11_yky4m"]
+[ext_resource type="Texture2D" uid="uid://didm1pnyolb82" path="res://addons/ac_engine/images/combat_unit/attack/0_Golem_Slashing_011.png" id="12_1rvq7"]
+[ext_resource type="Texture2D" uid="uid://bvuccpl85rsuc" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_000.png" id="13_qjfqk"]
+[ext_resource type="Texture2D" uid="uid://cvsjfoqhbwje" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_001.png" id="14_3i6o2"]
+[ext_resource type="Texture2D" uid="uid://dcwr1tufnhevx" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_002.png" id="15_tih05"]
+[ext_resource type="Texture2D" uid="uid://do1t085lm6x32" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_003.png" id="16_gtfk4"]
+[ext_resource type="Texture2D" uid="uid://d6spcw4shxbl" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_004.png" id="17_7wahx"]
+[ext_resource type="Texture2D" uid="uid://dc08te6vr4igr" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_005.png" id="18_ij41w"]
+[ext_resource type="Texture2D" uid="uid://dne74yx0l1d2a" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_006.png" id="19_tudun"]
+[ext_resource type="Texture2D" uid="uid://b0gne13c24bjl" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_007.png" id="20_ojxkx"]
+[ext_resource type="Texture2D" uid="uid://dn0840ha2wn7j" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_008.png" id="21_8ry1t"]
+[ext_resource type="Texture2D" uid="uid://c3qreld2v5rmy" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_009.png" id="22_rwr4q"]
+[ext_resource type="Texture2D" uid="uid://uxoeca4mfhm2" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_010.png" id="23_nnkqc"]
+[ext_resource type="Texture2D" uid="uid://y5mb0sbel5bk" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_011.png" id="24_jcp7a"]
+[ext_resource type="Texture2D" uid="uid://d2ga1vwdrjnew" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_012.png" id="25_g0hye"]
+[ext_resource type="Texture2D" uid="uid://dnn6xw3bm5yo7" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_013.png" id="26_532ai"]
+[ext_resource type="Texture2D" uid="uid://c7w3jsfu8h3mv" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_014.png" id="27_nfklt"]
+[ext_resource type="Texture2D" uid="uid://bljp504rh4nji" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_015.png" id="28_hp0ky"]
+[ext_resource type="Texture2D" uid="uid://bjbyrm7eirl61" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_016.png" id="29_gbotv"]
+[ext_resource type="Texture2D" uid="uid://dt2ujktfombh4" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_017.png" id="30_lae8w"]
+[ext_resource type="Texture2D" uid="uid://cc6k6elhfxg7j" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_000.png" id="31_cr1g6"]
+[ext_resource type="Texture2D" uid="uid://d2ixgxjpmasdr" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_001.png" id="32_6us0r"]
+[ext_resource type="Texture2D" uid="uid://x6lelx8heugc" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_002.png" id="33_wrlgx"]
+[ext_resource type="Texture2D" uid="uid://djhegu6qrsw8j" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_003.png" id="34_nsah5"]
+[ext_resource type="Texture2D" uid="uid://bvurs2kv8tt0o" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_004.png" id="35_ule63"]
+[ext_resource type="Texture2D" uid="uid://bi014210weetj" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_005.png" id="36_mvcir"]
+[ext_resource type="Texture2D" uid="uid://lhlrp7ehkvdy" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_006.png" id="37_6hmak"]
+[ext_resource type="Texture2D" uid="uid://cc8h3k0v3uw2q" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_007.png" id="38_xa3g0"]
+[ext_resource type="Texture2D" uid="uid://p0yh3s6mauju" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_008.png" id="39_ojdcf"]
+[ext_resource type="Texture2D" uid="uid://cedycwummfubi" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_009.png" id="40_48y47"]
+[ext_resource type="Texture2D" uid="uid://71navknwh2ev" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_010.png" id="41_vq4ja"]
+[ext_resource type="Texture2D" uid="uid://bcn3jvn5eyty6" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_011.png" id="42_qj0fn"]
+[ext_resource type="Texture2D" uid="uid://dqhon455hxwbr" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_012.png" id="43_8d36b"]
+[ext_resource type="Texture2D" uid="uid://caweq3ldscnyf" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_013.png" id="44_wiksm"]
+[ext_resource type="Texture2D" uid="uid://b81skpguibs7w" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_014.png" id="45_k3gew"]
+[ext_resource type="Texture2D" uid="uid://be834xpw7ecl" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_015.png" id="46_2tkun"]
+[ext_resource type="Texture2D" uid="uid://d3vrsktoyrd6b" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_016.png" id="47_xvb0x"]
+[ext_resource type="Texture2D" uid="uid://1jmvk5u7w2ro" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_017.png" id="48_avwgb"]
+[ext_resource type="Texture2D" uid="uid://dneuc1d2eabqm" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_018.png" id="49_w1blq"]
+[ext_resource type="Texture2D" uid="uid://b222f67vicyl2" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_019.png" id="50_he7yw"]
+[ext_resource type="Texture2D" uid="uid://xnh7dowlhdi7" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_020.png" id="51_ueqo5"]
+[ext_resource type="Texture2D" uid="uid://cbbq5q4hr8nn7" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_021.png" id="52_ibn5x"]
+[ext_resource type="Texture2D" uid="uid://cv0rver7uw76g" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_022.png" id="53_p1gkx"]
+[ext_resource type="Texture2D" uid="uid://dc737ur7wj0aa" path="res://addons/ac_engine/images/combat_unit/walk/0_Golem_Walking_023.png" id="54_yywen"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n8kcl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_k3obu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_byiay")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_bx5bp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_f3ixo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_lxyya")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_lkdvf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_1lff0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_1jl3s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_de7ro")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_fv71k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_yky4m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_1rvq7")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_qjfqk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_3i6o2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_tih05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_gtfk4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_7wahx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_ij41w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_tudun")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_ojxkx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_8ry1t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_rwr4q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_nnkqc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_jcp7a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_g0hye")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_532ai")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_nfklt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_hp0ky")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_gbotv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_lae8w")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("31_cr1g6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_6us0r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_wrlgx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_nsah5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_ule63")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_mvcir")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_6hmak")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_xa3g0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_ojdcf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_48y47")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_vq4ja")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_qj0fn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_8d36b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_wiksm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_k3gew")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_2tkun")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_xvb0x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_avwgb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_w1blq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_he7yw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_ueqo5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_ibn5x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_p1gkx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_yywen")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 30.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_067ss"]
+bg_color = Color(0.0588235, 0.0588235, 0.0588235, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xr1qr"]
+bg_color = Color(0, 0.713726, 0.266667, 1)
+
+[sub_resource type="Theme" id="Theme_vol2i"]
+ProgressBar/styles/background = SubResource("StyleBoxFlat_067ss")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_xr1qr")
+
+[node name="CombatUnit" type="Node2D"]
+script = ExtResource("1_u4dd5")
+
+[node name="UnitAnisprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_n8kcl")
+animation = &"idle"
+
+[node name="UnitAvatar" type="Sprite2D" parent="."]
+
+[node name="UnitTimer" type="Timer" parent="."]
+
+[node name="UnitHpBar" type="ProgressBar" parent="."]
+offset_left = 192.0
+offset_top = 64.0
+offset_right = 704.0
+offset_bottom = 128.0
+theme = SubResource("Theme_vol2i")
+rounded = true
+show_percentage = false
+metadata/_edit_use_anchors_ = true

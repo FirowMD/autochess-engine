@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4g6ym5fs0b0i"]
+
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/game_controller.gd" id="1_8usi3"]
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/game_timer.gd" id="2_3ydk0"]
+
+[node name="GameController" type="Node"]
+script = ExtResource("1_8usi3")
+
+[node name="GameTimer" type="Node" parent="."]
+script = ExtResource("2_3ydk0")
+
+[node name="Timer" type="Timer" parent="GameTimer"]
+
+[node name="Label" type="Label" parent="GameTimer"]
+offset_right = 40.0
+offset_bottom = 23.0

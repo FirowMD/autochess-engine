@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://dk3j1mfcnkdrn"]
+
+[ext_resource type="Texture2D" uid="uid://cwe027wtc0w4r" path="res://addons/ac_engine/images/board.png" id="1_eednb"]
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_map.gd" id="2_24vdv"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cwrv0"]
+texture = ExtResource("1_eednb")
+texture_region_size = Vector2i(96, 96)
+0:0/0 = 0
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_tti86"]
+tile_size = Vector2i(96, 96)
+sources/0 = SubResource("TileSetAtlasSource_cwrv0")
+
+[node name="CombatMap" type="TileMap"]
+tile_set = SubResource("TileSet_tti86")
+format = 2
+layer_0/tile_data = PackedInt32Array(0, 0, 0, 65537, 0, 0, 131074, 0, 0, 196611, 0, 0, 262148, 0, 0, 327685, 0, 0, 393222, 0, 0, 458759, 0, 0, 393223, 65536, 0, 327686, 65536, 0, 262149, 65536, 0, 196612, 65536, 0, 131075, 65536, 0, 65538, 65536, 0, 1, 65536, 0, 65536, 65536, 0, 131073, 65536, 0, 196610, 65536, 0, 262147, 65536, 0, 327684, 65536, 0, 393221, 65536, 0, 458758, 65536, 0, 458757, 0, 0, 458755, 0, 0, 458753, 0, 0, 393216, 0, 0, 327681, 0, 0, 393218, 0, 0, 393220, 0, 0, 327683, 0, 0, 262146, 0, 0, 262144, 0, 0, 196609, 0, 0, 131072, 0, 0, 2, 0, 0, 65539, 0, 0, 131076, 0, 0, 196613, 0, 0, 262150, 0, 0, 327687, 0, 0, 196615, 0, 0, 131078, 0, 0, 65541, 0, 0, 4, 0, 0, 6, 0, 0, 65543, 0, 0, 458752, 65536, 0, 458754, 65536, 0, 458756, 65536, 0, 393219, 65536, 0, 393217, 65536, 0, 327680, 65536, 0, 327682, 65536, 0, 262145, 65536, 0, 196608, 65536, 0, 3, 65536, 0, 65540, 65536, 0, 5, 65536, 0, 131077, 65536, 0, 65542, 65536, 0, 7, 65536, 0, 131079, 65536, 0, 196614, 65536, 0, 262151, 65536, 0)
+script = ExtResource("2_24vdv")
+map_width = 8
+map_height = 8
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -1
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 800.0
+offset_bottom = 800.0
+color = Color(0.164706, 0.180392, 0.211765, 1)

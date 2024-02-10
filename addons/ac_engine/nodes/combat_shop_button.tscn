@@ -1,0 +1,124 @@
+[gd_scene load_steps=21 format=3 uid="uid://ch5gsqakpm3t"]
+
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_shop_button.gd" id="1_2eum3"]
+[ext_resource type="Texture2D" uid="uid://bvuccpl85rsuc" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_000.png" id="1_hea1j"]
+[ext_resource type="Texture2D" uid="uid://cvsjfoqhbwje" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_001.png" id="3_6fnvt"]
+[ext_resource type="Texture2D" uid="uid://dcwr1tufnhevx" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_002.png" id="4_4ykab"]
+[ext_resource type="Texture2D" uid="uid://do1t085lm6x32" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_003.png" id="5_lptjf"]
+[ext_resource type="Texture2D" uid="uid://d6spcw4shxbl" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_004.png" id="6_1emua"]
+[ext_resource type="Texture2D" uid="uid://dc08te6vr4igr" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_005.png" id="7_veddk"]
+[ext_resource type="Texture2D" uid="uid://dne74yx0l1d2a" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_006.png" id="8_q5yho"]
+[ext_resource type="Texture2D" uid="uid://b0gne13c24bjl" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_007.png" id="9_6ha37"]
+[ext_resource type="Texture2D" uid="uid://dn0840ha2wn7j" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_008.png" id="10_c505l"]
+[ext_resource type="Texture2D" uid="uid://c3qreld2v5rmy" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_009.png" id="11_xt178"]
+[ext_resource type="Texture2D" uid="uid://uxoeca4mfhm2" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_010.png" id="12_ilqwb"]
+[ext_resource type="Texture2D" uid="uid://y5mb0sbel5bk" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_011.png" id="13_roidm"]
+[ext_resource type="Texture2D" uid="uid://d2ga1vwdrjnew" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_012.png" id="14_es4qc"]
+[ext_resource type="Texture2D" uid="uid://dnn6xw3bm5yo7" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_013.png" id="15_2pspf"]
+[ext_resource type="Texture2D" uid="uid://c7w3jsfu8h3mv" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_014.png" id="16_j06kc"]
+[ext_resource type="Texture2D" uid="uid://bljp504rh4nji" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_015.png" id="17_dgucw"]
+[ext_resource type="Texture2D" uid="uid://bjbyrm7eirl61" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_016.png" id="18_58i6b"]
+[ext_resource type="Texture2D" uid="uid://dt2ujktfombh4" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_017.png" id="19_jkl7s"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_epo2f"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_hea1j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_6fnvt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_4ykab")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_lptjf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_1emua")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_veddk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_q5yho")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_6ha37")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_c505l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_xt178")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_ilqwb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_roidm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_es4qc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_2pspf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_j06kc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_dgucw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_58i6b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_jkl7s")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 30.0
+}]
+
+[node name="CombatShopButton" type="Button"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 192)
+offset_right = 304.0
+offset_bottom = 192.0
+script = ExtResource("1_2eum3")
+item_name = "Combat unit"
+item_price = 1
+use_animated_icon = true
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 2
+offset_right = 304.0
+offset_bottom = 32.0
+text = "UNIT NAME"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IconAnimated" type="AnimatedSprite2D" parent="."]
+position = Vector2(160, 96)
+scale = Vector2(0.231, 0.213)
+sprite_frames = SubResource("SpriteFrames_epo2f")
+animation = &"idle"
+frame = 10
+frame_progress = 0.184168
+
+[node name="IconStatic" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(160, 96)
+scale = Vector2(0.231111, 0.213333)
+texture = ExtResource("1_hea1j")
+
+[node name="Price" type="Label" parent="."]
+layout_mode = 2
+offset_top = 160.0
+offset_right = 304.0
+offset_bottom = 192.0
+text = "UNIT PRICE"
+horizontal_alignment = 1
+vertical_alignment = 1

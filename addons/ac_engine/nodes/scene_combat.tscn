@@ -1,0 +1,62 @@
+[gd_scene load_steps=9 format=3 uid="uid://c4g6ym5fs0b0i"]
+
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/game_controller.gd" id="1_8usi3"]
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/game_timer.gd" id="2_3ydk0"]
+[ext_resource type="PackedScene" uid="uid://dk3j1mfcnkdrn" path="res://addons/ac_engine/nodes/combat_map.tscn" id="2_33xyj"]
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/player_manager.gd" id="5_3fs5h"]
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/game_player.gd" id="6_2uuvx"]
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/group_manager.gd" id="7_wuls5"]
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/game_group.gd" id="8_lqeeu"]
+[ext_resource type="PackedScene" uid="uid://dsx1bw2wv3cfu" path="res://addons/ac_engine/nodes/combat_shop.tscn" id="8_tu1m8"]
+
+[node name="GameController" type="Node"]
+script = ExtResource("1_8usi3")
+game_state = "combat"
+
+[node name="CombatMap" parent="." instance=ExtResource("2_33xyj")]
+position = Vector2(32, 32)
+
+[node name="GameTimer" type="Node" parent="."]
+script = ExtResource("2_3ydk0")
+
+[node name="Timer" type="Timer" parent="GameTimer"]
+
+[node name="Label" type="Label" parent="GameTimer"]
+offset_right = 832.0
+offset_bottom = 32.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerManager" type="Node" parent="."]
+script = ExtResource("5_3fs5h")
+
+[node name="PlayerBlue" type="Node" parent="PlayerManager"]
+script = ExtResource("6_2uuvx")
+player_name = "player_blue"
+player_id = 0
+
+[node name="PlayerRed" type="Node" parent="PlayerManager"]
+script = ExtResource("6_2uuvx")
+player_name = "player_red"
+player_id = 1
+
+[node name="GroupManager" type="Node" parent="."]
+script = ExtResource("7_wuls5")
+
+[node name="GroupNeutral" type="Node" parent="GroupManager"]
+script = ExtResource("8_lqeeu")
+group_name = "group_neutral"
+group_color = Color(0.419608, 0.419608, 0.419608, 1)
+
+[node name="GroupEnemy" type="Node" parent="GroupManager"]
+script = ExtResource("8_lqeeu")
+group_name = "group_enemy"
+group_type = 1
+group_color = Color(0.709804, 0.054902, 0, 1)
+
+[node name="GroupPlayer" type="Node" parent="GroupManager"]
+script = ExtResource("8_lqeeu")
+group_name = "group_player"
+group_type = 2
+
+[node name="CombatShop" parent="." instance=ExtResource("8_tu1m8")]

@@ -11,10 +11,25 @@ config_version=5
 [application]
 
 config/name="autochess-engine"
+run/main_scene="res://addons/ac_engine/nodes/scene_combat.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+AcTypes="*res://addons/ac_engine/scripts/ac_types.gd"
+AcPctrl="*res://addons/ac_engine/nodes/persistent_controller.tscn"
+
+[display]
+
+window/size/viewport_height=832
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/ac_engine/plugin.cfg")
 
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.184314, 0.305882, 0.45098, 1)

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://demg8kjfvti2"]
+
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/persistent_controller.gd" id="1_kyhfa"]
+
+[node name="PersistentController" type="Node"]
+script = ExtResource("1_kyhfa")
+path_combat_units = Array[String](["res://combat_units"])

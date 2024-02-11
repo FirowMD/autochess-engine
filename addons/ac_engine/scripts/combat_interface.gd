@@ -1,5 +1,5 @@
 class_name AcCombatInterface
-extends Node
+extends Control
 ## Combat Interface is a class that provides an opportunity to communicate with
 ## game as a player
 ## It contains and shows all the necessary information about the player's
@@ -9,6 +9,7 @@ extends Node
 const NAME_UI = "UserInterface"
 const NAME_DATA_CONTAINER = "DataContainer"
 const NAME_COMBAT_SHOP = "CombatShop"
+const NAME_COMBAT_COLLECTION = "CombatCollection"
 
 @export_group("General")
 ## The player to whom the combat interface belongs
@@ -21,6 +22,8 @@ const NAME_COMBAT_SHOP = "CombatShop"
 @export var data_container: Container = null
 ## The shop where the player can buy units and upgrades
 @export var combat_shop: AcCombatShop = null
+## The collection of units that the player has
+@export var combat_collection: AcCombatCollection = null
 
 @export_group("Advanced")
 @export var game_controller: AcGameController = null
@@ -28,10 +31,6 @@ const NAME_COMBAT_SHOP = "CombatShop"
 
 signal cominterface_hidden
 signal cominterface_shown
-signal cominterface_hidden_interface
-signal cominterface_shown_interface
-signal cominterface_hidden_shop
-signal cominterface_shown_shop
 
 
 func auto_setup():
@@ -92,7 +91,6 @@ func hide_container():
 		return
 	
 	data_container.hide()
-	cominterface_hidden_interface.emit()
 
 
 func show_container():
@@ -100,7 +98,6 @@ func show_container():
 		return
 	
 	data_container.show()
-	cominterface_shown_interface.emit()
 
 
 func hide_shop():
@@ -108,7 +105,6 @@ func hide_shop():
 		return
 	
 	combat_shop.hide()
-	cominterface_hidden_shop.emit()
 
 
 func show_shop():
@@ -116,7 +112,20 @@ func show_shop():
 		return
 	
 	combat_shop.show()
-	cominterface_shown_shop.emit()
+
+
+func hide_collection():
+	if combat_collection == null:
+		return
+	
+	combat_collection.hide()
+
+
+func show_collection():
+	if combat_collection == null:
+		return
+	
+	combat_collection.show()
 
 
 func store_data():
@@ -142,20 +151,26 @@ func show_data():
 		data_container.add_child(label)
 
 
-func handler_cominterface_hidden_shop():
-	show_container()
-
-
-func handler_cominterface_shown_shop():
-	hide_container()
-
-
 func handler_comshop_hidden():
 	show_container()
+	if not combat_collection.is_visible():
+		show_collection()
 
 
 func handler_comshop_shown():
 	hide_container()
+	hide_collection()
+
+
+func handler_comcollection_hidden():
+	show_container()
+	if not combat_shop.is_visible():
+		show_shop()
+
+
+func handler_comcollection_shown():
+	hide_container()
+	hide_shop()
 
 
 func _ready():
@@ -164,10 +179,12 @@ func _ready():
 		push_error("setup is not complete")
 	
 	show_data()
-
-	connect("cominterface_hidden_shop", handler_cominterface_hidden_shop)
-	connect("cominterface_shown_shop", handler_cominterface_shown_shop)
+	show()
 
 	if combat_shop != null:
 		combat_shop.connect("comshop_hidden", handler_comshop_hidden)
 		combat_shop.connect("comshop_shown", handler_comshop_shown)
+	
+	if combat_collection != null:
+		combat_collection.connect("comcollection_hidden", handler_comcollection_hidden)
+		combat_collection.connect("comcollection_shown", handler_comcollection_shown)

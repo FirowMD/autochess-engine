@@ -3,9 +3,10 @@ extends EditorPlugin
 
 
 func _enter_tree():
-	add_custom_type("AcCombatInterface", "Node", preload("res://addons/ac_engine/scripts/combat_interface.gd"), preload("res://addons/ac_engine/images/icon.png"))
+	add_custom_type("AcCombatCollection", "Control", preload("res://addons/ac_engine/scripts/combat_collection.gd"), preload("res://addons/ac_engine/images/icon_ctrl.png"))
+	add_custom_type("AcCombatInterface", "Control", preload("res://addons/ac_engine/scripts/combat_interface.gd"), preload("res://addons/ac_engine/images/icon_ctrl.png"))
 	add_custom_type("AcCombatMap","TileMap",preload("res://addons/ac_engine/scripts/combat_map.gd"),preload("res://addons/ac_engine/images/icon_map.png"))
-	add_custom_type("AcCombatShop","Node",preload("res://addons/ac_engine/scripts/combat_shop.gd"),preload("res://addons/ac_engine/images/icon.png"))
+	add_custom_type("AcCombatShop","Control",preload("res://addons/ac_engine/scripts/combat_shop.gd"),preload("res://addons/ac_engine/images/icon_ctrl.png"))
 	add_custom_type("AcCombatUnit","CharacterBody2D",preload("res://addons/ac_engine/scripts/combat_unit.gd"),preload("res://addons/ac_engine/images/icon_char.png"))
 	add_custom_type("AcGameController","Node",preload("res://addons/ac_engine/scripts/game_controller.gd"),preload("res://addons/ac_engine/images/icon.png"))
 	add_custom_type("AcGameGroup","Node",preload("res://addons/ac_engine/scripts/game_group.gd"),preload("res://addons/ac_engine/images/icon.png"))
@@ -19,6 +20,7 @@ func _enter_tree():
 	pass
 
 func _exit_tree():
+	remove_custom_type("AcCombatCollection")
 	remove_custom_type("AcCombatInterface")
 	remove_custom_type("AcCombatMap")
 	remove_custom_type("AcCombatShop")

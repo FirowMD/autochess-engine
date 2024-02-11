@@ -1,15 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://b3htp8r7eik6j"]
+[gd_scene load_steps=4 format=3 uid="uid://b3htp8r7eik6j"]
 
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_interface.gd" id="1_wxsy1"]
 [ext_resource type="PackedScene" uid="uid://dsx1bw2wv3cfu" path="res://addons/ac_engine/nodes/combat_shop.tscn" id="2_uq1o7"]
+[ext_resource type="PackedScene" uid="uid://cj1x4g7bkq4rt" path="res://addons/ac_engine/nodes/combat_collection.tscn" id="3_nb3nj"]
 
-[node name="AcCombatInterface" type="Node" node_paths=PackedStringArray("user_interface", "data_container", "combat_shop")]
+[node name="CombatInterface" type="Control" node_paths=PackedStringArray("user_interface", "data_container", "combat_shop", "combat_collection")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 script = ExtResource("1_wxsy1")
 user_interface = NodePath("UserInterface")
 data_container = NodePath("UserInterface/Panel2/DataContainer")
 combat_shop = NodePath("UserInterface/CombatShop")
+combat_collection = NodePath("UserInterface/CombatCollection")
 
 [node name="UserInterface" type="MarginContainer" parent="."]
+layout_mode = 0
 offset_left = 832.0
 offset_right = 1152.0
 offset_bottom = 832.0
@@ -36,4 +43,8 @@ vertical_alignment = 1
 [node name="HSeparator" type="HSeparator" parent="UserInterface/Panel2/DataContainer"]
 layout_mode = 2
 
+[node name="CombatCollection" parent="UserInterface" instance=ExtResource("3_nb3nj")]
+layout_mode = 2
+
 [node name="CombatShop" parent="UserInterface" instance=ExtResource("2_uq1o7")]
+layout_mode = 2

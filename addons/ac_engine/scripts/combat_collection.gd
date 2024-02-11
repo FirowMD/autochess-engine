@@ -1,4 +1,4 @@
-class_name AcCombatShop
+class_name AcCombatCollection
 extends Control
 
 
@@ -9,12 +9,12 @@ const NAME_ITEM_CONTAINER = "ItemContainer"
 
 
 @export_group("General")
-## The main panel which represents the shop
+## The main panel which represents the collection
 ## It will show and hide by the buttons specified below
 @export var user_interface: CanvasItem = null
-## The button which will show the shop
+## The button which will show the collection
 @export var btn_show: Button = null
-## The button which will hide the shop
+## The button which will hide the collection
 @export var btn_hide: Button = null
 ## The container which will hold the items
 @export var item_container: CanvasItem = null
@@ -23,16 +23,8 @@ const NAME_ITEM_CONTAINER = "ItemContainer"
 @export var game_controller: AcGameController = null
 
 
-## Scenes containing CombatUnits
-var combat_unit_list: Array = []
-
-## Current items in shop
-var combat_current_items: Array = []
-var combat_previous_items: Array = []
-
-
-signal comshop_hidden
-signal comshop_shown
+signal comcollection_hidden
+signal comcollection_shown
 
 
 func auto_setup():
@@ -74,17 +66,7 @@ func check_setup():
 	return true
 
 
-## Generates 5 items from the item pull
-## These items can be bought by the player
-func generate_current_items(item_pull):
-	combat_previous_items = combat_current_items.duplicate()
-	combat_current_items = []
-	for i in range(5):
-		var item = item_pull[randi() % item_pull.size()]
-		combat_current_items.append(item)
-
-
-func hide_shop_if_click_outside(event):
+func hide_collection_if_click_outside(event):
 	if event is InputEventMouseButton:
 		if (event.button_index == MouseButton.MOUSE_BUTTON_LEFT and
 			event.pressed == false):
@@ -92,34 +74,34 @@ func hide_shop_if_click_outside(event):
 			if (user_interface.is_visible() and
 				not user_interface.get_global_rect().has_point(event.global_position)):
 
-				hide()
+				collection_hide()
 
 
-func show():
+func collection_show():
 	if user_interface == null:
 		push_error("user_interface not set")
 		return
 	
 	btn_show.hide()
 	user_interface.show()
-	comshop_shown.emit()
+	comcollection_shown.emit()
 
-func hide():
+func collection_hide():
 	if user_interface == null:
 		push_error("user_interface not set")
 		return
 	
 	user_interface.hide()
 	btn_show.show()
-	comshop_hidden.emit()
+	comcollection_hidden.emit()
 
 
 func btn_hide_down():
-	hide()
+	collection_hide()
 
 
-func btn_show_down():
-	show()
+func btn_show_down():	
+	collection_show()
 
 
 func setup_btn_hide():
@@ -142,17 +124,10 @@ func _ready():
 	auto_setup()
 	if not check_setup():
 		push_error("setup is not complete")
-	combat_unit_list = AcPctrl.get_combat_unit_list_all()
-
-	if combat_unit_list.size() != 0:
-		generate_current_items(combat_unit_list)
 	
 	setup_btn_show()
 	setup_btn_hide()
 
-	# Initialize shop as hidden
-	# hide()
+	# Initialize collection as hidden
+	collection_hide()
 
-
-func _input(event):
-	hide_shop_if_click_outside(event)

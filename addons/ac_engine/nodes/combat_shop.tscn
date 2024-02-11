@@ -68,7 +68,8 @@ offset_right = 312.0
 offset_bottom = 96.0
 
 [node name="BtnShow" type="Button" parent="."]
-offset_left = 1024.0
+offset_left = 832.0
+offset_top = 768.0
 offset_right = 1152.0
-offset_bottom = 31.0
+offset_bottom = 832.0
 text = "SHOP"

@@ -80,6 +80,17 @@ func generate_current_items(item_pull):
 		combat_current_items.append(item)
 
 
+func hide_shop_if_click_outside(event):
+	if event is InputEventMouseButton:
+		if (event.button_index == MouseButton.MOUSE_BUTTON_LEFT and
+			event.pressed == false):
+			
+			if (user_interface.is_visible() and
+				not user_interface.get_global_rect().has_point(event.global_position)):
+
+				hide()
+
+
 func show():
 	if user_interface == null:
 		push_error("user_interface not set")
@@ -136,3 +147,7 @@ func _ready():
 
 	# Initialize shop as hidden
 	hide()
+
+
+func _input(event):
+	hide_shop_if_click_outside(event)

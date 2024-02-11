@@ -39,17 +39,20 @@ func get_current_wave():
 	return wave_idx
 
 
+## Returns dictionary of combat units and their count
+## Example: {"combat_unit_A": 5, "combat_unit_B": 3}
 func generate_wave(difficulty: AcTypes.WaveDifficulty):
 	var cunits = AcPctrl.get_combat_unit_list_all()
 	var chosen_cunits = []
 	var generated_cunits = []
+	var max_amount_per_unit = 5
 
 	for cunit in cunits:
 		if cunit.difficulty == difficulty:
 			chosen_cunits.append(cunit)
 	
 	for cunit in chosen_cunits:
-		var num = randi() % 5
+		var num = randi() % max_amount_per_unit
 		generated_cunits.append({cunit: num})
 	
 	return generated_cunits

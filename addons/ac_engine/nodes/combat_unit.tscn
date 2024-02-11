@@ -248,6 +248,7 @@ ProgressBar/styles/fill = SubResource("StyleBoxFlat_xr1qr")
 
 [node name="CombatUnit" type="Node2D"]
 script = ExtResource("1_u4dd5")
+base_attack_speed = 200
 
 [node name="UnitAnisprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_n8kcl")

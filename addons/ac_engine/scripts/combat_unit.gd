@@ -43,7 +43,14 @@ const ATTACK_SPEED_MAX = 2000
 @export var state: AcTypes.CombatUnitState = AcTypes.CombatUnitState.IDLE
 
 
-# signal unit_ready_to_attack
+signal unit_has_started_idling
+signal unit_has_stopped_idling
+signal unit_has_started_moving(delta)
+signal unit_has_stopped_moving
+signal unit_has_started_attacking
+signal unit_has_stopped_attacking
+signal unit_has_started_being_attacked
+signal unit_has_stopped_being_attacked
 
 
 var hp: int = base_hp
@@ -57,9 +64,6 @@ var game_controller: AcGameController = null
 var align_size: Vector2 = Vector2(128, 128)
 var target_unit: AcCombatUnit = null
 
-var is_moving: bool = false
-var is_attacking: bool = false
-var is_idling: bool = false
 var move_path: Array = []
 
 var enemy_groups = []
@@ -89,7 +93,7 @@ func instantiate():
 	unit.hp = base_hp
 	unit.move_speed = base_move_speed
 	unit.attack_speed = base_attack_speed
-	unit.attack_timer_max = 60.0 / unit.attack_speed
+	unit.attack_timer_max = 60.0 / base_attack_speed
 	unit.attack_range = base_attack_range
 	unit.state = AcTypes.CombatUnitState.IDLE
 
@@ -122,7 +126,7 @@ func change_attack_speed(att_speed):
 	if attack_speed > ATTACK_SPEED_MAX:
 		attack_speed = ATTACK_SPEED_MAX
 	attack_speed = att_speed
-	update_attack_timer(60.0 / attack_speed)
+	update_attack_timer(60.0 / attack_speed / get_attack_animation_time())
 
 
 func change_group(group_to):
@@ -135,27 +139,6 @@ func get_enemy_groups():
 
 
 func get_next_target():
-	# Get the nearest CombatUnit of enemy_group
-	# var target: AcCombatUnit = null
-	# for egroup in enemy_groups:
-	# 	var egroup_name = egroup.get_group_name()
-	# 	var all_egroup_nodes = get_tree().get_nodes_in_group(egroup_name)
-
-	# 	# Find nearest node
-	# 	var min_distance = 1000000.0
-	# 	for node in all_egroup_nodes:
-	# 		if node is AcCombatUnit:
-	# 			var distance = (node.unit_pos - unit_pos).length()
-	# 			if distance < min_distance:
-	# 				min_distance = distance
-	# 				target = node
-
-	# return target
-
-	# Do not find min distance for each group
-	# Just find which is in attack range
-	# If there is no one in attack range
-	# Then find the nearest one
 	var target: AcCombatUnit = null
 	var min_distance = 1000000.0
 	for egroup in enemy_groups:
@@ -177,34 +160,48 @@ func get_next_target():
 func can_attack_target(target: AcCombatUnit):
 	if has_wrong_pos():
 		return false
+	
 	var distance = unit_pos.distance_to(target.unit_pos)
-	if distance <= attack_range and target.is_moving == false:
+	if distance <= attack_range and target.state != AcTypes.CombatUnitState.WALK:
 		return true
 
 
 func sprite_animation_finished():
 	if state == AcTypes.CombatUnitState.ATTACK:
-		is_attacking = false
-		idle()
+		target_unit.deal_damage(damage)
+		unit_has_stopped_attacking.emit()
+		unit_has_started_idling.emit()
 
 
 func idle():
-	state = AcTypes.CombatUnitState.IDLE
+	if state != AcTypes.CombatUnitState.IDLE:
+		return
+	
 	sprite.play(AcTypes.CombatUnitStateNames[state])
 	timer.stop()
 	timer.set_paused(true)
 
 
 func walk():
-	state = AcTypes.CombatUnitState.WALK
+	if state != AcTypes.CombatUnitState.WALK:
+		return
+	
 	sprite.play(AcTypes.CombatUnitStateNames[state])
 
 
 func attack():
-	state = AcTypes.CombatUnitState.ATTACK
+	if state != AcTypes.CombatUnitState.ATTACK:
+		return
+	
+	adjust_sprite_direction(get_position().direction_to(target_unit.position))
+	timer.wait_time = attack_timer_max
+	timer.set_paused(false)
+	timer.stop()
+	timer.start(attack_timer_max)
+
+
+func start_attack():
 	sprite.play(AcTypes.CombatUnitStateNames[state])
-	if target_unit != null:
-		target_unit.deal_damage(damage)
 
 
 func adjust_sprite_direction(direction):
@@ -212,15 +209,6 @@ func adjust_sprite_direction(direction):
 		sprite.flip_h = false
 	elif direction.x < 0:
 		sprite.flip_h = true
-
-
-func attack_unit(unit: AcCombatUnit):
-	adjust_sprite_direction(get_position().direction_to(unit.position))
-	target_unit = unit
-	timer.wait_time = attack_timer_max
-	timer.set_paused(false)
-	timer.stop()
-	timer.start()
 
 
 func change_map_pos(new_pos):
@@ -231,7 +219,7 @@ func change_map_pos(new_pos):
 ## Start moving to target_position
 ## Returns true if unit can move to target_position
 func move_to(target_position, delta):
-	if is_moving == false:
+	if state != AcTypes.CombatUnitState.WALK:
 		move_path = game_controller.game_map.find_map_path_full_scale(get_position(), target_position)
 		if len(move_path) == 0:
 			return false
@@ -241,8 +229,8 @@ func move_to(target_position, delta):
 			return false
 
 		change_map_pos(dest_map_pos)
-		is_moving = true
-		walk()
+		unit_has_started_moving.emit(delta)
+		
 
 	var dest_pos = Vector2(move_path[0])
 	var direction = dest_pos - position
@@ -251,7 +239,8 @@ func move_to(target_position, delta):
 	position = position.move_toward(dest_pos, velocity)
 
 	if position == dest_pos:
-		is_moving = false
+		unit_has_stopped_moving.emit()
+		unit_has_started_idling.emit()
 	
 	return true
 
@@ -284,7 +273,7 @@ func setup_position():
 func setup_attack_timer():
 	timer.wait_time = attack_timer_max
 	timer.set_paused(true)
-	timer.connect("timeout", attack)
+	timer.connect("timeout", start_attack)
 
 
 func setup_group():
@@ -299,6 +288,11 @@ func setup_group():
 
 func setup_enemy_groups():
 	enemy_groups = get_enemy_groups()
+
+
+func get_attack_animation_time():
+	var anim_fps = sprite.frames.get_animation_speed("attack")
+	return 1.0 / anim_fps
 
 
 func update_attack_timer(attack_time):
@@ -409,48 +403,85 @@ func adjust_pos(delta):
 	move_to(unit_pos * align_size + game_controller.game_map.get_position(), delta)
 
 
-func combat(delta):
-	var current_target = get_next_target()
-	if current_target != null:
-		is_idling = false
+func handler_unit_has_started_idling():
+	print("unit pos: ", unit_pos, " signal: unit_has_started_idling")
+	if state == AcTypes.CombatUnitState.IDLE:
+		return
 
-		if can_attack_target(current_target):
-			if is_attacking == false:
-				is_attacking = true
-				attack_unit(current_target)
-		else:
-			var can_move = move_to(current_target.get_position(), delta)
-			if not can_move:
-				idle()
-				is_idling = true
-	elif has_wrong_pos():
-		adjust_pos(delta)
-	else:
-		if is_idling == false:
-			idle()
-			is_idling = true
+	update_state(AcTypes.CombatUnitState.IDLE)
+	idle()
 
 
-	# 	if not can_attack_target(current_target):
-	# 		move_to(current_target.get_position(), delta)
-	# 		return
-		
-	# 	# Distance between current_target.unit_pos and unit_pos
-	# 	var map_distance = unit_pos.distance_to(current_target.unit_pos)
-	# 	if map_distance <= attack_range + 1 and is_moving == false:
-	# 		if is_attacking == false:
-	# 			is_attacking = true
-	# 			attack_unit(current_target)
-	# 	else:
-	# 		move_to(current_target.get_position(), delta)
+func handler_unit_has_stopped_idling():
+	print("unit pos: ", unit_pos, " signal: unit_has_stopped_idling")
+	update_state(AcTypes.CombatUnitState.UNKNOWN)
+
+
+func handler_unit_has_started_moving(delta):
+	print("unit pos: ", unit_pos, " signal: unit_has_started_moving")
+	if state == AcTypes.CombatUnitState.WALK:
+		return
 	
-	# elif get_position() != unit_pos * align_size + game_controller.game_map.get_position():
-	# 	# If we stopped at the wrong position (between tiles for example)
-	# 	move_to(unit_pos * align_size + game_controller.game_map.get_position(), delta)
-	# else:
-	# 	if is_idling == false:
-	# 		idle()
-	# 		is_idling = true
+	update_state(AcTypes.CombatUnitState.WALK)
+	walk()
+
+
+func handler_unit_has_stopped_moving():
+	print("unit pos: ", unit_pos, " signal: unit_has_stopped_moving")
+	update_state(AcTypes.CombatUnitState.UNKNOWN)
+
+
+func handler_unit_has_started_attacking():
+	print("unit pos: ", unit_pos, " signal: unit_has_started_attacking")
+	if state == AcTypes.CombatUnitState.ATTACK:
+		return
+	
+	update_state(AcTypes.CombatUnitState.ATTACK)
+	attack()
+	print("Attacking with attack speed: ", attack_speed)
+
+
+func handler_unit_has_stopped_attacking():
+	print("unit pos: ", unit_pos, " signal: unit_has_stopped_attacking")
+	update_state(AcTypes.CombatUnitState.UNKNOWN)
+
+
+func handler_unit_has_started_being_attacked():
+	print("unit pos: ", unit_pos, " signal: unit_has_started_being_attacked")
+
+
+func handler_unit_has_stopped_being_attacked():
+	print("unit pos: ", unit_pos, " signal: unit_has_stopped_being_attacked")
+
+
+func is_path_to_target_free(target_position):
+	var path = game_controller.game_map.find_map_path_full_scale(get_position(), target_position)
+	if len(path) == 0:
+		return false
+
+	var dest_map_pos = game_controller.game_map.convert_to_map_pos(path[0])
+	if game_controller.game_map.is_map_place_free(dest_map_pos) == false:
+		return false
+
+	return true
+
+
+func update_state(current_state):
+	state = current_state
+
+
+func combat(delta):
+	target_unit  = get_next_target()
+	if target_unit != null:
+		if can_attack_target(target_unit):
+			unit_has_started_attacking.emit()
+		else:
+			move_to(target_unit.get_position(), delta)
+	else:
+		if has_wrong_pos():
+			adjust_pos(delta)
+		else:
+			unit_has_started_idling.emit()
 
 
 func preparation():
@@ -468,6 +499,15 @@ func _ready():
 		push_error("setup is not complete")
 
 	update_hp_bar()
+
+	connect("unit_has_started_idling", handler_unit_has_started_idling)
+	connect("unit_has_stopped_idling", handler_unit_has_stopped_idling)
+	connect("unit_has_started_moving", handler_unit_has_started_moving)
+	connect("unit_has_stopped_moving", handler_unit_has_stopped_moving)
+	connect("unit_has_started_attacking", handler_unit_has_started_attacking)
+	connect("unit_has_stopped_attacking", handler_unit_has_stopped_attacking)
+	connect("unit_has_started_being_attacked", handler_unit_has_started_being_attacked)
+	connect("unit_has_stopped_being_attacked", handler_unit_has_stopped_being_attacked)
 
 
 func _process(delta):

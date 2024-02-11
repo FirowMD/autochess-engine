@@ -35,6 +35,7 @@ enum CombatUnitPower {
 }
 
 enum CombatUnitState {
+	UNKNOWN = -1,
 	IDLE = 0,
 	WALK = 1,
 	ATTACK = 2,

@@ -49,7 +49,6 @@ func create_unit(unit: AcCombatUnit, group: AcGameGroup, pos: Vector2, player: A
 	unit_instance.unit_pos = pos
 	add_child(unit_instance)
 	unit_instance.add_to_group(group.group_name)
-	unit_instance.change_attack_speed(200)
 	return unit_instance
 
 
@@ -119,10 +118,10 @@ func _ready():
 	create_unit_serialized(self, [combat_unit, group_player, Vector2(1, 0), player_1])
 	create_unit_serialized(self, [combat_unit, group_enemy, Vector2(6, 6), player_2])
 
-	var all_comunits = AcPctrl.get_combat_unit_list_all()
-	print(all_comunits)
+	# var all_comunits = AcPctrl.get_combat_unit_list_all()
+	# print(all_comunits)
 
-	game_timer.add_alarm_event(self, generate_units, 1, [])
+	game_timer.add_alarm_event(self, generate_units, 2, [])
 	
 
 #! Test function
@@ -147,4 +146,4 @@ func generate_units(this, args):
 			create_unit(combat_unit, group, pos, player)
 	
 
-	game_timer.add_alarm_event(self, generate_units, 1, [])
+	game_timer.add_alarm_event(self, generate_units, 2, [])

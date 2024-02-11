@@ -283,7 +283,9 @@ func setup_group():
 
 	#! Change color according to group unit is assigned to
 	var group_color = group.get_group_color()
-	set_modulate(group_color)
+	
+	# Change color of `fill`
+	hp_bar.modulate = group_color
 
 
 func setup_enemy_groups():
@@ -404,7 +406,6 @@ func adjust_pos(delta):
 
 
 func handler_unit_has_started_idling():
-	print("unit pos: ", unit_pos, " signal: unit_has_started_idling")
 	if state == AcTypes.CombatUnitState.IDLE:
 		return
 
@@ -413,12 +414,10 @@ func handler_unit_has_started_idling():
 
 
 func handler_unit_has_stopped_idling():
-	print("unit pos: ", unit_pos, " signal: unit_has_stopped_idling")
 	update_state(AcTypes.CombatUnitState.UNKNOWN)
 
 
 func handler_unit_has_started_moving(delta):
-	print("unit pos: ", unit_pos, " signal: unit_has_started_moving")
 	if state == AcTypes.CombatUnitState.WALK:
 		return
 	
@@ -427,31 +426,27 @@ func handler_unit_has_started_moving(delta):
 
 
 func handler_unit_has_stopped_moving():
-	print("unit pos: ", unit_pos, " signal: unit_has_stopped_moving")
 	update_state(AcTypes.CombatUnitState.UNKNOWN)
 
 
 func handler_unit_has_started_attacking():
-	print("unit pos: ", unit_pos, " signal: unit_has_started_attacking")
 	if state == AcTypes.CombatUnitState.ATTACK:
 		return
 	
 	update_state(AcTypes.CombatUnitState.ATTACK)
 	attack()
-	print("Attacking with attack speed: ", attack_speed)
 
 
 func handler_unit_has_stopped_attacking():
-	print("unit pos: ", unit_pos, " signal: unit_has_stopped_attacking")
 	update_state(AcTypes.CombatUnitState.UNKNOWN)
 
 
 func handler_unit_has_started_being_attacked():
-	print("unit pos: ", unit_pos, " signal: unit_has_started_being_attacked")
+	pass
 
 
 func handler_unit_has_stopped_being_attacked():
-	print("unit pos: ", unit_pos, " signal: unit_has_stopped_being_attacked")
+	pass
 
 
 func is_path_to_target_free(target_position):

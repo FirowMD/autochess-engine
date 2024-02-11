@@ -49,6 +49,9 @@ func create_unit(unit: AcCombatUnit, group: AcGameGroup, pos: Vector2, player: A
 	unit_instance.unit_pos = pos
 	add_child(unit_instance)
 	unit_instance.add_to_group(group.group_name)
+
+	player.set_unit_count(player.get_unit_count() + 1)
+
 	return unit_instance
 
 

@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://b3htp8r7eik6j"]
+
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_interface.gd" id="1_wxsy1"]
+[ext_resource type="PackedScene" uid="uid://dsx1bw2wv3cfu" path="res://addons/ac_engine/nodes/combat_shop.tscn" id="2_uq1o7"]
+
+[node name="AcCombatInterface" type="Node"]
+script = ExtResource("1_wxsy1")
+
+[node name="UserInterface" type="MarginContainer" parent="."]
+offset_left = 832.0
+offset_right = 1152.0
+offset_bottom = 768.0
+
+[node name="Panel" type="Panel" parent="UserInterface"]
+layout_mode = 2
+
+[node name="PanelLabel" type="Panel" parent="UserInterface/Panel"]
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 64.0
+
+[node name="Label" type="Label" parent="UserInterface/Panel/PanelLabel"]
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 64.0
+text = "Combat interface"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DataContainer" type="VBoxContainer" parent="UserInterface/Panel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 72.0
+offset_right = 312.0
+offset_bottom = 696.0
+
+[node name="CombatShop" parent="." instance=ExtResource("2_uq1o7")]

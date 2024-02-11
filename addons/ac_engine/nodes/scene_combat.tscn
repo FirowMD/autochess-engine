@@ -52,12 +52,13 @@ group_color = Color(0.419608, 0.419608, 0.419608, 1)
 script = ExtResource("8_lqeeu")
 group_name = "group_enemy"
 group_type = 1
-group_color = Color(1, 0.713726, 0.666667, 1)
+group_color = Color(0.827451, 0.0196078, 0, 1)
 
 [node name="GroupPlayer" type="Node" parent="GroupManager"]
 script = ExtResource("8_lqeeu")
 group_name = "group_player"
 group_type = 2
+group_color = Color(0, 0.00784314, 1, 1)
 
 [node name="AcCombatInterface" parent="." node_paths=PackedStringArray("player") instance=ExtResource("8_258om")]
 player = NodePath("../PlayerManager/PlayerBlue")

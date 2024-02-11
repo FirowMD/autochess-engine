@@ -9,9 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://b3htp8r7eik6j" path="res://addons/ac_engine/nodes/combat_interface.tscn" id="8_258om"]
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/game_group.gd" id="8_lqeeu"]
 
-[node name="GameController" type="Node"]
+[node name="GameController" type="Node" node_paths=PackedStringArray("player_id")]
 script = ExtResource("1_8usi3")
 game_state = "combat"
+player_id = NodePath("PlayerManager/PlayerBlue")
 
 [node name="CombatMap" parent="." instance=ExtResource("2_33xyj")]
 position = Vector2(32, 32)

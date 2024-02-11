@@ -1,7 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://dsx1bw2wv3cfu"]
+[gd_scene load_steps=5 format=3 uid="uid://dsx1bw2wv3cfu"]
 
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_shop.gd" id="1_jokm7"]
 [ext_resource type="PackedScene" uid="uid://ch5gsqakpm3t" path="res://addons/ac_engine/nodes/combat_shop_button.tscn" id="2_03fj3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5a6t5"]
+bg_color = Color(0.34902, 0, 0.054902, 1)
+
+[sub_resource type="Theme" id="Theme_f31xp"]
+Button/styles/normal = SubResource("StyleBoxFlat_5a6t5")
 
 [node name="CombatShop" type="Node" node_paths=PackedStringArray("user_interface", "btn_show", "btn_hide", "item_container")]
 script = ExtResource("1_jokm7")
@@ -20,18 +26,21 @@ layout_mode = 2
 
 [node name="LabelShop" type="Label" parent="UserInterface/Panel"]
 layout_mode = 2
+offset_top = 48.0
 offset_right = 320.0
-offset_bottom = 32.0
+offset_bottom = 80.0
 text = "SHOP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="BtnHide" type="Button" parent="UserInterface/Panel"]
 layout_mode = 2
-offset_top = 32.0
-offset_right = 320.0
-offset_bottom = 63.0
-text = "CLOSE"
+offset_left = 264.0
+offset_top = 8.0
+offset_right = 314.0
+offset_bottom = 40.0
+theme = SubResource("Theme_f31xp")
+text = "X"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="UserInterface/Panel"]
 layout_mode = 0
@@ -45,19 +54,19 @@ horizontal_scroll_mode = 0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CombatShopButton4" parent="UserInterface/Panel/ScrollContainer/ItemContainer" instance=ExtResource("2_03fj3")]
+[node name="CombatShopButton" parent="UserInterface/Panel/ScrollContainer/ItemContainer" instance=ExtResource("2_03fj3")]
+layout_mode = 2
+
+[node name="CombatShopButton2" parent="UserInterface/Panel/ScrollContainer/ItemContainer" instance=ExtResource("2_03fj3")]
 layout_mode = 2
 
 [node name="CombatShopButton3" parent="UserInterface/Panel/ScrollContainer/ItemContainer" instance=ExtResource("2_03fj3")]
 layout_mode = 2
 
-[node name="ColorRect" parent="UserInterface/Panel/ScrollContainer/ItemContainer" instance=ExtResource("2_03fj3")]
+[node name="CombatShopButton4" parent="UserInterface/Panel/ScrollContainer/ItemContainer" instance=ExtResource("2_03fj3")]
 layout_mode = 2
 
-[node name="CombatShopButton" parent="UserInterface/Panel/ScrollContainer/ItemContainer" instance=ExtResource("2_03fj3")]
-layout_mode = 2
-
-[node name="CombatShopButton2" parent="UserInterface/Panel/ScrollContainer/ItemContainer" instance=ExtResource("2_03fj3")]
+[node name="CombatShopButton5" parent="UserInterface/Panel/ScrollContainer/ItemContainer" instance=ExtResource("2_03fj3")]
 layout_mode = 2
 
 [node name="HSeparator" type="HSeparator" parent="UserInterface/Panel"]

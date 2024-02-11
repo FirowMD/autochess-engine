@@ -398,11 +398,6 @@ func has_wrong_pos():
 	return get_position() != unit_pos * align_size + game_controller.game_map.get_position()
 
 
-## Move to your cell and do not stay on borders
-func adjust_pos(delta):
-	move_to(unit_pos * align_size + game_controller.game_map.get_position(), delta)
-
-
 func handler_unit_has_started_idling():
 	print("unit pos: ", unit_pos, " signal: unit_has_started_idling")
 	if state == AcTypes.CombatUnitState.IDLE:
@@ -478,10 +473,7 @@ func combat(delta):
 		else:
 			move_to(target_unit.get_position(), delta)
 	else:
-		if has_wrong_pos():
-			adjust_pos(delta)
-		else:
-			unit_has_started_idling.emit()
+		unit_has_started_idling.emit()
 
 
 func preparation():

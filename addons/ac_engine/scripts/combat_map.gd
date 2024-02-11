@@ -46,12 +46,15 @@ func free_map_place(pos):
 
 
 func convert_to_map_pos(pos):
-	var tmp_pos = Vector2(pos) - position
-	return Vector2i(floor(tmp_pos.x / tile_size.x), floor(tmp_pos.y / tile_size.y))
+	var tmp_pos = Vector2(pos) - (position + Vector2(tile_size.x / 2, tile_size.y / 2))
+	var ret = Vector2i(floor(tmp_pos.x / tile_size.x), floor(tmp_pos.y / tile_size.y))
+	return ret
 
 
 func convert_from_map_pos(pos):
-	return Vector2i(pos.x * tile_size.x + position.x, pos.y * tile_size.y + position.y)
+	# return Vector2i(pos.x * tile_size.x + position.x, pos.y * tile_size.y + position.y)
+	return Vector2i(pos.x * tile_size.x + position.x + tile_size.x / 2,
+		pos.y * tile_size.y + position.y + tile_size.y / 2)
 
 
 func move_map_place(start, end):

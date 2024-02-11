@@ -265,7 +265,8 @@ func setup_position():
 	check_map_position()
 
 	align_size = game_controller.game_map.tile_size
-	var real_pos = unit_pos * align_size + game_controller.game_map.get_position()
+	# var real_pos = unit_pos * align_size + game_controller.game_map.get_position()
+	var real_pos = game_controller.game_map.convert_from_map_pos(unit_pos)
 	set_position(real_pos)
 	game_controller.game_map.take_map_place(unit_pos)
 
@@ -347,7 +348,6 @@ func setup_sprite():
 		return
 	
 	scale = align_size / get_anisprite_size()
-	sprite.offset = get_anisprite_size() / 2
 	sprite.play("idle")
 	sprite.connect("animation_finished", sprite_animation_finished)
 
@@ -397,7 +397,7 @@ func check_setup():
 
 ## Situation when unit stops between cells
 func has_wrong_pos():
-	return get_position() != unit_pos * align_size + game_controller.game_map.get_position()
+	return Vector2i(get_position()) != game_controller.game_map.convert_from_map_pos(unit_pos)
 
 
 ## Move to your cell and do not stay on borders

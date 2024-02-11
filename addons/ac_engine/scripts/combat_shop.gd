@@ -31,6 +31,10 @@ var combat_current_items: Array = []
 var combat_previous_items: Array = []
 
 
+signal comshop_hidden
+signal comshop_shown
+
+
 func auto_setup():
 	if is_inside_tree():
 		game_controller = AcPctrl.get_game_controller(get_tree())
@@ -96,17 +100,18 @@ func show():
 		push_error("user_interface not set")
 		return
 	
-	user_interface.set_visible(true)
-	btn_show.set_visible(false)
-	
+	btn_show.hide()
+	user_interface.show()
+	comshop_shown.emit()
 
 func hide():
 	if user_interface == null:
 		push_error("user_interface not set")
 		return
 	
-	user_interface.set_visible(false)
-	btn_show.set_visible(true)
+	user_interface.hide()
+	btn_show.show()
+	comshop_hidden.emit()
 
 
 func btn_hide_down():

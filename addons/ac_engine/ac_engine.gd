@@ -3,6 +3,7 @@ extends EditorPlugin
 
 
 func _enter_tree():
+	add_custom_type("AcCombatInterface", "Node", preload("res://addons/ac_engine/scripts/combat_interface.gd"), preload("res://addons/ac_engine/images/icon.png"))
 	add_custom_type("AcCombatMap","TileMap",preload("res://addons/ac_engine/scripts/combat_map.gd"),preload("res://addons/ac_engine/images/icon_map.png"))
 	add_custom_type("AcCombatShop","Node",preload("res://addons/ac_engine/scripts/combat_shop.gd"),preload("res://addons/ac_engine/images/icon.png"))
 	add_custom_type("AcCombatUnit","CharacterBody2D",preload("res://addons/ac_engine/scripts/combat_unit.gd"),preload("res://addons/ac_engine/images/icon_char.png"))
@@ -18,6 +19,7 @@ func _enter_tree():
 	pass
 
 func _exit_tree():
+	remove_custom_type("AcCombatInterface")
 	remove_custom_type("AcCombatMap")
 	remove_custom_type("AcCombatShop")
 	remove_custom_type("AcCombatUnit")

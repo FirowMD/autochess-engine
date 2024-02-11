@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://b3htp8r7eik6j"]
+
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_interface.gd" id="1_wxsy1"]
+[ext_resource type="PackedScene" uid="uid://dsx1bw2wv3cfu" path="res://addons/ac_engine/nodes/combat_shop.tscn" id="2_uq1o7"]
+
+[node name="AcCombatInterface" type="Node" node_paths=PackedStringArray("user_interface", "data_container", "combat_shop")]
+script = ExtResource("1_wxsy1")
+user_interface = NodePath("UserInterface")
+data_container = NodePath("UserInterface/Panel2/DataContainer")
+combat_shop = NodePath("UserInterface/CombatShop")
+
+[node name="UserInterface" type="MarginContainer" parent="."]
+offset_left = 832.0
+offset_right = 1152.0
+offset_bottom = 832.0
+
+[node name="Panel" type="Panel" parent="UserInterface"]
+layout_mode = 2
+
+[node name="Panel2" type="Panel" parent="UserInterface"]
+layout_mode = 2
+
+[node name="DataContainer" type="VBoxContainer" parent="UserInterface/Panel2"]
+layout_mode = 2
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 312.0
+offset_bottom = 760.0
+
+[node name="Label" type="Label" parent="UserInterface/Panel2/DataContainer"]
+layout_mode = 2
+text = "Combat interface"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="UserInterface/Panel2/DataContainer"]
+layout_mode = 2
+
+[node name="CombatShop" parent="UserInterface" instance=ExtResource("2_uq1o7")]

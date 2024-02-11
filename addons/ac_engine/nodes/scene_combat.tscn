@@ -6,8 +6,8 @@
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/player_manager.gd" id="5_3fs5h"]
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/game_player.gd" id="6_2uuvx"]
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/group_manager.gd" id="7_wuls5"]
+[ext_resource type="PackedScene" uid="uid://b3htp8r7eik6j" path="res://addons/ac_engine/nodes/combat_interface.tscn" id="8_258om"]
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/game_group.gd" id="8_lqeeu"]
-[ext_resource type="PackedScene" uid="uid://dsx1bw2wv3cfu" path="res://addons/ac_engine/nodes/combat_shop.tscn" id="8_tu1m8"]
 
 [node name="GameController" type="Node"]
 script = ExtResource("1_8usi3")
@@ -59,4 +59,5 @@ script = ExtResource("8_lqeeu")
 group_name = "group_player"
 group_type = 2
 
-[node name="CombatShop" parent="." instance=ExtResource("8_tu1m8")]
+[node name="AcCombatInterface" parent="." node_paths=PackedStringArray("player") instance=ExtResource("8_258om")]
+player = NodePath("../PlayerManager/PlayerBlue")

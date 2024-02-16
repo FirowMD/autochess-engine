@@ -39,7 +39,7 @@ offset_bottom = 696.0
 
 [node name="Label" type="Label" parent="UserInterface/ColorRect/MarginContainer/Panel/DataContainer"]
 layout_mode = 2
-text = "COMBAT INTERFACE"
+text = "PLAYER DATA"
 horizontal_alignment = 1
 vertical_alignment = 1
 

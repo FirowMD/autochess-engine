@@ -85,14 +85,11 @@ func generate_current_items(item_pull):
 
 
 func hide_shop_if_click_outside(event):
-	if event is InputEventMouseButton:
-		if (event.button_index == MouseButton.MOUSE_BUTTON_LEFT and
-			event.pressed == false):
-			
-			if (user_interface.is_visible() and
-				not user_interface.get_global_rect().has_point(event.global_position)):
+	if event.is_action_released("app_click"):
+		if (user_interface.is_visible() and
+			not user_interface.get_global_rect().has_point(event.global_position)):
 
-				hide_shop()
+			hide_shop()
 
 
 func show():
@@ -138,7 +135,5 @@ func _ready():
 	hide_shop()
 
 
-#! Need to remove and add as `action` to make compatible with all platforms:
-# PC, Android, iOS
-# func _input(event):
-# 	hide_shop_if_click_outside(event)
+func _input(event):
+	hide_shop_if_click_outside(event)

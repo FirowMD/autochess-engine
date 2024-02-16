@@ -67,14 +67,11 @@ func check_setup():
 
 
 func hide_collection_if_click_outside(event):
-	if event is InputEventMouseButton:
-		if (event.button_index == MouseButton.MOUSE_BUTTON_LEFT and
-			event.pressed == false):
-			
-			if (user_interface.is_visible() and
-				not user_interface.get_global_rect().has_point(event.global_position)):
+	if event.is_action_released("app_click"):
+		if (user_interface.is_visible() and
+			not user_interface.get_global_rect().has_point(event.global_position)):
 
-				hide_collection()
+			hide_collection()
 
 
 func collection_show():
@@ -117,3 +114,7 @@ func _ready():
 	# Initialize collection as hidden
 	hide_collection()
 
+
+func _input():
+	# hide_collection_if_click_outside(get_tree().get_root().get_input_event())
+	pass

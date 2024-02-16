@@ -120,3 +120,7 @@ func _ready():
 	btn_resume.connect("button_down", btn_resume_down)
 	btn_exit.connect("button_down", btn_exit_down)
 
+
+func _input(event):
+	if event.is_action_released("app_cancel"):
+		switch_visibility()

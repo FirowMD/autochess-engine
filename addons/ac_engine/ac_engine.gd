@@ -4,6 +4,7 @@ extends EditorPlugin
 
 func _enter_tree():
 	add_custom_type("AcCombatCollection", "Control", preload("res://addons/ac_engine/scripts/combat_collection.gd"), preload("res://addons/ac_engine/images/icon_ctrl.png"))
+	add_custom_type("AcCombatEsc", "Control", preload("res://addons/ac_engine/scripts/combat_esc.gd"), preload("res://addons/ac_engine/images/icon_ctrl.png"))
 	add_custom_type("AcCombatInterface", "Control", preload("res://addons/ac_engine/scripts/combat_interface.gd"), preload("res://addons/ac_engine/images/icon_ctrl.png"))
 	add_custom_type("AcCombatMap","TileMap",preload("res://addons/ac_engine/scripts/combat_map.gd"),preload("res://addons/ac_engine/images/icon_map.png"))
 	add_custom_type("AcCombatShop","Control",preload("res://addons/ac_engine/scripts/combat_shop.gd"),preload("res://addons/ac_engine/images/icon_ctrl.png"))
@@ -21,6 +22,7 @@ func _enter_tree():
 
 func _exit_tree():
 	remove_custom_type("AcCombatCollection")
+	remove_custom_type("AcCombatEsc")
 	remove_custom_type("AcCombatInterface")
 	remove_custom_type("AcCombatMap")
 	remove_custom_type("AcCombatShop")

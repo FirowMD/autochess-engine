@@ -24,6 +24,8 @@ const NAME_COMBAT_COLLECTION = "CombatCollection"
 @export var combat_shop: AcCombatShop = null
 ## The collection of units that the player has
 @export var combat_collection: AcCombatCollection = null
+## Auto setup for z index (set as `100`)
+@export var auto_z_index: bool = true
 
 @export_group("Advanced")
 @export var game_controller: AcGameController = null
@@ -173,6 +175,11 @@ func handler_comcollection_shown():
 	hide_shop()
 
 
+func change_z_index_if_need():
+	if auto_z_index:
+		set_z_index(100)
+
+
 func _ready():
 	auto_setup()
 	if not check_setup():
@@ -180,7 +187,8 @@ func _ready():
 	
 	show_data()
 	show()
-
+	change_z_index_if_need()
+	
 	if combat_shop != null:
 		combat_shop.connect("comshop_hidden", handler_comshop_hidden)
 		combat_shop.connect("comshop_shown", handler_comshop_shown)

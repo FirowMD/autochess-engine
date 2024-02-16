@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://b3htp8r7eik6j"]
+[gd_scene load_steps=5 format=3 uid="uid://b3htp8r7eik6j"]
 
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_interface.gd" id="1_wxsy1"]
+[ext_resource type="PackedScene" uid="uid://b7xqhbpbpiay1" path="res://addons/ac_engine/nodes/combat_esc.tscn" id="2_jekqs"]
 [ext_resource type="PackedScene" uid="uid://dsx1bw2wv3cfu" path="res://addons/ac_engine/nodes/combat_shop.tscn" id="2_uq1o7"]
 [ext_resource type="PackedScene" uid="uid://cj1x4g7bkq4rt" path="res://addons/ac_engine/nodes/combat_collection.tscn" id="3_nb3nj"]
 
@@ -47,4 +48,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="CombatShop" parent="UserInterface" instance=ExtResource("2_uq1o7")]
+layout_mode = 2
+
+[node name="CombatEsc" parent="UserInterface" instance=ExtResource("2_jekqs")]
 layout_mode = 2

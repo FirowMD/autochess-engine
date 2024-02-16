@@ -151,8 +151,10 @@ func _ready():
 	setup_btn_hide()
 
 	# Initialize shop as hidden
-	# hide()
+	hide()
 
 
+#! Need to remove and add as `action` to make compatible with all platforms:
+# PC, Android, iOS
 func _input(event):
 	hide_shop_if_click_outside(event)

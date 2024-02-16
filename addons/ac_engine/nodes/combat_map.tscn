@@ -25,6 +25,6 @@ map_height = 8
 z_index = -1
 offset_left = -32.0
 offset_top = -32.0
-offset_right = 800.0
+offset_right = 1120.0
 offset_bottom = 800.0
 color = Color(0.164706, 0.180392, 0.211765, 1)

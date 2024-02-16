@@ -1,54 +1,53 @@
 [gd_scene load_steps=5 format=3 uid="uid://b3htp8r7eik6j"]
 
-[ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_interface.gd" id="1_wxsy1"]
-[ext_resource type="PackedScene" uid="uid://b7xqhbpbpiay1" path="res://addons/ac_engine/nodes/combat_esc.tscn" id="2_jekqs"]
-[ext_resource type="PackedScene" uid="uid://dsx1bw2wv3cfu" path="res://addons/ac_engine/nodes/combat_shop.tscn" id="2_uq1o7"]
-[ext_resource type="PackedScene" uid="uid://cj1x4g7bkq4rt" path="res://addons/ac_engine/nodes/combat_collection.tscn" id="3_nb3nj"]
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_interface.gd" id="1_5kmid"]
+[ext_resource type="PackedScene" uid="uid://dsx1bw2wv3cfu" path="res://addons/ac_engine/nodes/combat_shop.tscn" id="2_4mdrh"]
+[ext_resource type="PackedScene" uid="uid://cj1x4g7bkq4rt" path="res://addons/ac_engine/nodes/combat_collection.tscn" id="3_qbv75"]
+[ext_resource type="PackedScene" uid="uid://b7xqhbpbpiay1" path="res://addons/ac_engine/nodes/combat_esc.tscn" id="4_mfhxk"]
 
-[node name="CombatInterface" type="Control" node_paths=PackedStringArray("user_interface", "data_container", "combat_shop", "combat_collection")]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("1_wxsy1")
+[node name="CombatInterface" type="Node" node_paths=PackedStringArray("user_interface", "data_container", "combat_shop", "combat_collection", "combat_esc")]
+script = ExtResource("1_5kmid")
 user_interface = NodePath("UserInterface")
-data_container = NodePath("UserInterface/Panel2/DataContainer")
-combat_shop = NodePath("UserInterface/CombatShop")
-combat_collection = NodePath("UserInterface/CombatCollection")
+data_container = NodePath("UserInterface/ColorRect/MarginContainer/Panel/DataContainer")
+combat_shop = NodePath("UserInterface/ColorRect/MarginContainer/CombatShop")
+combat_collection = NodePath("UserInterface/ColorRect/MarginContainer/CombatCollection")
+combat_esc = NodePath("UserInterface/ColorRect/MarginContainer/AcCombatEsc")
 
 [node name="UserInterface" type="MarginContainer" parent="."]
-layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 832.0
+
+[node name="ColorRect" type="ColorRect" parent="UserInterface"]
+layout_mode = 2
+color = Color(1, 1, 1, 0)
+
+[node name="MarginContainer" type="MarginContainer" parent="UserInterface/ColorRect"]
+layout_mode = 2
 offset_left = 832.0
 offset_right = 1152.0
 offset_bottom = 832.0
 
-[node name="Panel" type="Panel" parent="UserInterface"]
+[node name="Panel" type="Panel" parent="UserInterface/ColorRect/MarginContainer"]
 layout_mode = 2
 
-[node name="Panel2" type="Panel" parent="UserInterface"]
-layout_mode = 2
-
-[node name="DataContainer" type="VBoxContainer" parent="UserInterface/Panel2"]
-layout_mode = 2
+[node name="DataContainer" type="VBoxContainer" parent="UserInterface/ColorRect/MarginContainer/Panel"]
+layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 312.0
-offset_bottom = 760.0
+offset_bottom = 696.0
 
-[node name="Label" type="Label" parent="UserInterface/Panel2/DataContainer"]
+[node name="Label" type="Label" parent="UserInterface/ColorRect/MarginContainer/Panel/DataContainer"]
 layout_mode = 2
-text = "Combat interface"
+text = "COMBAT INTERFACE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="UserInterface/Panel2/DataContainer"]
+[node name="HSeparator" type="HSeparator" parent="UserInterface/ColorRect/MarginContainer/Panel/DataContainer"]
 layout_mode = 2
 
-[node name="CombatCollection" parent="UserInterface" instance=ExtResource("3_nb3nj")]
-layout_mode = 2
+[node name="CombatShop" parent="UserInterface/ColorRect/MarginContainer" instance=ExtResource("2_4mdrh")]
 
-[node name="CombatShop" parent="UserInterface" instance=ExtResource("2_uq1o7")]
-layout_mode = 2
+[node name="CombatCollection" parent="UserInterface/ColorRect/MarginContainer" instance=ExtResource("3_qbv75")]
 
-[node name="CombatEsc" parent="UserInterface" instance=ExtResource("2_jekqs")]
-layout_mode = 2
+[node name="AcCombatEsc" parent="UserInterface/ColorRect/MarginContainer" instance=ExtResource("4_mfhxk")]

@@ -1,19 +1,18 @@
 [gd_scene load_steps=2 format=3 uid="uid://cj1x4g7bkq4rt"]
 
-[ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_shop.gd" id="1_480bj"]
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_collection.gd" id="1_2cbwg"]
 
-[node name="CombatShop" type="Control"]
-layout_mode = 3
-anchor_left = 0.722
-anchor_right = 0.722
-offset_left = -831.744
-offset_right = -511.744
-offset_bottom = 832.0
-script = ExtResource("1_480bj")
+[node name="CombatCollection" type="Node" node_paths=PackedStringArray("user_interface", "btn_show", "btn_hide", "item_container")]
+script = ExtResource("1_2cbwg")
+user_interface = NodePath("UserInterface")
+btn_show = NodePath("BtnShow")
+btn_hide = NodePath("UserInterface/Panel/BtnHide")
+item_container = NodePath("UserInterface/Panel/ScrollContainer/ItemContainer")
 
 [node name="UserInterface" type="MarginContainer" parent="."]
-layout_mode = 0
-offset_right = 320.0
+visible = false
+offset_left = 832.0
+offset_right = 1152.0
 offset_bottom = 832.0
 
 [node name="Panel" type="Panel" parent="UserInterface"]
@@ -56,8 +55,8 @@ offset_right = 312.0
 offset_bottom = 96.0
 
 [node name="BtnShow" type="Button" parent="."]
-layout_mode = 0
+offset_left = 832.0
 offset_top = 704.0
-offset_right = 320.0
+offset_right = 1152.0
 offset_bottom = 768.0
 text = "COLLECTION"

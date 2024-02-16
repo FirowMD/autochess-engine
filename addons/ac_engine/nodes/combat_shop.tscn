@@ -3,11 +3,7 @@
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_shop.gd" id="1_jokm7"]
 [ext_resource type="PackedScene" uid="uid://ch5gsqakpm3t" path="res://addons/ac_engine/nodes/combat_shop_button.tscn" id="2_03fj3"]
 
-[node name="Control" type="Control" node_paths=PackedStringArray("user_interface", "btn_show", "btn_hide", "item_container")]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="CombatShop" type="Node" node_paths=PackedStringArray("user_interface", "btn_show", "btn_hide", "item_container")]
 script = ExtResource("1_jokm7")
 user_interface = NodePath("UserInterface")
 btn_show = NodePath("BtnShow")
@@ -15,8 +11,9 @@ btn_hide = NodePath("UserInterface/Panel/BtnHide")
 item_container = NodePath("UserInterface/Panel/ScrollContainer/ItemContainer")
 
 [node name="UserInterface" type="MarginContainer" parent="."]
-layout_mode = 0
-offset_right = 320.0
+visible = false
+offset_left = 832.0
+offset_right = 1152.0
 offset_bottom = 832.0
 
 [node name="Panel" type="Panel" parent="UserInterface"]
@@ -74,8 +71,8 @@ offset_right = 312.0
 offset_bottom = 96.0
 
 [node name="BtnShow" type="Button" parent="."]
-layout_mode = 0
+offset_left = 832.0
 offset_top = 768.0
-offset_right = 320.0
+offset_right = 1152.0
 offset_bottom = 832.0
 text = "SHOP"

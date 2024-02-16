@@ -2,12 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_esc.gd" id="1_tobe8"]
 
-[node name="CombatEsc" type="Control" node_paths=PackedStringArray("user_interface", "btn_esc", "btn_resume", "btn_exit", "container")]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 832.0
-offset_right = 1152.0
-offset_bottom = 832.0
+[node name="AcCombatEsc" type="Node" node_paths=PackedStringArray("user_interface", "btn_esc", "btn_resume", "btn_exit", "container")]
 script = ExtResource("1_tobe8")
 user_interface = NodePath("UserInterface")
 btn_esc = NodePath("BtnEsc")
@@ -16,12 +11,12 @@ btn_exit = NodePath("UserInterface/Panel/Container/BtnExit")
 container = NodePath("UserInterface/Panel/Container")
 
 [node name="UserInterface" type="MarginContainer" parent="."]
-layout_mode = 1
+visible = false
 anchors_preset = -1
 anchor_left = -2.6
 anchor_right = -2.6
-offset_left = 6.10352e-05
-offset_right = 1152.0
+offset_left = 2995.2
+offset_right = 4147.2
 offset_bottom = 832.0
 
 [node name="Panel" type="Panel" parent="UserInterface"]
@@ -52,12 +47,11 @@ layout_mode = 2
 text = "EXIT"
 
 [node name="BtnEsc" type="Button" parent="."]
-layout_mode = 1
 anchors_preset = -1
 anchor_left = -2.6
 anchor_right = -2.6
-offset_left = 8.00006
+offset_left = 3003.2
 offset_top = 8.0
-offset_right = 120.0
+offset_right = 3115.2
 offset_bottom = 56.0
 text = "MENU"

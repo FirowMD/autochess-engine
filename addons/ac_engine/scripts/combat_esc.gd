@@ -1,5 +1,5 @@
 class_name AcCombatEsc
-extends Control
+extends Node
 ## Class that represents the escape menu
 
 
@@ -23,7 +23,9 @@ const NAME_CONTAINER = "Container"
 @export var btn_exit: Button = null
 ## New buttons which you want to add to the escape menu
 ## Should be placed inside this container
-@export var container: CanvasItem = null
+@export var container: Container = null
+## Auto setup for z index (set as `100`)
+@export var auto_z_index: bool = true
 
 @export_group("Advanced")
 @export var game_controller: AcGameController = null
@@ -100,14 +102,19 @@ func init_visibility():
 	btn_esc.set_visible(true)
 
 
+func change_z_index_if_need():
+	if auto_z_index:
+		user_interface.set_z_index(100)
+
+
 func _ready():
 	auto_setup()
 	if not check_setup():
 		push_error("setup is not complete")
 	
-	set_position(Vector2(0, 0))
 	set_process_mode(Node.PROCESS_MODE_ALWAYS)
 	init_visibility()
+	change_z_index_if_need()
 
 	btn_esc.connect("button_down", btn_esc_down)
 	btn_resume.connect("button_down", btn_resume_down)

@@ -1,5 +1,5 @@
 class_name AcCombatShop
-extends Control
+extends Node
 
 
 const NAME_UI = "UserInterface"
@@ -17,7 +17,7 @@ const NAME_ITEM_CONTAINER = "ItemContainer"
 ## The button which will hide the shop
 @export var btn_hide: Button = null
 ## The container which will hold the items
-@export var item_container: CanvasItem = null
+@export var item_container: Container = null
 
 @export_group("Advanced")
 @export var game_controller: AcGameController = null
@@ -92,7 +92,7 @@ func hide_shop_if_click_outside(event):
 			if (user_interface.is_visible() and
 				not user_interface.get_global_rect().has_point(event.global_position)):
 
-				hide()
+				hide_shop()
 
 
 func show():
@@ -104,7 +104,7 @@ func show():
 	user_interface.show()
 	comshop_shown.emit()
 
-func hide():
+func hide_shop():
 	if user_interface == null:
 		push_error("user_interface not set")
 		return
@@ -115,7 +115,7 @@ func hide():
 
 
 func btn_hide_down():
-	hide()
+	hide_shop()
 
 
 func btn_show_down():
@@ -151,10 +151,10 @@ func _ready():
 	setup_btn_hide()
 
 	# Initialize shop as hidden
-	hide()
+	hide_shop()
 
 
 #! Need to remove and add as `action` to make compatible with all platforms:
 # PC, Android, iOS
-func _input(event):
-	hide_shop_if_click_outside(event)
+# func _input(event):
+# 	hide_shop_if_click_outside(event)

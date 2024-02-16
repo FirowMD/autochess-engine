@@ -1,5 +1,5 @@
 class_name AcCombatCollection
-extends Control
+extends Node
 
 
 const NAME_UI = "UserInterface"
@@ -17,7 +17,7 @@ const NAME_ITEM_CONTAINER = "ItemContainer"
 ## The button which will hide the collection
 @export var btn_hide: Button = null
 ## The container which will hold the items
-@export var item_container: CanvasItem = null
+@export var item_container: Container = null
 
 @export_group("Advanced")
 @export var game_controller: AcGameController = null
@@ -74,7 +74,7 @@ func hide_collection_if_click_outside(event):
 			if (user_interface.is_visible() and
 				not user_interface.get_global_rect().has_point(event.global_position)):
 
-				collection_hide()
+				hide_collection()
 
 
 func collection_show():
@@ -86,7 +86,7 @@ func collection_show():
 	user_interface.show()
 	comcollection_shown.emit()
 
-func collection_hide():
+func hide_collection():
 	if user_interface == null:
 		push_error("user_interface not set")
 		return
@@ -97,10 +97,12 @@ func collection_hide():
 
 
 func btn_hide_down():
-	collection_hide()
+	print("hiding collection")
+	hide_collection()
 
 
-func btn_show_down():	
+func btn_show_down():
+	print("showing collection")
 	collection_show()
 
 
@@ -129,5 +131,5 @@ func _ready():
 	setup_btn_hide()
 
 	# Initialize collection as hidden
-	collection_hide()
+	hide_collection()
 

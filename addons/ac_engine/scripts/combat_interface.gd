@@ -1,5 +1,5 @@
 class_name AcCombatInterface
-extends Control
+extends Node
 ## Combat Interface is a class that provides an opportunity to communicate with
 ## game as a player
 ## It contains and shows all the necessary information about the player's
@@ -10,6 +10,7 @@ const NAME_UI = "UserInterface"
 const NAME_DATA_CONTAINER = "DataContainer"
 const NAME_COMBAT_SHOP = "CombatShop"
 const NAME_COMBAT_COLLECTION = "CombatCollection"
+const NAME_COMBAT_ESC = "CombatEsc"
 
 @export_group("General")
 ## The player to whom the combat interface belongs
@@ -24,8 +25,8 @@ const NAME_COMBAT_COLLECTION = "CombatCollection"
 @export var combat_shop: AcCombatShop = null
 ## The collection of units that the player has
 @export var combat_collection: AcCombatCollection = null
-## Auto setup for z index (set as `100`)
-@export var auto_z_index: bool = true
+## The escape menu, which will pause the game and show the menu
+@export var combat_esc: AcCombatEsc = null
 
 @export_group("Advanced")
 @export var game_controller: AcGameController = null
@@ -49,7 +50,11 @@ func auto_setup():
 		elif child.name == NAME_DATA_CONTAINER:
 			data_container = child
 		elif child.name == NAME_COMBAT_SHOP:
-			combat_shop = child		
+			combat_shop = child	
+		elif child.name == NAME_COMBAT_COLLECTION:
+			combat_collection = child
+		elif child.name == NAME_COMBAT_ESC:
+			combat_esc = child
 
 
 func check_setup():
@@ -62,6 +67,12 @@ func check_setup():
 	elif combat_shop == null:
 		push_error("combat_shop not set")
 		return false
+	elif combat_collection == null:
+		push_error("combat_collection not set")
+		return false
+	elif combat_esc == null:
+		push_error("combat_esc not set")
+		return false
 	elif game_controller == null:
 		push_error("game_controller not set")
 		return false
@@ -72,7 +83,7 @@ func check_setup():
 	return true
 
 
-func hide():
+func hide_interface():
 	if user_interface == null:
 		return
 	
@@ -80,7 +91,7 @@ func hide():
 	cominterface_hidden.emit()
 
 
-func show():
+func show_interface():
 	if user_interface == null:
 		return
 	
@@ -106,28 +117,28 @@ func hide_shop():
 	if combat_shop == null:
 		return
 	
-	combat_shop.hide()
+	combat_shop.hide_shop()
 
 
 func show_shop():
 	if combat_shop == null:
 		return
 	
-	combat_shop.show()
+	combat_shop.show_shop()
 
 
 func hide_collection():
 	if combat_collection == null:
 		return
 	
-	combat_collection.hide()
+	combat_collection.hide_collection()
 
 
 func show_collection():
 	if combat_collection == null:
 		return
 	
-	combat_collection.show()
+	combat_collection.show_collection()
 
 
 func store_data():
@@ -143,7 +154,7 @@ func store_data():
 	return data
 
 
-func show_data():
+func init_data_container():
 	# Add labels to the data container
 	var data = store_data()
 
@@ -175,24 +186,18 @@ func handler_comcollection_shown():
 	hide_shop()
 
 
-func change_z_index_if_need():
-	if auto_z_index:
-		set_z_index(100)
-
-
 func _ready():
 	auto_setup()
 	if not check_setup():
 		push_error("setup is not complete")
 	
-	show_data()
-	show()
-	change_z_index_if_need()
+	init_data_container()
+	# show_interface()
 	
-	if combat_shop != null:
-		combat_shop.connect("comshop_hidden", handler_comshop_hidden)
-		combat_shop.connect("comshop_shown", handler_comshop_shown)
+	# if combat_shop != null:
+	# 	combat_shop.connect("comshop_hidden", handler_comshop_hidden)
+	# 	combat_shop.connect("comshop_shown", handler_comshop_shown)
 	
-	if combat_collection != null:
-		combat_collection.connect("comcollection_hidden", handler_comcollection_hidden)
-		combat_collection.connect("comcollection_shown", handler_comcollection_shown)
+	# if combat_collection != null:
+	# 	combat_collection.connect("comcollection_hidden", handler_comcollection_hidden)
+	# 	combat_collection.connect("comcollection_shown", handler_comcollection_shown)

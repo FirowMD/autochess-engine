@@ -83,61 +83,27 @@ func check_setup():
 	return true
 
 
-func hide_interface():
-	if user_interface == null:
-		return
-	
-	user_interface.hide()
-	cominterface_hidden.emit()
-
-
-func show_interface():
-	if user_interface == null:
-		return
-	
-	user_interface.show()
-	cominterface_shown.emit()
-
-
 func hide_container():
-	if data_container == null:
-		return
-	
 	data_container.hide()
 
 
 func show_container():
-	if data_container == null:
-		return
-	
 	data_container.show()
 
 
 func hide_shop():
-	if combat_shop == null:
-		return
-	
 	combat_shop.hide_shop()
 
 
 func show_shop():
-	if combat_shop == null:
-		return
-	
 	combat_shop.show_shop()
 
 
 func hide_collection():
-	if combat_collection == null:
-		return
-	
 	combat_collection.hide_collection()
 
 
 func show_collection():
-	if combat_collection == null:
-		return
-	
 	combat_collection.show_collection()
 
 
@@ -164,26 +130,30 @@ func init_data_container():
 		data_container.add_child(label)
 
 
-func handler_comshop_hidden():
+func handler_comshop_comcollection_hidden():
 	show_container()
-	if not combat_collection.is_visible():
-		show_collection()
+	combat_shop.btn_show.show()
+	combat_collection.btn_show.show()
 
 
 func handler_comshop_shown():
 	hide_container()
-	hide_collection()
-
-
-func handler_comcollection_hidden():
-	show_container()
-	if not combat_shop.is_visible():
-		show_shop()
+	combat_collection.btn_show.hide()
 
 
 func handler_comcollection_shown():
 	hide_container()
-	hide_shop()
+	combat_shop.btn_show.hide()
+
+
+func setup_combat_shop():
+	combat_shop.connect("comshop_shown", handler_comshop_shown)
+	combat_shop.connect("comshop_hidden", handler_comshop_comcollection_hidden)
+
+
+func setup_combat_collection():
+	combat_collection.connect("comcollection_shown", handler_comcollection_shown)
+	combat_collection.connect("comcollection_hidden", handler_comshop_comcollection_hidden)
 
 
 func _ready():
@@ -191,13 +161,8 @@ func _ready():
 	if not check_setup():
 		push_error("setup is not complete")
 	
+	setup_combat_shop()
+	setup_combat_collection()
+
 	init_data_container()
-	# show_interface()
-	
-	# if combat_shop != null:
-	# 	combat_shop.connect("comshop_hidden", handler_comshop_hidden)
-	# 	combat_shop.connect("comshop_shown", handler_comshop_shown)
-	
-	# if combat_collection != null:
-	# 	combat_collection.connect("comcollection_hidden", handler_comcollection_hidden)
-	# 	combat_collection.connect("comcollection_shown", handler_comcollection_shown)
+	show_container()

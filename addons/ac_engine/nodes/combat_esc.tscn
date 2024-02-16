@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_esc.gd" id="1_tobe8"]
 
-[node name="AcCombatEsc" type="Node" node_paths=PackedStringArray("user_interface", "btn_esc", "btn_resume", "btn_exit", "container")]
+[node name="CombatEsc" type="Node" node_paths=PackedStringArray("user_interface", "btn_esc", "btn_resume", "btn_exit", "container")]
 script = ExtResource("1_tobe8")
 user_interface = NodePath("UserInterface")
 btn_esc = NodePath("BtnEsc")

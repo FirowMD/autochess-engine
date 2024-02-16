@@ -96,19 +96,11 @@ func hide_shop_if_click_outside(event):
 
 
 func show():
-	if user_interface == null:
-		push_error("user_interface not set")
-		return
-	
 	btn_show.hide()
 	user_interface.show()
 	comshop_shown.emit()
 
 func hide_shop():
-	if user_interface == null:
-		push_error("user_interface not set")
-		return
-	
 	user_interface.hide()
 	btn_show.show()
 	comshop_hidden.emit()
@@ -123,18 +115,10 @@ func btn_show_down():
 
 
 func setup_btn_hide():
-	if btn_hide == null:
-		push_error("btn_hide not set")
-		return
-	
 	btn_hide.connect("pressed", btn_hide_down)
 
 
 func setup_btn_show():
-	if btn_show == null:
-		push_error("btn_show not set")
-		return
-	
 	btn_show.connect("pressed", btn_show_down)
 
 

@@ -11,7 +11,7 @@ user_interface = NodePath("UserInterface")
 data_container = NodePath("UserInterface/ColorRect/MarginContainer/Panel/DataContainer")
 combat_shop = NodePath("UserInterface/ColorRect/MarginContainer/CombatShop")
 combat_collection = NodePath("UserInterface/ColorRect/MarginContainer/CombatCollection")
-combat_esc = NodePath("UserInterface/ColorRect/MarginContainer/AcCombatEsc")
+combat_esc = NodePath("UserInterface/ColorRect/MarginContainer/CombatEsc")
 
 [node name="UserInterface" type="MarginContainer" parent="."]
 offset_right = 1152.0
@@ -50,4 +50,4 @@ layout_mode = 2
 
 [node name="CombatCollection" parent="UserInterface/ColorRect/MarginContainer" instance=ExtResource("3_qbv75")]
 
-[node name="AcCombatEsc" parent="UserInterface/ColorRect/MarginContainer" instance=ExtResource("4_mfhxk")]
+[node name="CombatEsc" parent="UserInterface/ColorRect/MarginContainer" instance=ExtResource("4_mfhxk")]

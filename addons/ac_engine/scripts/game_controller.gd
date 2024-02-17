@@ -40,6 +40,8 @@ const NAME_COMBAT_MAP = "CombatMap"
 
 # var combat_unit: AcCombatUnit = load("res://scenes/combat_units/combat_unit.tscn").instantiate()
 var combat_unit: AcCombatUnit = load("res://addons/ac_engine/nodes/combat_unit.tscn").instantiate()
+var chosen_unit: AcCombatUnit = null
+
 
 func create_unit(unit: AcCombatUnit, group: AcGameGroup, pos: Vector2, player: AcGamePlayer):
 	var unit_instance = unit.instantiate()
@@ -61,6 +63,20 @@ func create_unit_serialized(this, args):
 
 func get_enemy_groups(your_group):
 	return group_manager.get_enemy_groups(your_group)
+
+
+func get_chosen_unit():
+	return chosen_unit
+
+
+func set_chosen_unit(unit_id: AcCombatUnit):
+	chosen_unit = unit_id
+	print("Chosen unit: ", chosen_unit)
+
+
+func unset_chosen_unit():
+	chosen_unit = null
+	print("Unset chosen unit")
 
 
 func auto_setup():

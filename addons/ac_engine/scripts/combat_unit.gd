@@ -6,6 +6,7 @@ const NAME_SPRITE = "UnitAnisprite"
 const NAME_AVATAR = "UnitAvatar"
 const NAME_TIMER = "UnitTimer"
 const NAME_HP_BAR = "UnitHpBar"
+const NAME_CHOSEN = "UnitChosen"
 
 const ATTACK_SPEED_MAX = 2000
 
@@ -38,19 +39,22 @@ const ATTACK_SPEED_MAX = 2000
 @export var avatar: Sprite2D = null
 @export var timer: Timer = null
 @export var hp_bar: ProgressBar = null
+@export var chosen_element: Control = null
 
 @export_group("Unit state")
 @export var state: AcTypes.CombatUnitState = AcTypes.CombatUnitState.IDLE
 
 
-signal unit_has_started_idling
-signal unit_has_stopped_idling
-signal unit_has_started_moving(delta)
-signal unit_has_stopped_moving
-signal unit_has_started_attacking
-signal unit_has_stopped_attacking
-signal unit_has_started_being_attacked
-signal unit_has_stopped_being_attacked
+signal unit_started_idling
+signal unit_stopped_idling
+signal unit_started_moving(delta)
+signal unit_stopped_moving
+signal unit_started_attacking
+signal unit_stopped_attacking
+signal unit_started_being_attacked
+signal unit_stopped_being_attacked
+signal unit_chosen
+signal unit_unchosen
 
 
 var hp: int = base_hp
@@ -63,6 +67,9 @@ var game_controller: AcGameController = null
 ## Also known as game board
 var align_size: Vector2 = Vector2(128, 128)
 var target_unit: AcCombatUnit = null
+## If you click on the unit, it will be chosen
+## Then you can move it on the game board
+var is_chosen: bool = false
 
 var move_path: Array = []
 
@@ -169,8 +176,8 @@ func can_attack_target(target: AcCombatUnit):
 func sprite_animation_finished():
 	if state == AcTypes.CombatUnitState.ATTACK:
 		target_unit.deal_damage(damage)
-		unit_has_stopped_attacking.emit()
-		unit_has_started_idling.emit()
+		unit_stopped_attacking.emit()
+		unit_started_idling.emit()
 
 
 func idle():
@@ -229,7 +236,7 @@ func move_to(target_position, delta):
 			return false
 
 		change_map_pos(dest_map_pos)
-		unit_has_started_moving.emit(delta)
+		unit_started_moving.emit(delta)
 		
 
 	var dest_pos = Vector2(move_path[0])
@@ -239,8 +246,8 @@ func move_to(target_position, delta):
 	position = position.move_toward(dest_pos, velocity)
 
 	if position == dest_pos:
-		unit_has_stopped_moving.emit()
-		unit_has_started_idling.emit()
+		unit_stopped_moving.emit()
+		unit_started_idling.emit()
 	
 	return true
 
@@ -285,8 +292,8 @@ func setup_group():
 	#! Change color according to group unit is assigned to
 	var group_color = group.get_group_color()
 	
-	# Change color of `fill`
 	hp_bar.modulate = group_color
+	chosen_element.modulate = group_color
 
 
 func setup_enemy_groups():
@@ -368,6 +375,8 @@ func auto_setup():
 			timer = child
 		elif child.name == NAME_HP_BAR:
 			hp_bar = child
+		elif child.name == NAME_CHOSEN:
+			chosen_element = child
 
 
 func check_setup():
@@ -392,6 +401,9 @@ func check_setup():
 	if hp_bar == null:
 		push_error("hp_bar is not set")
 		return false
+	if chosen_element == null:
+		push_error("chosen_element is not set")
+		return false
 
 	return true
 
@@ -405,7 +417,7 @@ func adjust_pos(delta):
 	move_to(unit_pos * align_size + game_controller.game_map.get_position(), delta)
 
 
-func handler_unit_has_started_idling():
+func handler_unit_started_idling():
 	if state == AcTypes.CombatUnitState.IDLE:
 		return
 
@@ -413,11 +425,11 @@ func handler_unit_has_started_idling():
 	idle()
 
 
-func handler_unit_has_stopped_idling():
+func handler_unit_stopped_idling():
 	update_state(AcTypes.CombatUnitState.UNKNOWN)
 
 
-func handler_unit_has_started_moving(delta):
+func handler_unit_started_moving(delta):
 	if state == AcTypes.CombatUnitState.WALK:
 		return
 	
@@ -425,11 +437,11 @@ func handler_unit_has_started_moving(delta):
 	walk()
 
 
-func handler_unit_has_stopped_moving():
+func handler_unit_stopped_moving():
 	update_state(AcTypes.CombatUnitState.UNKNOWN)
 
 
-func handler_unit_has_started_attacking():
+func handler_unit_started_attacking():
 	if state == AcTypes.CombatUnitState.ATTACK:
 		return
 	
@@ -437,15 +449,15 @@ func handler_unit_has_started_attacking():
 	attack()
 
 
-func handler_unit_has_stopped_attacking():
+func handler_unit_stopped_attacking():
 	update_state(AcTypes.CombatUnitState.UNKNOWN)
 
 
-func handler_unit_has_started_being_attacked():
+func handler_unit_started_being_attacked():
 	pass
 
 
-func handler_unit_has_stopped_being_attacked():
+func handler_unit_stopped_being_attacked():
 	pass
 
 
@@ -465,18 +477,29 @@ func update_state(current_state):
 	state = current_state
 
 
+func handler_unit_chosen():
+	game_controller.set_chosen_unit(self)
+	chosen_element.set_visible(true)
+
+
+func handler_unit_unchosen():
+	if game_controller.get_chosen_unit() == self:
+		game_controller.unset_chosen_unit()
+	chosen_element.set_visible(false)
+
+
 func combat(delta):
 	target_unit  = get_next_target()
 	if target_unit != null:
 		if can_attack_target(target_unit):
-			unit_has_started_attacking.emit()
+			unit_started_attacking.emit()
 		else:
 			move_to(target_unit.get_position(), delta)
 	else:
 		if has_wrong_pos():
 			adjust_pos(delta)
 		else:
-			unit_has_started_idling.emit()
+			unit_started_idling.emit()
 
 
 func preparation():
@@ -495,14 +518,16 @@ func _ready():
 
 	update_hp_bar()
 
-	connect("unit_has_started_idling", handler_unit_has_started_idling)
-	connect("unit_has_stopped_idling", handler_unit_has_stopped_idling)
-	connect("unit_has_started_moving", handler_unit_has_started_moving)
-	connect("unit_has_stopped_moving", handler_unit_has_stopped_moving)
-	connect("unit_has_started_attacking", handler_unit_has_started_attacking)
-	connect("unit_has_stopped_attacking", handler_unit_has_stopped_attacking)
-	connect("unit_has_started_being_attacked", handler_unit_has_started_being_attacked)
-	connect("unit_has_stopped_being_attacked", handler_unit_has_stopped_being_attacked)
+	connect("unit_started_idling", handler_unit_started_idling)
+	connect("unit_stopped_idling", handler_unit_stopped_idling)
+	connect("unit_started_moving", handler_unit_started_moving)
+	connect("unit_stopped_moving", handler_unit_stopped_moving)
+	connect("unit_started_attacking", handler_unit_started_attacking)
+	connect("unit_stopped_attacking", handler_unit_stopped_attacking)
+	connect("unit_started_being_attacked", handler_unit_started_being_attacked)
+	connect("unit_stopped_being_attacked", handler_unit_stopped_being_attacked)
+	connect("unit_chosen", handler_unit_chosen)
+	connect("unit_unchosen", handler_unit_unchosen)
 
 
 func _process(delta):
@@ -512,3 +537,19 @@ func _process(delta):
 		combat(delta)
 	elif game_state == "preparation":
 		preparation()
+
+
+func _input(event):
+	if game_controller.get_game_state() == "combat":
+		return
+	
+	if event.is_action_pressed("app_click"):
+		var rect = Rect2(position - align_size / 2, align_size)
+		if rect.has_point(event.position):
+			if is_chosen != true:
+				is_chosen = true
+				unit_chosen.emit()
+		else:
+			if is_chosen != false:
+				is_chosen = false
+				unit_unchosen.emit()

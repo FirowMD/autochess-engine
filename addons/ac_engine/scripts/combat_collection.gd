@@ -115,6 +115,6 @@ func _ready():
 	hide_collection()
 
 
-func _input():
+func _input(event):
 	# hide_collection_if_click_outside(get_tree().get_root().get_input_event())
 	pass

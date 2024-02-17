@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://diosyywi5rx43"]
+
+[sub_resource type="Gradient" id="Gradient_8ah8j"]
+offsets = PackedFloat32Array(0, 0.993506, 1)
+colors = PackedColorArray(0.494118, 0.494118, 0.494118, 0.392157, 0.364706, 0.364706, 0.364706, 0.392157, 0.231373, 0.231373, 0.231373, 0.392157)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5sjp2"]
+gradient = SubResource("Gradient_8ah8j")
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+
+[node name="UnitSelection" type="TextureRect"]
+offset_right = 896.0
+offset_bottom = 896.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = SubResource("GradientTexture2D_5sjp2")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 832.0
+color = Color(0.462745, 0.462745, 0.462745, 0.392157)
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 64.0
+offset_right = 896.0
+offset_bottom = 64.0
+color = Color(0.462745, 0.462745, 0.462745, 0.392157)
+
+[node name="ColorRect3" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 832.0
+offset_right = 832.0
+offset_bottom = 896.0
+color = Color(0.462745, 0.462745, 0.462745, 0.392157)
+
+[node name="ColorRect4" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 832.0
+offset_top = 64.0
+offset_right = 896.0
+offset_bottom = 896.0
+color = Color(0.462745, 0.462745, 0.462745, 0.392157)

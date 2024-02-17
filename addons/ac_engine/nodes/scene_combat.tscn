@@ -9,9 +9,11 @@
 [ext_resource type="PackedScene" uid="uid://b3htp8r7eik6j" path="res://addons/ac_engine/nodes/combat_interface.tscn" id="8_258om"]
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/game_group.gd" id="8_lqeeu"]
 
-[node name="GameController" type="Node" node_paths=PackedStringArray("player_id")]
+[node name="GameController" type="Node" node_paths=PackedStringArray("player_id", "game_map", "combat_interface")]
 script = ExtResource("1_8usi3")
 player_id = NodePath("PlayerManager/PlayerBlue")
+game_map = NodePath("CombatMap")
+combat_interface = NodePath("AcCombatInterface")
 
 [node name="CombatMap" parent="." instance=ExtResource("2_33xyj")]
 position = Vector2(32, 32)
@@ -30,15 +32,17 @@ vertical_alignment = 1
 [node name="PlayerManager" type="Node" parent="."]
 script = ExtResource("5_3fs5h")
 
-[node name="PlayerBlue" type="Node" parent="PlayerManager"]
+[node name="PlayerBlue" type="Node" parent="PlayerManager" node_paths=PackedStringArray("player_group")]
 script = ExtResource("6_2uuvx")
 player_name = "player_blue"
 player_id = 0
+player_group = NodePath("../../GroupManager/GroupPlayer")
 
-[node name="PlayerRed" type="Node" parent="PlayerManager"]
+[node name="PlayerRed" type="Node" parent="PlayerManager" node_paths=PackedStringArray("player_group")]
 script = ExtResource("6_2uuvx")
 player_name = "player_red"
 player_id = 1
+player_group = NodePath("../../GroupManager/GroupEnemy")
 
 [node name="GroupManager" type="Node" parent="."]
 script = ExtResource("7_wuls5")

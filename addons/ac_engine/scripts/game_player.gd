@@ -8,6 +8,7 @@ extends Node
 @export_group("General")
 @export var player_name: String = "player_name"
 @export var player_id: int = -1
+@export var player_group: AcGameGroup = null
 
 @export_group("Game Data")
 @export var player_hp: int = 1

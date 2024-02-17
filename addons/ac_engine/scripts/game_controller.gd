@@ -21,6 +21,7 @@ const NAME_PLAYER_MANAGER = "PlayerManager"
 const NAME_GROUP_MANAGER = "GroupManager"
 const NAME_GAME_TIMER = "GameTimer"
 const NAME_COMBAT_MAP = "CombatMap"
+const NAME_COMBAT_INTERFACE = "CombatInterface"
 
 
 @export_group("General")
@@ -36,6 +37,7 @@ const NAME_COMBAT_MAP = "CombatMap"
 @export var game_map: AcCombatMap = null
 @export var group_manager: AcGroupManager = null
 @export var player_manager: AcPlayerManager = null
+@export var combat_interface: AcCombatInterface = null
 
 
 # var combat_unit: AcCombatUnit = load("res://scenes/combat_units/combat_unit.tscn").instantiate()
@@ -65,16 +67,16 @@ func get_enemy_groups(your_group):
 	return group_manager.get_enemy_groups(your_group)
 
 
-func get_chosen_unit():
+func get_selected_unit():
 	return chosen_unit
 
 
-func set_chosen_unit(unit_id: AcCombatUnit):
+func set_selected_unit(unit_id: AcCombatUnit):
 	chosen_unit = unit_id
 	print("Chosen unit: ", chosen_unit)
 
 
-func unset_chosen_unit():
+func unset_selected_unit():
 	chosen_unit = null
 	print("Unset chosen unit")
 
@@ -90,6 +92,8 @@ func auto_setup():
 			group_manager = child
 		elif child.name == NAME_PLAYER_MANAGER:
 			player_manager = child
+		elif child.name == NAME_COMBAT_INTERFACE:
+			combat_interface = child
 
 
 func check_setup():
@@ -104,6 +108,9 @@ func check_setup():
 		return false
 	if player_manager == null:
 		push_error("player_manager is not set")
+		return false
+	if combat_interface == null:
+		push_error("combat_interface is not set")
 		return false
 	
 	return true

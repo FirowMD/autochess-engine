@@ -1,17 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://b3htp8r7eik6j"]
+[gd_scene load_steps=6 format=3 uid="uid://b3htp8r7eik6j"]
 
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_interface.gd" id="1_5kmid"]
 [ext_resource type="PackedScene" uid="uid://dsx1bw2wv3cfu" path="res://addons/ac_engine/nodes/combat_shop.tscn" id="2_4mdrh"]
+[ext_resource type="PackedScene" uid="uid://diosyywi5rx43" path="res://addons/ac_engine/nodes/combat_selection.tscn" id="2_211sb"]
 [ext_resource type="PackedScene" uid="uid://cj1x4g7bkq4rt" path="res://addons/ac_engine/nodes/combat_collection.tscn" id="3_qbv75"]
 [ext_resource type="PackedScene" uid="uid://b7xqhbpbpiay1" path="res://addons/ac_engine/nodes/combat_esc.tscn" id="4_mfhxk"]
 
-[node name="CombatInterface" type="Node" node_paths=PackedStringArray("user_interface", "data_container", "combat_shop", "combat_collection", "combat_esc")]
+[node name="CombatInterface" type="Node" node_paths=PackedStringArray("user_interface", "data_container", "combat_shop", "combat_collection", "combat_esc", "unit_selection")]
 script = ExtResource("1_5kmid")
 user_interface = NodePath("UserInterface")
 data_container = NodePath("UserInterface/ColorRect/MarginContainer/Panel/DataContainer")
 combat_shop = NodePath("UserInterface/ColorRect/MarginContainer/CombatShop")
 combat_collection = NodePath("UserInterface/ColorRect/MarginContainer/CombatCollection")
 combat_esc = NodePath("UserInterface/ColorRect/MarginContainer/CombatEsc")
+unit_selection = NodePath("UserInterface/ColorRect/UnitSelection")
 
 [node name="UserInterface" type="MarginContainer" parent="."]
 offset_right = 1152.0
@@ -20,6 +22,9 @@ offset_bottom = 832.0
 [node name="ColorRect" type="ColorRect" parent="UserInterface"]
 layout_mode = 2
 color = Color(1, 1, 1, 0)
+
+[node name="UnitSelection" parent="UserInterface/ColorRect" instance=ExtResource("2_211sb")]
+layout_mode = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="UserInterface/ColorRect"]
 layout_mode = 2

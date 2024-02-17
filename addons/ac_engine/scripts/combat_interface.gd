@@ -11,6 +11,7 @@ const NAME_DATA_CONTAINER = "DataContainer"
 const NAME_COMBAT_SHOP = "CombatShop"
 const NAME_COMBAT_COLLECTION = "CombatCollection"
 const NAME_COMBAT_ESC = "CombatEsc"
+const NAME_UNIT_SELECTION = "UnitSelection"
 
 @export_group("General")
 ## The player to whom the combat interface belongs
@@ -27,6 +28,9 @@ const NAME_COMBAT_ESC = "CombatEsc"
 @export var combat_collection: AcCombatCollection = null
 ## The escape menu, which will pause the game and show the menu
 @export var combat_esc: AcCombatEsc = null
+## Unit selection box
+## It will draw around the selected unit
+@export var unit_selection: Control = null
 
 @export_group("Advanced")
 @export var game_controller: AcGameController = null
@@ -55,6 +59,8 @@ func auto_setup():
 			combat_collection = child
 		elif child.name == NAME_COMBAT_ESC:
 			combat_esc = child
+		elif child.name == NAME_UNIT_SELECTION:
+			unit_selection = child
 
 
 func check_setup():
@@ -72,6 +78,9 @@ func check_setup():
 		return false
 	elif combat_esc == null:
 		push_error("combat_esc not set")
+		return false
+	elif unit_selection == null:
+		push_error("unit_selection not set")
 		return false
 	elif game_controller == null:
 		push_error("game_controller not set")
@@ -156,6 +165,38 @@ func setup_combat_collection():
 	combat_collection.connect("comcollection_hidden", handler_comshop_comcollection_hidden)
 
 
+func setup_unit_selection():
+	var align_size = game_controller.game_map.get_tile_size()
+	unit_selection.scale = Vector2(align_size) / unit_selection.get_size()
+
+	var group_color = player.player_group.get_group_color()
+	unit_selection.modulate = group_color
+
+	unit_selection.hide()
+
+
+func show_unit_selection():
+	unit_selection.show()
+
+
+func hide_unit_selection():
+	unit_selection.hide()
+
+
+func set_unit_selection_color(color: Color):
+	unit_selection.modulate = color
+
+
+func set_unit_selection_pos(pos: Vector2):
+	var align_size = game_controller.game_map.get_tile_size()
+	unit_selection.set_position(pos - Vector2(align_size / 2))
+
+
+func get_unit_selection_pos():
+	var align_size = game_controller.game_map.get_tile_size()
+	return unit_selection.get_position() + Vector2(align_size / 2)
+
+
 func _ready():
 	auto_setup()
 	if not check_setup():
@@ -163,6 +204,7 @@ func _ready():
 	
 	setup_combat_shop()
 	setup_combat_collection()
+	setup_unit_selection()
 
 	init_data_container()
 	show_container()

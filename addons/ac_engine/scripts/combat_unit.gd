@@ -6,7 +6,6 @@ const NAME_SPRITE = "UnitAnisprite"
 const NAME_AVATAR = "UnitAvatar"
 const NAME_TIMER = "UnitTimer"
 const NAME_HP_BAR = "UnitHpBar"
-const NAME_CHOSEN = "UnitChosen"
 
 const ATTACK_SPEED_MAX = 2000
 
@@ -39,7 +38,6 @@ const ATTACK_SPEED_MAX = 2000
 @export var avatar: Sprite2D = null
 @export var timer: Timer = null
 @export var hp_bar: ProgressBar = null
-@export var chosen_element: Control = null
 
 @export_group("Unit state")
 @export var state: AcTypes.CombatUnitState = AcTypes.CombatUnitState.IDLE
@@ -53,8 +51,10 @@ signal unit_started_attacking
 signal unit_stopped_attacking
 signal unit_started_being_attacked
 signal unit_stopped_being_attacked
-signal unit_chosen
-signal unit_unchosen
+signal unit_selected
+signal unit_unselected
+signal unit_dragging
+signal unit_dropped
 
 
 var hp: int = base_hp
@@ -69,7 +69,8 @@ var align_size: Vector2 = Vector2(128, 128)
 var target_unit: AcCombatUnit = null
 ## If you click on the unit, it will be chosen
 ## Then you can move it on the game board
-var is_chosen: bool = false
+var is_selected: bool = false
+var is_dragging: bool = false
 
 var move_path: Array = []
 
@@ -293,7 +294,6 @@ func setup_group():
 	var group_color = group.get_group_color()
 	
 	hp_bar.modulate = group_color
-	chosen_element.modulate = group_color
 
 
 func setup_enemy_groups():
@@ -375,8 +375,6 @@ func auto_setup():
 			timer = child
 		elif child.name == NAME_HP_BAR:
 			hp_bar = child
-		elif child.name == NAME_CHOSEN:
-			chosen_element = child
 
 
 func check_setup():
@@ -401,9 +399,6 @@ func check_setup():
 	if hp_bar == null:
 		push_error("hp_bar is not set")
 		return false
-	if chosen_element == null:
-		push_error("chosen_element is not set")
-		return false
 
 	return true
 
@@ -415,6 +410,10 @@ func has_wrong_pos():
 ## Move to your cell and do not stay on borders
 func adjust_pos(delta):
 	move_to(unit_pos * align_size + game_controller.game_map.get_position(), delta)
+
+
+func adjust_pos_instanly():
+	position = game_controller.game_map.convert_from_map_pos(unit_pos)
 
 
 func handler_unit_started_idling():
@@ -477,15 +476,36 @@ func update_state(current_state):
 	state = current_state
 
 
-func handler_unit_chosen():
-	game_controller.set_chosen_unit(self)
-	chosen_element.set_visible(true)
+func handler_unit_selected():
+	game_controller.set_selected_unit(self)
+	game_controller.combat_interface.show_unit_selection()
+	game_controller.combat_interface.set_unit_selection_color(group.get_group_color())
+	game_controller.combat_interface.set_unit_selection_pos(get_position())
 
 
-func handler_unit_unchosen():
-	if game_controller.get_chosen_unit() == self:
-		game_controller.unset_chosen_unit()
-	chosen_element.set_visible(false)
+func handler_unit_unselected():
+	if game_controller.get_selected_unit() == self:
+		game_controller.unset_selected_unit()
+		game_controller.combat_interface.hide_unit_selection()
+
+
+func adjust_drop_pos(pos, align_sz):
+	align_sz = int(align_sz)
+	var remainder = int(pos) % align_sz
+	if remainder > align_sz / 2:
+		return pos + align_sz - remainder
+	else:
+		return pos - remainder
+
+
+func drop_unit():
+	position.x = adjust_drop_pos(position.x, align_size.x)
+	position.y = adjust_drop_pos(position.y, align_size.y)
+
+	var new_pos = game_controller.game_map.convert_to_map_pos(get_position())
+	if game_controller.game_map.is_map_place_free(new_pos):
+		change_map_pos(new_pos)
+		position = game_controller.game_map.convert_from_map_pos(new_pos)
 
 
 func combat(delta):
@@ -503,7 +523,14 @@ func combat(delta):
 
 
 func preparation():
-	pass
+	if is_selected:
+		game_controller.combat_interface.set_unit_selection_pos(get_position())
+
+	if is_dragging:
+		var mouse_pos = get_viewport().get_mouse_position()
+		position = mouse_pos
+	elif has_wrong_pos():
+		adjust_pos_instanly()
 
 
 func _ready():
@@ -526,8 +553,8 @@ func _ready():
 	connect("unit_stopped_attacking", handler_unit_stopped_attacking)
 	connect("unit_started_being_attacked", handler_unit_started_being_attacked)
 	connect("unit_stopped_being_attacked", handler_unit_stopped_being_attacked)
-	connect("unit_chosen", handler_unit_chosen)
-	connect("unit_unchosen", handler_unit_unchosen)
+	connect("unit_selected", handler_unit_selected)
+	connect("unit_unselected", handler_unit_unselected)
 
 
 func _process(delta):
@@ -546,10 +573,19 @@ func _input(event):
 	if event.is_action_pressed("app_click"):
 		var rect = Rect2(position - align_size / 2, align_size)
 		if rect.has_point(event.position):
-			if is_chosen != true:
-				is_chosen = true
-				unit_chosen.emit()
+			if is_selected != true:
+				is_selected = true
+				unit_selected.emit()
+			else:
+				is_dragging = true
+				unit_dragging.emit()
 		else:
-			if is_chosen != false:
-				is_chosen = false
-				unit_unchosen.emit()
+			if is_selected != false:
+				is_selected = false
+				unit_unselected.emit()
+	
+	if event.is_action_released("app_click"):
+		if is_dragging:
+			is_dragging = false
+			drop_unit()
+			unit_dropped.emit()

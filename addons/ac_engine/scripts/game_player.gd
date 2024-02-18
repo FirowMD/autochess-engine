@@ -140,8 +140,6 @@ func set_random_shop_items(count: int):
 func set_shop_items(items: Array[String]):
 	previous_shop_items = current_shop_items
 	current_shop_items = items
-	print("+++++++++++++++++++++++++++++++++++++++++")
-	print("Shop items: ", current_shop_items)
 	gameplayer_shop_items_changed.emit(items)
 
 
@@ -151,5 +149,3 @@ func _ready():
 		push_error("setup is not complete")
 	
 	setup_shop_items()
-	print("Player ready")
-	print("Shop items: ", shop_items)

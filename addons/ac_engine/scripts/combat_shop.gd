@@ -157,7 +157,6 @@ func extract_roots_from_items(items: Array[String]) -> Array[Node]:
 
 
 func update_shop_items(items: Array[String]):
-	print("------------------ update_shop_items")
 	combat_previous_items = combat_current_items
 	combat_current_items = extract_roots_from_items(items)
 

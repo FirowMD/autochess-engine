@@ -3,7 +3,6 @@ extends Node2D
 
 
 const NAME_SPRITE = "UnitAnisprite"
-const NAME_AVATAR = "UnitAvatar"
 const NAME_TIMER = "UnitTimer"
 const NAME_HP_BAR = "UnitHpBar"
 
@@ -19,6 +18,7 @@ const ATTACK_SPEED_MAX = 2000
 @export var unit_pos: Vector2 = Vector2(0, 0)
 
 @export_group("Base stats")
+@export var base_name: String = "Unit"
 @export var base_hp: int = 10
 @export var base_damage: int = 1
 ## Attacks per minute
@@ -35,7 +35,6 @@ const ATTACK_SPEED_MAX = 2000
 
 @export_group("Advanced")
 @export var sprite: AnimatedSprite2D = null
-@export var avatar: Sprite2D = null
 @export var timer: Timer = null
 @export var hp_bar: ProgressBar = null
 
@@ -369,8 +368,6 @@ func auto_setup():
 	for child in children:
 		if child.name == NAME_SPRITE:
 			sprite = child
-		elif child.name == NAME_AVATAR:
-			avatar = child
 		elif child.name == NAME_TIMER:
 			timer = child
 		elif child.name == NAME_HP_BAR:
@@ -380,9 +377,6 @@ func auto_setup():
 func check_setup():
 	if sprite == null:
 		push_error("sprite is not set")
-		return false
-	if avatar == null:
-		push_error("avatar is not set")
 		return false
 	if timer == null:
 		push_error("timer is not set")

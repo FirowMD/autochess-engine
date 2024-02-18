@@ -11,6 +11,7 @@
 
 [node name="GameController" type="Node" node_paths=PackedStringArray("player_id", "game_map", "combat_interface")]
 script = ExtResource("1_8usi3")
+game_state = "combat"
 player_id = NodePath("PlayerManager/PlayerBlue")
 game_map = NodePath("CombatMap")
 combat_interface = NodePath("AcCombatInterface")

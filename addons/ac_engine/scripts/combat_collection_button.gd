@@ -1,18 +1,16 @@
-class_name AcCombatShopButton
+class_name AcCombatCollectionButton
 extends Button
 ## This is a button that will be used in the shop
 ## To present the item that can be bought, especially combat unit
 
 
 const NAME_LABEL_NAME = "Name"
-const NAME_LABEL_PRICE = "Price"
 const NAME_ICON_ANIMATED = "IconAnimated"
 const NAME_ICON_STATIC = "IconStatic"
 
 
 @export_group("General")
 @export var item_name: String = ""
-@export var item_price: int = 0
 @export var item_description: String = ""
 @export var use_animated_icon: bool = true
 
@@ -23,7 +21,6 @@ const NAME_ICON_STATIC = "IconStatic"
 
 @export_group("Advanced")
 @export var label_name: Label = null
-@export var label_price: Label = null
 @export var icon_animated: AnimatedSprite2D = null
 @export var icon_static: Sprite2D = null
 
@@ -38,8 +35,6 @@ func auto_setup():
 	for child in children:
 		if child.name == NAME_LABEL_NAME:
 			label_name = child
-		elif child.name == NAME_LABEL_PRICE:
-			label_price = child
 		elif child.name == NAME_ICON_ANIMATED:
 			icon_animated = child
 		elif child.name == NAME_ICON_STATIC:
@@ -49,9 +44,6 @@ func auto_setup():
 func check_setup():
 	if label_name == null:
 		push_error("label_name not set")
-		return false
-	elif label_price == null:
-		push_error("label_price not set")
 		return false
 	elif icon_animated == null:
 		push_error("icon_animated not set")
@@ -82,10 +74,6 @@ func setup_name():
 	label_name.text = item_name
 
 
-func setup_price():
-	label_price.text = str(item_price)
-
-
 func change_icon_animated(anisprite: AnimatedSprite2D):
 	icon_animated = anisprite
 	setup_icon()
@@ -103,4 +91,3 @@ func _ready():
 	
 	setup_icon()
 	setup_name()
-	setup_price()

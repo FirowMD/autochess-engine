@@ -29,6 +29,12 @@ window/size/viewport_height=832
 
 enabled=PackedStringArray("res://addons/ac_engine/plugin.cfg")
 
+[importer_defaults]
+
+animation_library={
+"animation/fps": 60.0
+}
+
 [input]
 
 app_click={

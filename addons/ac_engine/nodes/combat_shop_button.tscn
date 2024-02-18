@@ -88,9 +88,6 @@ custom_minimum_size = Vector2(0, 192)
 offset_right = 304.0
 offset_bottom = 192.0
 script = ExtResource("1_2eum3")
-item_name = "Combat unit"
-item_price = 1
-use_animated_icon = true
 
 [node name="Name" type="Label" parent="."]
 layout_mode = 2

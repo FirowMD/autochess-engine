@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://dsx1bw2wv3cfu"]
+[gd_scene load_steps=2 format=3 uid="uid://dsx1bw2wv3cfu"]
 
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_shop.gd" id="1_jokm7"]
-[ext_resource type="PackedScene" uid="uid://ch5gsqakpm3t" path="res://addons/ac_engine/nodes/combat_shop_button.tscn" id="2_03fj3"]
 
 [node name="CombatShop" type="Node" node_paths=PackedStringArray("user_interface", "btn_show", "btn_hide", "item_container")]
 script = ExtResource("1_jokm7")
@@ -47,21 +46,6 @@ horizontal_scroll_mode = 0
 [node name="ItemContainer" type="VBoxContainer" parent="UserInterface/Panel/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="CombatShopButton" parent="UserInterface/Panel/ScrollContainer/ItemContainer" instance=ExtResource("2_03fj3")]
-layout_mode = 2
-
-[node name="CombatShopButton2" parent="UserInterface/Panel/ScrollContainer/ItemContainer" instance=ExtResource("2_03fj3")]
-layout_mode = 2
-
-[node name="CombatShopButton3" parent="UserInterface/Panel/ScrollContainer/ItemContainer" instance=ExtResource("2_03fj3")]
-layout_mode = 2
-
-[node name="CombatShopButton4" parent="UserInterface/Panel/ScrollContainer/ItemContainer" instance=ExtResource("2_03fj3")]
-layout_mode = 2
-
-[node name="CombatShopButton5" parent="UserInterface/Panel/ScrollContainer/ItemContainer" instance=ExtResource("2_03fj3")]
-layout_mode = 2
 
 [node name="HSeparator" type="HSeparator" parent="UserInterface/Panel"]
 layout_mode = 0

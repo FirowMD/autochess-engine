@@ -26,12 +26,15 @@ enum CombatUnitLabel {
 	AIR = 4,
 	LIGHT = 5,
 	DARK = 6,
+	IRON = 7,
 }
 
 enum CombatUnitPower {
 	STANDARD = 0,
 	ADVANCED = 1,
 	ELITE = 2,
+	RARE = 3,
+	LEGENDARY = 4,
 }
 
 enum CombatUnitState {

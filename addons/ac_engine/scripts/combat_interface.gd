@@ -12,6 +12,8 @@ const NAME_COMBAT_SHOP = "CombatShop"
 const NAME_COMBAT_COLLECTION = "CombatCollection"
 const NAME_COMBAT_ESC = "CombatEsc"
 const NAME_UNIT_SELECTION = "UnitSelection"
+const NAME_LABEL_DEBUG = "LabelDebug"
+
 
 @export_group("General")
 ## The player to whom the combat interface belongs
@@ -31,9 +33,11 @@ const NAME_UNIT_SELECTION = "UnitSelection"
 ## Unit selection box
 ## It will draw around the selected unit
 @export var unit_selection: Control = null
+@export var show_fps: bool = false
 
 @export_group("Advanced")
 @export var game_controller: AcGameController = null
+@export var label_debug: Label = null
 
 
 signal cominterface_hidden
@@ -61,6 +65,8 @@ func auto_setup():
 			combat_esc = child
 		elif child.name == NAME_UNIT_SELECTION:
 			unit_selection = child
+		elif child.name == NAME_LABEL_DEBUG:
+			label_debug = child
 
 
 func check_setup():
@@ -87,6 +93,9 @@ func check_setup():
 		return false
 	elif player == null:
 		push_error("player not set")
+		return false
+	elif label_debug == null:
+		push_error("label_debug not set")
 		return false
 	
 	return true
@@ -208,3 +217,10 @@ func _ready():
 
 	init_data_container()
 	show_container()
+
+
+func _process(delta):
+	if show_fps:
+		label_debug.text = "FPS: " + str(Engine.get_frames_per_second())
+	else:
+		label_debug.text = ""

@@ -14,6 +14,14 @@ combat_shop = NodePath("UserInterface/ColorRect/MarginContainer/CombatShop")
 combat_collection = NodePath("UserInterface/ColorRect/MarginContainer/CombatCollection")
 combat_esc = NodePath("UserInterface/ColorRect/MarginContainer/CombatEsc")
 unit_selection = NodePath("UserInterface/ColorRect/UnitSelection")
+show_fps = true
+
+[node name="LabelDebug" type="Label" parent="."]
+offset_left = 8.0
+offset_top = 800.0
+offset_right = 832.0
+offset_bottom = 824.0
+text = "Debug information"
 
 [node name="UserInterface" type="MarginContainer" parent="."]
 offset_right = 1152.0

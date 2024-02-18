@@ -1,0 +1,107 @@
+[gd_scene load_steps=21 format=3 uid="uid://c04py050tw8lj"]
+
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_collection_button.gd" id="1_i8m3y"]
+[ext_resource type="Texture2D" uid="uid://bvuccpl85rsuc" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_000.png" id="1_jnrdq"]
+[ext_resource type="Texture2D" uid="uid://cvsjfoqhbwje" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_001.png" id="2_dip7j"]
+[ext_resource type="Texture2D" uid="uid://dcwr1tufnhevx" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_002.png" id="3_wb7eu"]
+[ext_resource type="Texture2D" uid="uid://do1t085lm6x32" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_003.png" id="4_7qwbt"]
+[ext_resource type="Texture2D" uid="uid://d6spcw4shxbl" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_004.png" id="5_mwlrv"]
+[ext_resource type="Texture2D" uid="uid://dc08te6vr4igr" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_005.png" id="6_lfwmp"]
+[ext_resource type="Texture2D" uid="uid://dne74yx0l1d2a" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_006.png" id="7_esydq"]
+[ext_resource type="Texture2D" uid="uid://b0gne13c24bjl" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_007.png" id="8_bx2iq"]
+[ext_resource type="Texture2D" uid="uid://dn0840ha2wn7j" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_008.png" id="9_fv6hb"]
+[ext_resource type="Texture2D" uid="uid://c3qreld2v5rmy" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_009.png" id="10_huyy5"]
+[ext_resource type="Texture2D" uid="uid://uxoeca4mfhm2" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_010.png" id="11_c2h33"]
+[ext_resource type="Texture2D" uid="uid://y5mb0sbel5bk" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_011.png" id="12_j4dj7"]
+[ext_resource type="Texture2D" uid="uid://d2ga1vwdrjnew" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_012.png" id="13_jepk7"]
+[ext_resource type="Texture2D" uid="uid://dnn6xw3bm5yo7" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_013.png" id="14_6t5lb"]
+[ext_resource type="Texture2D" uid="uid://c7w3jsfu8h3mv" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_014.png" id="15_mogy8"]
+[ext_resource type="Texture2D" uid="uid://bljp504rh4nji" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_015.png" id="16_sdq6f"]
+[ext_resource type="Texture2D" uid="uid://bjbyrm7eirl61" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_016.png" id="17_bypju"]
+[ext_resource type="Texture2D" uid="uid://dt2ujktfombh4" path="res://addons/ac_engine/images/combat_unit/idle/0_Golem_Idle_017.png" id="18_61rt3"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5bl2u"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_jnrdq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_dip7j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_wb7eu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_7qwbt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_mwlrv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_lfwmp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_esydq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_bx2iq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_fv6hb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_huyy5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_c2h33")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_j4dj7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_jepk7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_6t5lb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_mogy8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_sdq6f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_bypju")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_61rt3")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 30.0
+}]
+
+[node name="CombatCollectionButton" type="Button"]
+offset_right = 304.0
+offset_bottom = 192.0
+script = ExtResource("1_i8m3y")
+
+[node name="Name" type="Label" parent="."]
+offset_right = 304.0
+offset_bottom = 32.0
+text = "UNIT NAME"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IconAnimated" type="AnimatedSprite2D" parent="."]
+position = Vector2(160, 96)
+scale = Vector2(0.231, 0.213)
+sprite_frames = SubResource("SpriteFrames_5bl2u")
+animation = &"idle"
+
+[node name="IconStatic" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(160, 96)
+scale = Vector2(0.231111, 0.213333)
+texture = ExtResource("1_jnrdq")

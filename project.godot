@@ -24,6 +24,7 @@ AcPctrl="*res://addons/ac_engine/nodes/persistent_controller.tscn"
 [display]
 
 window/size/viewport_height=832
+window/stretch/mode="viewport"
 
 [editor_plugins]
 

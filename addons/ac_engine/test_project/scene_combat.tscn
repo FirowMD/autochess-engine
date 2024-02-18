@@ -18,16 +18,8 @@ combat_interface = NodePath("AcCombatInterface")
 [node name="CombatMap" parent="." instance=ExtResource("2_33xyj")]
 position = Vector2(32, 32)
 
-[node name="GameTimer" type="Node" parent="."]
-script = ExtResource("2_3ydk0")
-
-[node name="Timer" type="Timer" parent="GameTimer"]
-
-[node name="Label" type="Label" parent="GameTimer"]
-offset_right = 832.0
-offset_bottom = 32.0
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="AcCombatInterface" parent="." node_paths=PackedStringArray("player") instance=ExtResource("8_258om")]
+player = NodePath("../PlayerManager/PlayerBlue")
 
 [node name="PlayerManager" type="Node" parent="."]
 script = ExtResource("5_3fs5h")
@@ -63,5 +55,13 @@ group_name = "group_player"
 group_type = 2
 group_color = Color(0, 0.00784314, 1, 1)
 
-[node name="AcCombatInterface" parent="." node_paths=PackedStringArray("player") instance=ExtResource("8_258om")]
-player = NodePath("../PlayerManager/PlayerBlue")
+[node name="GameTimer" type="Node" parent="."]
+script = ExtResource("2_3ydk0")
+
+[node name="Timer" type="Timer" parent="GameTimer"]
+
+[node name="Label" type="Label" parent="GameTimer"]
+offset_right = 832.0
+offset_bottom = 32.0
+horizontal_alignment = 1
+vertical_alignment = 1

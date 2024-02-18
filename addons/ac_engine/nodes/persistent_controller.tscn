@@ -4,4 +4,3 @@
 
 [node name="PersistentController" type="Node"]
 script = ExtResource("1_kyhfa")
-path_combat_units = Array[String](["res://combat_units"])

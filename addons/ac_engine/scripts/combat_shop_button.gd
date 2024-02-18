@@ -96,6 +96,36 @@ func change_icon_static(sprite: Sprite2D):
 	setup_icon()
 
 
+func set_item_name(name: String):
+	item_name = name
+	setup_name()
+
+
+func set_item_price(price: int):
+	item_price = price
+	setup_price()
+
+
+func set_item_description(description: String):
+	item_description = description
+
+
+func get_item_name() -> String:
+	return item_name
+
+
+func get_item_price() -> int:
+	return item_price
+
+
+func get_item_description() -> String:
+	return item_description
+
+
+func get_use_animated_icon() -> bool:
+	return use_animated_icon
+
+
 func _ready():
 	auto_setup()
 	if not check_setup():

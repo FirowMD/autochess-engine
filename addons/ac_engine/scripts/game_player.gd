@@ -17,11 +17,10 @@ extends Node
 @export var player_score: int = 0
 
 @export_group("Player shop")
-## If you want to load available shop items from tscn files automatically
-## You can specify directories where to find them
-@export var path_shop_items: Array[String] = [
-	"res://addons/ac_engine/test_project/combat_units"
-]
+@export var shop_item_count = 4
+
+@export_group("Advanced")
+@export var game_controller: AcGameController = null
 
 
 signal gameplayer_out_of_units
@@ -32,10 +31,30 @@ signal gameplayer_exp_changed
 signal gameplayer_gold_changed
 signal gameplayer_score_changed
 signal gameplayer_name_changed
+signal gameplayer_shop_items_changed(items: Array[String])
 
 
 var unit_count = 0
-var shop_items = []
+## All available shop items
+var shop_items: Array[String] = []
+## Currently presented shop items
+var current_shop_items: Array[String] = []
+var previous_shop_items: Array[String] = []
+
+
+func auto_setup():
+	if is_inside_tree():
+		game_controller = AcPctrl.get_game_controller(get_tree())
+	else:
+		push_error("not inside tree")
+
+
+func check_setup():
+	if game_controller == null:
+		push_error("game_controller not set")
+		return false
+	
+	return true
 
 
 func get_player_id():
@@ -100,24 +119,37 @@ func set_unit_count(count: int):
 	gameplayer_unit_count_changed.emit()
 
 
-func setup_shop(paths: Array[String]):
-	shop_items = []
-	for path in path_shop_items:
-		var dir = DirAccess.open(path)
-		if dir:
-			dir.list_dir_begin()
-			var file_name = dir.get_next()
-			while file_name != "":
-				if not dir.current_is_dir():
-					if file_name.get_extension() == "tscn":
-						var scene_path = path + "/" + file_name
-						if AcPctrl.scene_has_combat_unit(scene_path):
-							var unit = load(scene_path)
-							shop_items.append(unit)
-				file_name = dir.get_next()
-			
-			dir.list_dir_end()
+## Default system for shop items
+## It will fill the shop with all available items (1 piece of each kind)
+func setup_shop_items():
+	shop_items = AcPctrl.get_combat_unit_list_all().duplicate()
+	set_shop_items(shop_items)
+
+
+## Generate random shop items (took from the shop_items array)
+## count - how many items to generate
+func set_random_shop_items(count: int):
+	var items = []
+	for i in range(count):
+		var index = randi() % shop_items.size()
+		items.append(shop_items[index])
+	
+	set_shop_items(items)
+
+
+func set_shop_items(items: Array[String]):
+	previous_shop_items = current_shop_items
+	current_shop_items = items
+	print("+++++++++++++++++++++++++++++++++++++++++")
+	print("Shop items: ", current_shop_items)
+	gameplayer_shop_items_changed.emit(items)
 
 
 func _ready():
-	setup_shop(path_shop_items)
+	auto_setup()
+	if not check_setup():
+		push_error("setup is not complete")
+	
+	setup_shop_items()
+	print("Player ready")
+	print("Shop items: ", shop_items)

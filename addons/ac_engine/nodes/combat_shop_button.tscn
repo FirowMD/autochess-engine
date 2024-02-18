@@ -96,6 +96,7 @@ offset_bottom = 32.0
 text = "UNIT NAME"
 horizontal_alignment = 1
 vertical_alignment = 1
+uppercase = true
 
 [node name="IconAnimated" type="AnimatedSprite2D" parent="."]
 position = Vector2(160, 96)
@@ -119,3 +120,4 @@ offset_bottom = 192.0
 text = "UNIT PRICE"
 horizontal_alignment = 1
 vertical_alignment = 1
+uppercase = true

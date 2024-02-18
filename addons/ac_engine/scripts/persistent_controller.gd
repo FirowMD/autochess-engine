@@ -8,7 +8,9 @@ const NAME_GAME_CONTROLLER = "GameController"
 
 @export_group("Project paths")
 ## The path to the directory containing combat unit scenes
-@export var path_combat_units: Array[String] = [ "res://scenes/combat_units"]
+@export var path_combat_units: Array[String] = [
+	"res://addons/ac_engine/test_project/combat_units"
+]
 
 
 var combat_units: Array[String] = []
@@ -51,8 +53,10 @@ func get_combat_unit_list(dir_path):
 				if file_name.get_extension() == "tscn":
 					var scene_path = dir_path + "/" + file_name
 					if scene_has_combat_unit(scene_path):
-						res_lst.append(file_name)
+						res_lst.append(scene_path)
 			file_name = dir.get_next()
+		
+		dir.list_dir_end()
 	
 	return res_lst
 

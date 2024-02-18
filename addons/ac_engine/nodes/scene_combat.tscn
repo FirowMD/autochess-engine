@@ -34,7 +34,6 @@ script = ExtResource("5_3fs5h")
 
 [node name="PlayerBlue" type="Node" parent="PlayerManager" node_paths=PackedStringArray("player_group")]
 script = ExtResource("6_2uuvx")
-player_name = "player_blue"
 player_id = 0
 player_group = NodePath("../../GroupManager/GroupPlayer")
 

@@ -32,6 +32,7 @@ layout_mode = 2
 color = Color(1, 1, 1, 0)
 
 [node name="UnitSelection" parent="UserInterface/ColorRect" instance=ExtResource("2_211sb")]
+visible = false
 layout_mode = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="UserInterface/ColorRect"]

@@ -10,7 +10,6 @@ btn_hide = NodePath("UserInterface/Panel/BtnHide")
 item_container = NodePath("UserInterface/Panel/ScrollContainer/ItemContainer")
 
 [node name="UserInterface" type="MarginContainer" parent="."]
-visible = false
 offset_left = 832.0
 offset_right = 1152.0
 offset_bottom = 832.0

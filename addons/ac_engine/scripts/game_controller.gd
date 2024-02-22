@@ -147,7 +147,7 @@ func _ready():
 	# var all_comunits = AcPctrl.get_combat_unit_list_all()
 	# print(all_comunits)
 
-	game_timer.add_alarm_event(self, generate_units, 2, [])
+	# game_timer.add_alarm_event(self, generate_units, 2, [])
 	
 
 #! Test function

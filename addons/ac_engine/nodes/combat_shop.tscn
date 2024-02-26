@@ -1,15 +1,15 @@
 [gd_scene load_steps=3 format=3 uid="uid://dsx1bw2wv3cfu"]
 
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_shop.gd" id="1_jokm7"]
-[ext_resource type="PackedScene" uid="uid://ch5gsqakpm3t" path="res://addons/ac_engine/nodes/combat_shop_button.tscn" id="2_03fj3"]
+[ext_resource type="PackedScene" uid="uid://ch5gsqakpm3t" path="res://addons/ac_engine/nodes/combat_shop_button.tscn" id="2_psfly"]
 
-[node name="CombatShop" type="Node" node_paths=PackedStringArray("user_interface", "btn_show", "btn_hide", "item_container")]
+[node name="CombatShop" type="Node" node_paths=PackedStringArray("user_interface", "btn_show", "btn_hide", "container")]
 script = ExtResource("1_jokm7")
+item_button = ExtResource("2_psfly")
 user_interface = NodePath("UserInterface")
 btn_show = NodePath("BtnShow")
 btn_hide = NodePath("UserInterface/Panel/BtnHide")
-item_container = NodePath("UserInterface/Panel/ScrollContainer/ItemContainer")
-item_button = ExtResource("2_03fj3")
+container = NodePath("UserInterface/Panel/ScrollContainer/ItemContainer")
 
 [node name="UserInterface" type="MarginContainer" parent="."]
 offset_left = 832.0

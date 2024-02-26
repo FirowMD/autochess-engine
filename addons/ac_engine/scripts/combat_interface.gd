@@ -182,13 +182,13 @@ func handler_comlogger_shown():
 
 
 func setup_combat_shop():
-	combat_shop.connect("comshop_shown", handler_comshop_shown)
-	combat_shop.connect("comshop_hidden", handler_com_hidden)
+	combat_shop.connect("ui_shown", handler_comshop_shown)
+	combat_shop.connect("ui_hidden", handler_com_hidden)
 
 
 func setup_combat_collection():
-	combat_collection.connect("comcollection_shown", handler_comcollection_shown)
-	combat_collection.connect("comcollection_hidden", handler_com_hidden)
+	combat_collection.connect("ui_shown", handler_comcollection_shown)
+	combat_collection.connect("ui_hidden", handler_com_hidden)
 
 
 func setup_combat_logger():

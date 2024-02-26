@@ -67,5 +67,6 @@ layout_mode = 2
 [node name="CombatCollection" parent="UserInterface/ColorRect/MarginContainer" instance=ExtResource("3_qbv75")]
 
 [node name="CombatLogger" parent="UserInterface/ColorRect/MarginContainer" instance=ExtResource("6_x2t30")]
+max_printed_lines = 100
 
 [node name="CombatEsc" parent="UserInterface/ColorRect/MarginContainer" instance=ExtResource("4_mfhxk")]

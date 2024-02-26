@@ -8,7 +8,7 @@ const NAME_SCROLL_CONTAINER = "ScrollContainer"
 ## BBCode must be enabled in the RichTextLabel node
 @export var log_label: RichTextLabel = null
 ## Maximum number of lines to be printed in the log
-@export var max_printed_lines: int = 5
+@export var max_printed_lines: int = 100
 
 
 func print_log(text: String) -> void:
@@ -33,3 +33,9 @@ func adjust_line_number_if_need() -> void:
 
 func clear_first_line() -> void:
 	log_label.text = log_label.text.substr(log_label.text.find("\n") + 1)
+
+
+func _ready():
+	ac_show_hide_ready()
+
+	log_label.bbcode_enabled = true

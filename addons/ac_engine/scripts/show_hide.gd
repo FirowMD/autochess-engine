@@ -27,7 +27,7 @@ signal ui_shown
 signal ui_hidden
 
 
-func auto_setup():
+func auto_setup() -> void:
 	if is_inside_tree():
 		game_controller = AcPctrl.get_game_controller(get_tree())
 		combat_interface = game_controller.combat_interface
@@ -47,7 +47,7 @@ func auto_setup():
 			container = node
 
 
-func check_setup():
+func check_setup() -> bool:
 	if game_controller == null:
 		push_error("game_controller not set")
 		return false
@@ -67,7 +67,7 @@ func check_setup():
 	return true
 
 
-func hide_if_click_outside(event):
+func hide_if_click_outside(event) -> void:
 	if event.is_action_released("app_click"):
 		if (user_interface.is_visible() and
 			not user_interface.get_global_rect().has_point(event.global_position)):
@@ -75,40 +75,40 @@ func hide_if_click_outside(event):
 			hide()
 
 
-func show():
+func show() -> void:
 	btn_show.hide()
 	user_interface.show()
 	ui_shown.emit()
 
-func hide():
+func hide() -> void:
 	user_interface.hide()
 	btn_show.show()
 	ui_hidden.emit()
 
 
-func btn_hide_down():
+func btn_hide_down() -> void:
 	hide()
 
 
-func btn_show_down():
+func btn_show_down() -> void:
 	show()
 
 
-func setup_btn_hide():
+func setup_btn_hide() -> void:
 	btn_hide.connect("pressed", btn_hide_down)
 
 
-func setup_btn_show():
+func setup_btn_show() -> void:
 	btn_show.connect("pressed", btn_show_down)
 
 
-func clear_container():
+func clear_container() -> void:
 	var container_children = container.get_children()
 	for child in container_children:
 		child.queue_free()
 
 
-func _ready():
+func ac_show_hide_ready() -> void:
 	auto_setup()
 	if not check_setup():
 		push_error("setup is not complete")
@@ -120,5 +120,13 @@ func _ready():
 	hide()
 
 
-func _input(event):
+func ac_show_hide_input(event: InputEvent) -> void:
 	hide_if_click_outside(event)
+
+
+func _ready():
+	ac_show_hide_ready()
+
+
+func _input(event):
+	ac_show_hide_input(event)

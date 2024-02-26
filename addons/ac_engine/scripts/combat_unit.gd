@@ -165,13 +165,15 @@ func get_next_target():
 	return target
 
 
-func can_attack_target(target: AcCombatUnit):
+func can_attack_target(target: AcCombatUnit) -> bool:
 	if has_wrong_pos():
 		return false
 	
 	var distance = unit_pos.distance_to(target.unit_pos)
 	if distance <= attack_range and target.state != AcTypes.CombatUnitState.WALK:
 		return true
+	
+	return false
 
 
 func sprite_animation_finished():

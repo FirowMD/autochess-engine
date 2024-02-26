@@ -125,7 +125,10 @@ func get_game_state() -> String:
 
 
 func print_log(text: String, color: Color = Color(1, 1, 1)) -> void:
-	combat_interface.combat_logger.print_log(text, color)
+	if color == Color(1, 1, 1):
+		combat_interface.combat_logger.print_log(text)
+	else:
+		combat_interface.combat_logger.print_log_ext(text, color)
 
 
 func _ready():

@@ -177,7 +177,7 @@ func can_attack_target(target: AcCombatUnit):
 func sprite_animation_finished():
 	if state == AcTypes.CombatUnitState.ATTACK:
 		var log = base_name + " dealt " + str(damage) + " damage to " + target_unit.base_name
-		game_controller.print_log(log, Color(1, 1, 1))
+		game_controller.print_log(log)
 		
 		target_unit.deal_damage(damage)
 		unit_stopped_attacking.emit()

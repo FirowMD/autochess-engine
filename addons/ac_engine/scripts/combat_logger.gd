@@ -11,21 +11,25 @@ const NAME_SCROLL_CONTAINER = "ScrollContainer"
 @export var max_printed_lines: int = 5
 
 
-func print_log(text: String, color: Color = Color(1, 1, 1)) -> void:
-	if log_label.get_line_count() > max_printed_lines:
-		clear_first_line()
-	
-	log_label.append_text(text + "\n")
-	log_label.scroll_to_line(log_label.get_line_count() - 1)
+func print_log(text: String) -> void:
+	adjust_line_number_if_need()
+	log_label.text += text + "\n"
+
+
+func print_log_ext(text: String, color: Color) -> void:
+	adjust_line_number_if_need()
+	log_label.text += "[color=" + color.to_html() + "]" + text + "[/color]\n"
 
 
 func clear_log() -> void:
 	log_label.clear()
 
 
+func adjust_line_number_if_need() -> void:
+	var line_count = log_label.get_line_count()
+	if line_count > max_printed_lines:
+		clear_first_line()
+
+
 func clear_first_line() -> void:
-	var tmp_text = log_label.get_parsed_text()
-	var first_line_end = tmp_text.find("\n")
-	tmp_text = tmp_text.substr(first_line_end + 1)
-	clear_log()
-	log_label.append_text(tmp_text)
+	log_label.text = log_label.text.substr(log_label.text.find("\n") + 1)

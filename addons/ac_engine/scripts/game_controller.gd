@@ -76,6 +76,10 @@ func set_selected_unit(unit_id: AcCombatUnit) -> void:
 	print("Chosen unit: ", selected_unit)
 
 
+func get_current_time() -> String:
+	return game_timer.get_pretty_time_string()
+
+
 func unset_selected_unit() -> void:
 	selected_unit = null
 	print("Unset chosen unit")

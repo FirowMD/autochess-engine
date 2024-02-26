@@ -13,12 +13,16 @@ const NAME_SCROLL_CONTAINER = "ScrollContainer"
 
 func print_log(text: String) -> void:
 	adjust_line_number_if_need()
+	log_label.text += "[" + game_controller.get_current_time() + "] "
 	log_label.text += text + "\n"
 
 
 func print_log_ext(text: String, color: Color) -> void:
 	adjust_line_number_if_need()
-	log_label.text += "[color=" + color.to_html() + "]" + text + "[/color]\n"
+	log_label.text += "[color=" + color.to_html() + "]"
+	log_label.text += "[" + game_controller.get_current_time() + "] "
+	log_label.text += text
+	log_label.text += "[/color]\n"
 
 
 func clear_log() -> void:

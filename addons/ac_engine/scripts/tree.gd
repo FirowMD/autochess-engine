@@ -10,26 +10,26 @@ var node_template: Dictionary = {
 var node_root: Dictionary = node_template.duplicate()
 
 
-func is_root(node: Dictionary) -> bool:
-	return node == node_root
+# func is_root(node: Dictionary) -> bool:
+# 	return node == node_root
 
 
-func add_node(data: Variant, parent: Dictionary = node_root) -> Dictionary:
-	var new_node = node_template.duplicate()
-	new_node["data"] = data
-	new_node["root"] = parent
-	parent["children"].append(new_node)
-	return new_node
+# func add_node(data: Variant, parent: Dictionary = node_root) -> Dictionary:
+# 	var new_node = node_template.duplicate()
+# 	new_node["data"] = data
+# 	new_node["root"] = parent
+# 	parent["children"].append(new_node)
+# 	return new_node
 
 
-func search_node(data: Variant, compare_func: FuncRef, parent: Dictionary = node_root) -> Dictionary:
-	for child in parent["children"]:
-		if compare_func.call_func(data, child["data"]):
-			return child
-		var result = search_node(data, compare_func, child)
-		if result:
-			return result
-	return null
+# func search_node(data: Variant, compare_func: FuncRef, parent: Dictionary = node_root) -> Dictionary:
+# 	for child in parent["children"]:
+# 		if compare_func.call_func(data, child["data"]):
+# 			return child
+# 		var result = search_node(data, compare_func, child)
+# 		if result:
+# 			return result
+# 	return null
 
 # func add_node(data: Dictionary, parent: Dictionary = node_root) -> Dictionary:
 # 	var new_node = node_template.duplicate()

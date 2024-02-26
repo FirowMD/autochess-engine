@@ -72,7 +72,6 @@ vertical_alignment = 1
 
 [node name="AcCraftSystem" type="Node" parent="."]
 script = ExtResource("9_eyi1c")
-json_path = null
 
 [node name="AcTree" type="Node" parent="AcCraftSystem"]
 script = ExtResource("10_j0vfh")

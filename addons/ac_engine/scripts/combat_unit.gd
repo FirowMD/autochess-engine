@@ -146,12 +146,12 @@ func get_enemy_groups():
 	return game_controller.get_enemy_groups(group)
 
 
-func get_next_target():
+func get_next_target() -> Variant:
 	var target: AcCombatUnit = null
-	var min_distance = 1000000.0
+	var min_distance: float = 1000000.0
 	for egroup in enemy_groups:
 		var egroup_name = egroup.get_group_name()
-		var all_egroup_nodes = get_tree().get_nodes_in_group(egroup_name)
+		var all_egroup_nodes: Array[Variant] = get_tree().get_nodes_in_group(egroup_name)
 
 		for node in all_egroup_nodes:
 			if node is AcCombatUnit:

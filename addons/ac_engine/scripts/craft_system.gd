@@ -9,4 +9,4 @@ extends Node
 @export var game_controller: AcGameController = null
 @export var ac_tree: AcTree = null
 
-func add_craft_item(item: AcCombatUnit) -> void:
+# func add_craft_item(item: AcCombatUnit) -> void:

@@ -2,12 +2,11 @@
 
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_collection.gd" id="1_2cbwg"]
 
-[node name="CombatCollection" type="Node" node_paths=PackedStringArray("user_interface", "btn_show", "btn_hide", "item_container")]
+[node name="CombatCollection" type="Node" node_paths=PackedStringArray("user_interface", "btn_show", "btn_hide")]
 script = ExtResource("1_2cbwg")
 user_interface = NodePath("UserInterface")
 btn_show = NodePath("BtnShow")
 btn_hide = NodePath("UserInterface/Panel/BtnHide")
-item_container = NodePath("UserInterface/Panel/ScrollContainer/ItemContainer")
 
 [node name="UserInterface" type="MarginContainer" parent="."]
 offset_left = 832.0

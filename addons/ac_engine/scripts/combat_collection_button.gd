@@ -4,9 +4,9 @@ extends Button
 ## To present the item that can be bought, especially combat unit
 
 
-const NAME_LABEL_NAME = "Name"
-const NAME_ICON_ANIMATED = "IconAnimated"
-const NAME_ICON_STATIC = "IconStatic"
+const NAME_LABEL_NAME: String = "Name"
+const NAME_ICON_ANIMATED: String = "IconAnimated"
+const NAME_ICON_STATIC: String = "IconStatic"
 
 
 @export_group("General")
@@ -30,7 +30,7 @@ func update_custom_min_size():
 
 
 func auto_setup():
-	var children = get_children()
+	var children: Array[Node] = get_children()
 
 	for child in children:
 		if child.name == NAME_LABEL_NAME:
@@ -41,7 +41,7 @@ func auto_setup():
 			icon_static = child
 
 
-func check_setup():
+func check_setup() -> bool:
 	if label_name == null:
 		push_error("label_name not set")
 		return false
@@ -55,7 +55,7 @@ func check_setup():
 	return true
 
 
-func setup_icon():
+func setup_icon() -> void:
 	if icon_animated == null or icon_static == null:
 		return
 

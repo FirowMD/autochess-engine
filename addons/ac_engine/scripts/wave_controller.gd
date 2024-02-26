@@ -31,28 +31,28 @@ extends Node
 @export var game_controller: AcGameController = null
 @export var group_neutral: AcGameGroup = null
 
-var time_start = 0
-var time_end = 0
+var time_start: int = 0
+var time_end: int = 0
 
 
-func get_current_wave():
+func get_current_wave() -> int:
 	return wave_idx
 
 
 ## Returns dictionary of combat units and their count
 ## Example: {"combat_unit_A": 5, "combat_unit_B": 3}
-func generate_wave(difficulty: AcTypes.WaveDifficulty):
-	var cunits = AcPctrl.get_combat_unit_list_all()
-	var chosen_cunits = []
-	var generated_cunits = []
-	var max_amount_per_unit = 5
+func generate_wave(difficulty: AcTypes.WaveDifficulty) -> Array[Variant]:
+	var cunits: Array[String] = AcPctrl.get_combat_unit_list_all()
+	var chosen_cunits: Array[Variant] = []
+	var generated_cunits: Array[Variant] = []
+	var max_amount_per_unit: int = 5
 
 	for cunit in cunits:
 		if cunit.difficulty == difficulty:
 			chosen_cunits.append(cunit)
 	
 	for cunit in chosen_cunits:
-		var num = randi() % max_amount_per_unit
+		var num: int = randi() % max_amount_per_unit
 		generated_cunits.append({cunit: num})
 	
 	return generated_cunits
@@ -69,11 +69,11 @@ func auto_setup():
 	else:
 		push_error("not inside tree")
 	
-	var game_groups = game_controller.group_manager.get_groups_by_type(
+	var game_groups: Array[Variant] = game_controller.group_manager.get_groups_by_type(
 		AcTypes.GameGroupType.NEUTRAL)
 
 
-func check_setup():
+func check_setup() -> bool:
 	if game_controller == null:
 		push_error("game_controller is not set")
 		return false
@@ -85,4 +85,3 @@ func _ready():
 	auto_setup()
 	if not check_setup():
 		push_error("setup is not complete")
-	

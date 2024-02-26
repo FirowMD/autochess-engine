@@ -3,7 +3,7 @@ extends Node
 ## This node is used to store data that needs to be accessed from multiple scenes.
 
 
-const NAME_GAME_CONTROLLER = "GameController"
+const NAME_GAME_CONTROLLER: String = "GameController"
 
 
 @export_group("Project paths")
@@ -23,16 +23,16 @@ func _ready():
 	print("Combat units loaded: ", combat_units)
 
 
-func get_game_controller(scn_tree):
+func get_game_controller(scn_tree) -> Node:
 	return scn_tree.get_root().get_node(NAME_GAME_CONTROLLER)
 
 
-func get_scene_list(scr_dir):
-	var res_lst = []
-	var dir = DirAccess.open(scr_dir)
+func get_scene_list(scr_dir) -> Array[Variant]:
+	var res_lst: Array[Variant] = []
+	var dir: DirAccess = DirAccess.open(scr_dir)
 	if dir:
 		dir.list_dir_begin()
-		var file_name = dir.get_next()
+		var file_name: String = dir.get_next()
 		while file_name != "":
 			if not dir.current_is_dir():
 				if file_name.get_extension() == "tscn":
@@ -44,12 +44,12 @@ func get_scene_list(scr_dir):
 	return res_lst
 
 
-func get_combat_unit_list(dir_path):
-	var res_lst = []
-	var dir = DirAccess.open(dir_path)
+func get_combat_unit_list(dir_path) -> Array[Variant]:
+	var res_lst: Array[Variant] = []
+	var dir: DirAccess = DirAccess.open(dir_path)
 	if dir:
 		dir.list_dir_begin()
-		var file_name = dir.get_next()
+		var file_name: String = dir.get_next()
 		while file_name != "":
 			if not dir.current_is_dir():
 				if file_name.get_extension() == "tscn":
@@ -65,7 +65,7 @@ func get_combat_unit_list(dir_path):
 
 ## Check if a root node of a scene is a combat unit
 ## Otherwise the scene is ignored - returns false
-func scene_has_combat_unit(scene_path):
+func scene_has_combat_unit(scene_path) -> bool:
 	var packed_scene = load(scene_path)
 	var scene = packed_scene.instantiate()
 	var children = scene.get_children()
@@ -79,10 +79,10 @@ func scene_has_combat_unit(scene_path):
 func load_combat_units():
 	combat_units = []
 	for path in path_combat_units:
-		var lst = get_combat_unit_list(path)
+		var lst: Array[Variant] = get_combat_unit_list(path)
 		for item in lst:
 			combat_units.append(item)
 
 
-func get_combat_unit_list_all():
+func get_combat_unit_list_all() -> Array[String]:
 	return combat_units

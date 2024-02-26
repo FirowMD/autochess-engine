@@ -2,7 +2,7 @@ class_name AcCombatLogger
 extends AcShowHide
 ## Combat Logger
 
-const NAME_SCROLL_CONTAINER = "ScrollContainer"
+const NAME_SCROLL_CONTAINER: String = "ScrollContainer"
 
 
 ## BBCode must be enabled in the RichTextLabel node
@@ -30,7 +30,7 @@ func clear_log() -> void:
 
 
 func adjust_line_number_if_need() -> void:
-	var line_count = log_label.get_line_count()
+	var line_count: int = log_label.get_line_count()
 	if line_count > max_printed_lines:
 		clear_first_line()
 

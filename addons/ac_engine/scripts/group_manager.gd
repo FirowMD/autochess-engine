@@ -8,9 +8,9 @@ extends Node
 @export var game_groups: Array[AcGameGroup] = []
 
 
-func get_enemy_groups(your_group):
+func get_enemy_groups(your_group) -> Array[Variant]:
 	var gtype = your_group.get_group_type()
-	var enemy_groups = []
+	var enemy_groups: Array[Variant] = []
 
 	for g in game_groups:
 		if g.get_group_type() != gtype:
@@ -19,8 +19,8 @@ func get_enemy_groups(your_group):
 	return enemy_groups
 
 
-func get_groups_by_type(gtype):
-	var groups = []
+func get_groups_by_type(gtype) -> Array[Variant]:
+	var groups: Array[Variant] = []
 
 	for g in game_groups:
 		if g.get_group_type() == gtype:
@@ -37,7 +37,7 @@ func auto_setup():
 	print("group manager has ", game_groups.size(), " groups")
 
 
-func check_setup():
+func check_setup() -> bool:
 	if game_groups.size() == 0:
 		push_error("no groups found")
 		return false

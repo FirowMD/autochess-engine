@@ -16,7 +16,7 @@ func auto_setup():
 	print("player manager has ", game_players.size(), " players")
 
 
-func get_player_by_id(id: int):
+func get_player_by_id(id: int) -> AcGamePlayer:
 	for player in game_players:
 		if player.get_player_id() == id:
 			return player
@@ -24,7 +24,7 @@ func get_player_by_id(id: int):
 	return null
 
 
-func check_setup():
+func check_setup() -> bool:
 	if game_players.size() == 0:
 		push_error("no players found")
 		return false

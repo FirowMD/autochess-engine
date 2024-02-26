@@ -17,11 +17,11 @@ extends Node
 ## - Managing all other in-game (combat) settings
 
 
-const NAME_PLAYER_MANAGER = "PlayerManager"
-const NAME_GROUP_MANAGER = "GroupManager"
-const NAME_GAME_TIMER = "GameTimer"
-const NAME_COMBAT_MAP = "CombatMap"
-const NAME_COMBAT_INTERFACE = "CombatInterface"
+const NAME_PLAYER_MANAGER: String = "PlayerManager"
+const NAME_GROUP_MANAGER: String = "GroupManager"
+const NAME_GAME_TIMER: String = "GameTimer"
+const NAME_COMBAT_MAP: String = "CombatMap"
+const NAME_COMBAT_INTERFACE: String = "CombatInterface"
 
 
 @export_group("General")
@@ -45,7 +45,7 @@ var combat_unit: AcCombatUnit = load("res://addons/ac_engine/nodes/combat_unit.t
 var selected_unit: AcCombatUnit = null
 
 
-func create_unit(unit: AcCombatUnit, group: AcGameGroup, pos: Vector2, player: AcGamePlayer):
+func create_unit(unit: AcCombatUnit, group: AcGameGroup, pos: Vector2, player: AcGamePlayer) -> Variant:
 	var unit_instance = unit.instantiate()
 	unit_instance.position = pos
 	unit_instance.player = player
@@ -59,7 +59,7 @@ func create_unit(unit: AcCombatUnit, group: AcGameGroup, pos: Vector2, player: A
 	return unit_instance
 
 
-func create_unit_serialized(this, args) -> void:
+func create_unit_serialized(this, args) -> Variant:
 	return create_unit(args[0], args[1], args[2], args[3])
 
 
@@ -86,7 +86,7 @@ func unset_selected_unit() -> void:
 
 
 func auto_setup() -> void:
-	var children = get_children()
+	var children: Array[Node] = get_children()
 	for child in children:
 		if child.name == NAME_GAME_TIMER:
 			game_timer = child
@@ -163,11 +163,11 @@ func _ready():
 
 #! Test function
 func generate_units(this, args) -> void:
-	var count = 2
+	var count: int = 2
 	for i in range(count):
 		var player = player_manager.get_player_by_id(0)
 		var group = group_manager.get_groups_by_type(2)[0]
-		var pos = game_map.get_random_free_place()
+		var pos: Vector2i = game_map.get_random_free_place()
 
 		if pos != Vector2i(-1, -1):
 			print("Spawn player unit at: ", pos)
@@ -176,7 +176,7 @@ func generate_units(this, args) -> void:
 	for i in range(count):
 		var player = player_manager.get_player_by_id(1)
 		var group = group_manager.get_groups_by_type(1)[0]
-		var pos = game_map.get_random_free_place()
+		var pos: Vector2i = game_map.get_random_free_place()
 
 		if pos != Vector2i(-1, -1):
 			print("Spawn enemy unit at: ", pos)

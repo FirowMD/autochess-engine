@@ -11,14 +11,15 @@
 
 [node name="GameController" type="Node" node_paths=PackedStringArray("player_id", "game_map", "combat_interface")]
 script = ExtResource("1_8usi3")
+game_state = "combat"
 player_id = NodePath("PlayerManager/PlayerBlue")
 game_map = NodePath("CombatMap")
-combat_interface = NodePath("AcCombatInterface")
+combat_interface = NodePath("CombatInterface")
 
 [node name="CombatMap" parent="." instance=ExtResource("2_33xyj")]
 position = Vector2(32, 32)
 
-[node name="AcCombatInterface" parent="." node_paths=PackedStringArray("player") instance=ExtResource("8_258om")]
+[node name="CombatInterface" parent="." node_paths=PackedStringArray("player") instance=ExtResource("8_258om")]
 player = NodePath("../PlayerManager/PlayerBlue")
 
 [node name="PlayerManager" type="Node" parent="."]

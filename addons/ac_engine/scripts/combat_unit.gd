@@ -110,6 +110,7 @@ func instantiate():
 func destroy():
 	game_controller.game_map.free_map_place(unit_pos)
 	queue_free()
+	game_controller.print_log(base_name + " has been killed", Color(1, 0, 0))
 
 
 func update_hp_bar():
@@ -175,6 +176,9 @@ func can_attack_target(target: AcCombatUnit):
 
 func sprite_animation_finished():
 	if state == AcTypes.CombatUnitState.ATTACK:
+		var log = base_name + " dealt " + str(damage) + " damage to " + target_unit.base_name
+		game_controller.print_log(log, Color(1, 1, 1))
+		
 		target_unit.deal_damage(damage)
 		unit_stopped_attacking.emit()
 		unit_started_idling.emit()

@@ -10,6 +10,7 @@ const NAME_UI = "UserInterface"
 const NAME_DATA_CONTAINER = "DataContainer"
 const NAME_COMBAT_SHOP = "CombatShop"
 const NAME_COMBAT_COLLECTION = "CombatCollection"
+const NAME_COMBAT_LOGGER = "CombatLogger"
 const NAME_COMBAT_ESC = "CombatEsc"
 const NAME_UNIT_SELECTION = "UnitSelection"
 const NAME_LABEL_DEBUG = "LabelDebug"
@@ -28,6 +29,8 @@ const NAME_LABEL_DEBUG = "LabelDebug"
 @export var combat_shop: AcCombatShop = null
 ## The collection of units that the player has
 @export var combat_collection: AcCombatCollection = null
+## The logger that will show the debug information to player
+@export var combat_logger: AcCombatLogger = null
 ## The escape menu, which will pause the game and show the menu
 @export var combat_esc: AcCombatEsc = null
 ## Unit selection box
@@ -61,6 +64,8 @@ func auto_setup():
 			combat_shop = child	
 		elif child.name == NAME_COMBAT_COLLECTION:
 			combat_collection = child
+		elif child.name == NAME_COMBAT_LOGGER:
+			combat_logger = child
 		elif child.name == NAME_COMBAT_ESC:
 			combat_esc = child
 		elif child.name == NAME_UNIT_SELECTION:
@@ -81,6 +86,9 @@ func check_setup():
 		return false
 	elif combat_collection == null:
 		push_error("combat_collection not set")
+		return false
+	elif combat_logger == null:
+		push_error("combat_logger not set")
 		return false
 	elif combat_esc == null:
 		push_error("combat_esc not set")
@@ -148,30 +156,44 @@ func init_data_container():
 		data_container.add_child(label)
 
 
-func handler_comshop_comcollection_hidden():
+func handler_com_hidden():
 	show_container()
 	combat_shop.btn_show.show()
 	combat_collection.btn_show.show()
+	combat_logger.btn_show.show()
 
 
 func handler_comshop_shown():
 	hide_container()
 	combat_collection.btn_show.hide()
+	combat_logger.btn_show.hide()
 
 
 func handler_comcollection_shown():
 	hide_container()
 	combat_shop.btn_show.hide()
+	combat_logger.btn_show.hide()
+
+
+func handler_comlogger_shown():
+	hide_container()
+	combat_shop.btn_show.hide()
+	combat_collection.btn_show.hide()
 
 
 func setup_combat_shop():
 	combat_shop.connect("comshop_shown", handler_comshop_shown)
-	combat_shop.connect("comshop_hidden", handler_comshop_comcollection_hidden)
+	combat_shop.connect("comshop_hidden", handler_com_hidden)
 
 
 func setup_combat_collection():
 	combat_collection.connect("comcollection_shown", handler_comcollection_shown)
-	combat_collection.connect("comcollection_hidden", handler_comshop_comcollection_hidden)
+	combat_collection.connect("comcollection_hidden", handler_com_hidden)
+
+
+func setup_combat_logger():
+	combat_logger.connect("ui_shown", handler_comlogger_shown)
+	combat_logger.connect("ui_hidden", handler_com_hidden)
 
 
 func setup_unit_selection():
@@ -213,6 +235,7 @@ func _ready():
 	
 	setup_combat_shop()
 	setup_combat_collection()
+	setup_combat_logger()
 	setup_unit_selection()
 
 	init_data_container()

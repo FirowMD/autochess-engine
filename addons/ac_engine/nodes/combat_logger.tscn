@@ -1,0 +1,84 @@
+[gd_scene load_steps=2 format=3 uid="uid://bl562x8ra7asn"]
+
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_logger.gd" id="1_yj5hl"]
+
+[node name="CombatLogger" type="Node" node_paths=PackedStringArray("log_label", "user_interface", "btn_show", "btn_hide", "container")]
+script = ExtResource("1_yj5hl")
+log_label = NodePath("UserInterface/Panel/Panel/ScrollContainer/VBoxContainer/LogText")
+user_interface = NodePath("UserInterface")
+btn_show = NodePath("BtnShow")
+btn_hide = NodePath("UserInterface/Panel/BtnHide")
+container = NodePath("UserInterface/Panel/Panel/ScrollContainer/VBoxContainer")
+
+[node name="UserInterface" type="MarginContainer" parent="."]
+offset_left = 832.0
+offset_right = 1152.0
+offset_bottom = 832.0
+
+[node name="Panel" type="Panel" parent="UserInterface"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UserInterface/Panel"]
+layout_mode = 0
+offset_top = 48.0
+offset_right = 320.0
+offset_bottom = 80.0
+text = "COMBAT LOGGER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnMenu" type="Button" parent="UserInterface/Panel"]
+layout_mode = 0
+offset_left = 264.0
+offset_top = 8.0
+offset_right = 312.0
+offset_bottom = 48.0
+text = "• • •"
+
+[node name="BtnHide" type="Button" parent="UserInterface/Panel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 58.0
+offset_bottom = 48.0
+text = "<"
+
+[node name="HSeparator" type="HSeparator" parent="UserInterface/Panel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 72.0
+offset_right = 312.0
+offset_bottom = 96.0
+
+[node name="Panel" type="Panel" parent="UserInterface/Panel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 104.0
+offset_right = 312.0
+offset_bottom = 824.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UserInterface/Panel/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UserInterface/Panel/Panel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LogText" type="RichTextLabel" parent="UserInterface/Panel/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_following = true
+
+[node name="BtnShow" type="Button" parent="."]
+offset_left = 832.0
+offset_top = 640.0
+offset_right = 1152.0
+offset_bottom = 704.0
+text = "COMBAT LOGGER"

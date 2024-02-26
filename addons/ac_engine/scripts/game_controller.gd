@@ -42,7 +42,7 @@ const NAME_COMBAT_INTERFACE = "CombatInterface"
 
 # var combat_unit: AcCombatUnit = load("res://scenes/combat_units/combat_unit.tscn").instantiate()
 var combat_unit: AcCombatUnit = load("res://addons/ac_engine/nodes/combat_unit.tscn").instantiate()
-var chosen_unit: AcCombatUnit = null
+var selected_unit: AcCombatUnit = null
 
 
 func create_unit(unit: AcCombatUnit, group: AcGameGroup, pos: Vector2, player: AcGamePlayer):
@@ -59,29 +59,29 @@ func create_unit(unit: AcCombatUnit, group: AcGameGroup, pos: Vector2, player: A
 	return unit_instance
 
 
-func create_unit_serialized(this, args):
+func create_unit_serialized(this, args) -> void:
 	return create_unit(args[0], args[1], args[2], args[3])
 
 
-func get_enemy_groups(your_group):
+func get_enemy_groups(your_group) -> Array:
 	return group_manager.get_enemy_groups(your_group)
 
 
-func get_selected_unit():
-	return chosen_unit
+func get_selected_unit() -> AcCombatUnit:
+	return selected_unit
 
 
-func set_selected_unit(unit_id: AcCombatUnit):
-	chosen_unit = unit_id
-	print("Chosen unit: ", chosen_unit)
+func set_selected_unit(unit_id: AcCombatUnit) -> void:
+	selected_unit = unit_id
+	print("Chosen unit: ", selected_unit)
 
 
-func unset_selected_unit():
-	chosen_unit = null
+func unset_selected_unit() -> void:
+	selected_unit = null
 	print("Unset chosen unit")
 
 
-func auto_setup():
+func auto_setup() -> void:
 	var children = get_children()
 	for child in children:
 		if child.name == NAME_GAME_TIMER:
@@ -96,7 +96,7 @@ func auto_setup():
 			combat_interface = child
 
 
-func check_setup():
+func check_setup() -> bool:
 	if game_timer == null:
 		push_error("game_timer is not set")
 		return false
@@ -116,12 +116,16 @@ func check_setup():
 	return true
 
 
-func set_game_state(state: String):
+func set_game_state(state: String) -> void:
 	game_state = state
 
 
-func get_game_state():
+func get_game_state() -> String:
 	return game_state
+
+
+func print_log(text: String, color: Color = Color(1, 1, 1)) -> void:
+	combat_interface.combat_logger.print_log(text, color)
 
 
 func _ready():
@@ -151,7 +155,7 @@ func _ready():
 	
 
 #! Test function
-func generate_units(this, args):
+func generate_units(this, args) -> void:
 	var count = 2
 	for i in range(count):
 		var player = player_manager.get_player_by_id(0)

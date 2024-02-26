@@ -12,7 +12,6 @@ item_container = NodePath("UserInterface/Panel/ScrollContainer/ItemContainer")
 item_button = ExtResource("2_03fj3")
 
 [node name="UserInterface" type="MarginContainer" parent="."]
-visible = false
 offset_left = 832.0
 offset_right = 1152.0
 offset_bottom = 832.0

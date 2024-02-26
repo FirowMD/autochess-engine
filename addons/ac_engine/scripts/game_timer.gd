@@ -2,8 +2,8 @@ class_name AcGameTimer
 extends Node
 
 
-const NAME_TIMER = "Timer"
-const NAME_LABEL = "Label"
+const NAME_TIMER: String = "Timer"
+const NAME_LABEL: String = "Label"
 
 
 @export var game_time_sec: int = 0
@@ -21,7 +21,7 @@ func get_pretty_time_string() -> String:
 	var hours = floor(game_time_sec / 3600.0)
 	var minutes = floor((game_time_sec - hours * 3600) / 60.0)
 	var seconds = game_time_sec - hours * 3600 - minutes * 60
-	var time_string = "%02d:%02d:%02d" % [hours, minutes, seconds]
+	var time_string: String = "%02d:%02d:%02d" % [hours, minutes, seconds]
 
 	return time_string
 
@@ -29,7 +29,7 @@ func get_pretty_time_string() -> String:
 func get_pretty_time_string_minutes() -> String:
 	var minutes = floor(game_time_sec / 60.0)
 	var seconds = game_time_sec - minutes * 60
-	var time_string = "%02d:%02d" % [minutes, seconds]
+	var time_string: String = "%02d:%02d" % [minutes, seconds]
 
 	return time_string
 
@@ -50,7 +50,7 @@ func update_time() -> void:
 
 # Pass `foo` - function, and `time` - how many seconds to wait to call `foo`
 func add_alarm_event(obj: Object, foo: Callable, wait_time: int, args: Array = []) -> void:
-	var alarm = Dictionary()
+	var alarm: Dictionary = Dictionary()
 	alarm["object"] = obj
 	alarm["function"] = foo
 	alarm["time"] = wait_time + game_time_sec
@@ -59,7 +59,7 @@ func add_alarm_event(obj: Object, foo: Callable, wait_time: int, args: Array = [
 
 
 func auto_setup() -> void:
-	var children = get_children()
+	var children: Array[Node] = get_children()
 	for child in children:
 		# Check names instead of types
 		if child.name == NAME_TIMER:

@@ -17,7 +17,7 @@ extends Node
 @export var player_score: int = 0
 
 @export_group("Player shop")
-@export var shop_item_count = 4
+@export var shop_item_count: int = 4
 
 @export_group("Advanced")
 @export var game_controller: AcGameController = null
@@ -34,7 +34,7 @@ signal gameplayer_name_changed
 signal gameplayer_shop_items_changed(items: Array[String])
 
 
-var unit_count = 0
+var unit_count: int = 0
 ## All available shop items
 var shop_items: Array[String] = []
 ## Currently presented shop items
@@ -49,7 +49,7 @@ func auto_setup():
 		push_error("not inside tree")
 
 
-func check_setup():
+func check_setup() -> bool:
 	if game_controller == null:
 		push_error("game_controller not set")
 		return false
@@ -57,35 +57,35 @@ func check_setup():
 	return true
 
 
-func get_player_id():
+func get_player_id() -> int:
 	return player_id
 
 
-func get_player_name():
+func get_player_name() -> String:
 	return player_name
 
 
-func get_player_hp():
+func get_player_hp() -> int:
 	return player_hp
 
 
-func get_player_exp():
+func get_player_exp() -> int:
 	return player_exp
 
 
-func get_player_gold():
+func get_player_gold() -> int:
 	return player_gold
 
 
-func get_player_score():
+func get_player_score() -> int:
 	return player_score
 
 
-func get_unit_count():
+func get_unit_count() -> int:
 	return unit_count
 
 
-func get_shop_items():
+func get_shop_items() -> Array[String]:
 	return shop_items
 
 
@@ -129,9 +129,9 @@ func setup_shop_items():
 ## Generate random shop items (took from the shop_items array)
 ## count - how many items to generate
 func set_random_shop_items(count: int):
-	var items = []
+	var items: Array[Variant] = []
 	for i in range(count):
-		var index = randi() % shop_items.size()
+		var index: int = randi() % shop_items.size()
 		items.append(shop_items[index])
 	
 	set_shop_items(items)

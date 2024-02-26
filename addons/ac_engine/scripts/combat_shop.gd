@@ -29,7 +29,7 @@ func update_container() -> void:
 		new_item._ready()
 		new_item.set_item_name(item.base_name)
 		new_item.set_item_price(item.base_cost)
-		var stats = "HP: {}\nDMG: {}\nAS: {}\nMS: {}".format([
+		var stats: String = "HP: {}\nDMG: {}\nAS: {}\nMS: {}".format([
 			item.base_hp,
 			item.base_damage,
 			item.base_attack_speed,

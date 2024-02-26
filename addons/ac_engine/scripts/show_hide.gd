@@ -2,10 +2,10 @@ class_name AcShowHide
 extends Node
 
 
-const NAME_UI = "UserInterface"
-const NAME_BTN_SHOW = "BtnShow"
-const NAME_BTN_HIDE = "BtnHide"
-const NAME_CONTAINER = "Container"
+const NAME_UI: String = "UserInterface"
+const NAME_BTN_SHOW: String = "BtnShow"
+const NAME_BTN_HIDE: String = "BtnHide"
+const NAME_CONTAINER: String = "Container"
 
 
 @export_group("General")
@@ -34,7 +34,7 @@ func auto_setup() -> void:
 	else:
 		push_error("not inside tree")
 	
-	var child_nodes = get_children()
+	var child_nodes: Array[Node] = get_children()
 
 	for node in child_nodes:
 		if node.name == NAME_UI:
@@ -103,7 +103,7 @@ func setup_btn_show() -> void:
 
 
 func clear_container() -> void:
-	var container_children = container.get_children()
+	var container_children: Array[Node] = container.get_children()
 	for child in container_children:
 		child.queue_free()
 

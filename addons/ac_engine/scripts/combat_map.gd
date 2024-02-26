@@ -2,8 +2,8 @@ class_name AcCombatMap
 extends TileMap
 
 
-@export var map_width = 12
-@export var map_height = 14
+@export var map_width: int = 12
+@export var map_height: int = 14
 @export var areas: Array = []
 
 
@@ -26,11 +26,11 @@ func init_map():
 			map_2d.set_point_solid(Vector2i(x, y), false)
 
 
-func is_map_place_free(pos):
+func is_map_place_free(pos) -> bool:
 	return !map_2d.is_point_solid(Vector2i(pos.x, pos.y))
 
 
-func take_map_place(pos):
+func take_map_place(pos) -> bool:
 	if map_2d.is_point_solid(Vector2i(pos.x, pos.y)):
 		return false
 	
@@ -39,25 +39,25 @@ func take_map_place(pos):
 
 
 func free_map_place(pos):
-	var was_solid = map_2d.is_point_solid(Vector2i(pos.x, pos.y))
+	var was_solid: bool = map_2d.is_point_solid(Vector2i(pos.x, pos.y))
 	map_2d.set_point_solid(Vector2i(pos.x, pos.y), false)
 
 	return was_solid
 
 
-func convert_to_map_pos(pos):
-	var tmp_pos = Vector2(pos) - (position + Vector2(tile_size.x / 2, tile_size.y / 2))
-	var ret = Vector2i(floor(tmp_pos.x / tile_size.x), floor(tmp_pos.y / tile_size.y))
+func convert_to_map_pos(pos) -> Vector2i:
+	var tmp_pos: Vector2 = Vector2(pos) - (position + Vector2(tile_size.x / 2, tile_size.y / 2))
+	var ret: Vector2i = Vector2i(floor(tmp_pos.x / tile_size.x), floor(tmp_pos.y / tile_size.y))
 	return ret
 
 
-func convert_from_map_pos(pos):
+func convert_from_map_pos(pos) -> Vector2i:
 	# return Vector2i(pos.x * tile_size.x + position.x, pos.y * tile_size.y + position.y)
 	return Vector2i(pos.x * tile_size.x + position.x + tile_size.x / 2,
 		pos.y * tile_size.y + position.y + tile_size.y / 2)
 
 
-func move_map_place(start, end):
+func move_map_place(start, end) -> bool:
 	if map_2d.is_point_solid(Vector2i(start.x, start.y)):
 		map_2d.set_point_solid(Vector2i(start.x, start.y), false)
 		map_2d.set_point_solid(Vector2i(end.x, end.y), true)
@@ -66,8 +66,8 @@ func move_map_place(start, end):
 	return false
 
 
-func find_map_path(start: Vector2i, end: Vector2i):
-	var res_path = []
+func find_map_path(start: Vector2i, end: Vector2i) -> Array[Variant]:
+	var res_path: Array[Variant] = []
 	var is_end_solid = free_map_place(end)
 
 	for point in map_2d.get_point_path(start, end):
@@ -99,9 +99,9 @@ func find_map_path_full_scale(start: Vector2i, end: Vector2i):
 #
 
 func get_atlas_tiles(id):
-	var atlas_source = tile_set.get_source(id)
+	var atlas_source: TileSetSource = tile_set.get_source(id)
 	var atlas_grid_size = atlas_source.get_atlas_grid_size()
-	var res = []
+	var res: Array[Variant] = []
 
 	for x in range(atlas_grid_size.x):
 		for y in range(atlas_grid_size.y):
@@ -112,7 +112,7 @@ func get_atlas_tiles(id):
 	return res
 
 
-func get_tile_size():
+func get_tile_size() -> Vector2i:
 	return tile_size
 
 
@@ -120,8 +120,8 @@ func setup_tile_size():
 	tile_size = tile_set.tile_size
 
 
-func get_random_free_place():
-	var empty_places = []
+func get_random_free_place() -> Vector2i:
+	var empty_places: Array[Variant] = []
 
 	for x in range(map_width):
 		for y in range(map_height):

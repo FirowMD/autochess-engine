@@ -6,14 +6,14 @@ extends Node
 ## stats, units, resources, etc.
 
 
-const NAME_UI = "UserInterface"
-const NAME_DATA_CONTAINER = "DataContainer"
-const NAME_COMBAT_SHOP = "CombatShop"
-const NAME_COMBAT_COLLECTION = "CombatCollection"
-const NAME_COMBAT_LOGGER = "CombatLogger"
-const NAME_COMBAT_ESC = "CombatEsc"
-const NAME_UNIT_SELECTION = "UnitSelection"
-const NAME_LABEL_DEBUG = "LabelDebug"
+const NAME_UI: String = "UserInterface"
+const NAME_DATA_CONTAINER: String = "DataContainer"
+const NAME_COMBAT_SHOP: String = "CombatShop"
+const NAME_COMBAT_COLLECTION: String = "CombatCollection"
+const NAME_COMBAT_LOGGER: String = "CombatLogger"
+const NAME_COMBAT_ESC: String = "CombatEsc"
+const NAME_UNIT_SELECTION: String= "UnitSelection"
+const NAME_LABEL_DEBUG: String = "LabelDebug"
 
 
 @export_group("General")
@@ -53,7 +53,7 @@ func auto_setup():
 	else:
 		push_error("not inside tree")
 	
-	var children = get_children()
+	var children: Array[Node] = get_children()
 	
 	for child in children:
 		if child.name == NAME_UI:
@@ -74,7 +74,7 @@ func auto_setup():
 			label_debug = child
 
 
-func check_setup():
+func check_setup() -> bool:
 	if user_interface == null:
 		push_error("user_interface not set")
 		return false
@@ -133,8 +133,8 @@ func show_collection():
 	combat_collection.show_collection()
 
 
-func store_data():
-	var data = {
+func store_data() -> Dictionary:
+	var data: Dictionary = {
 		"player_id": player.get_player_id(),
 		"player_name": player.get_player_name(),
 		"player_hp": player.get_player_hp(),
@@ -148,10 +148,10 @@ func store_data():
 
 func init_data_container():
 	# Add labels to the data container
-	var data = store_data()
+	var data: Dictionary = store_data()
 
 	for key in data:
-		var label = Label.new()
+		var label: Label = Label.new()
 		label.text = key + ": " + str(data[key])
 		data_container.add_child(label)
 
@@ -223,7 +223,7 @@ func set_unit_selection_pos(pos: Vector2):
 	unit_selection.set_position(pos - Vector2(align_size / 2))
 
 
-func get_unit_selection_pos():
+func get_unit_selection_pos() -> Vector2:
 	var align_size = game_controller.game_map.get_tile_size()
 	return unit_selection.get_position() + Vector2(align_size / 2)
 

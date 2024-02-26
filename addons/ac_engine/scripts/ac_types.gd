@@ -44,7 +44,7 @@ enum CombatUnitState {
 	ATTACK = 2,
 }
 
-const CombatUnitStateNames = {
+const CombatUnitStateNames: Dictionary = {
 	CombatUnitState.IDLE: "idle",
 	CombatUnitState.WALK: "walk",
 	CombatUnitState.ATTACK: "attack",

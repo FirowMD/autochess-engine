@@ -3,11 +3,11 @@ extends Node
 ## Class that represents the escape menu
 
 
-const NAME_UI = "UserInterface"
-const NAME_BTN_ESC = "BtnEsc"
-const NAME_BTN_RESUME = "BtnResume"
-const NAME_BTN_EXIT = "BtnExit"
-const NAME_CONTAINER = "Container"
+const NAME_UI: String = "UserInterface"
+const NAME_BTN_ESC: String = "BtnEsc"
+const NAME_BTN_RESUME: String = "BtnResume"
+const NAME_BTN_EXIT: String = "BtnExit"
+const NAME_CONTAINER: String = "Container"
 
 
 @export_group("General")
@@ -37,7 +37,7 @@ func auto_setup():
 	else:
 		push_error("not inside tree")
 	
-	var child_nodes = get_children()
+	var child_nodes: Array[Node] = get_children()
 
 	for node in child_nodes:
 		if node.name == NAME_UI:
@@ -52,7 +52,7 @@ func auto_setup():
 			container = node
 
 
-func check_setup():
+func check_setup() -> bool:
 	if game_controller == null:
 		push_error("game_controller not set")
 		return false

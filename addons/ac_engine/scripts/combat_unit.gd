@@ -6,7 +6,7 @@ const NAME_SPRITE = "UnitAnisprite"
 const NAME_TIMER = "UnitTimer"
 const NAME_HP_BAR = "UnitHpBar"
 
-const ATTACK_SPEED_MAX = 2000
+const ATTACK_SPEED_MAX: int = 2000
 
 
 @export_group("General")
@@ -27,7 +27,7 @@ const ATTACK_SPEED_MAX = 2000
 @export var base_attack_range: float = 1.5
 @export var base_move_speed: int = 100
 ## Cost it will take to buy this unit
-@export var base_cost = 1
+@export var base_cost: int = 1
 ## Here you can set a label for the unit
 ## Which can be used to identify type of the unit
 @export var base_labels: Array[AcTypes.CombatUnitLabel] = []
@@ -73,7 +73,7 @@ var is_dragging: bool = false
 
 var move_path: Array = []
 
-var enemy_groups = []
+var enemy_groups: Array[Variant] = []
 
 
 func check_sprite():

@@ -18,7 +18,7 @@ func auto_setup():
 
 func get_player_by_id(id: int) -> AcGamePlayer:
 	for player in game_players:
-		if player.get_player_id() == id:
+		if player.player_id == id:
 			return player
 
 	return null

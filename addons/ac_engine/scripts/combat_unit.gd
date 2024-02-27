@@ -112,6 +112,7 @@ func destroy():
 	game_controller.game_map.free_map_place(unit_pos)
 	game_controller.unit_count -= 1
 	game_controller.print_log(base_name + " has been killed", Color(1, 0, 0))
+	player.unit_count -= 1
 	queue_free()
 
 
@@ -481,14 +482,14 @@ func update_state(current_state):
 
 
 func handler_unit_selected():
-	game_controller.set_selected_unit(self)
+	game_controller.selected_unit = self
 	game_controller.combat_interface.show_unit_selection()
 	game_controller.combat_interface.set_unit_selection_color(group.get_group_color())
 	game_controller.combat_interface.set_unit_selection_pos(get_position())
 
 
 func handler_unit_unselected():
-	if game_controller.get_selected_unit() == self:
+	if game_controller.selected_unit == self:
 		game_controller.unset_selected_unit()
 		game_controller.combat_interface.hide_unit_selection()
 
@@ -550,6 +551,7 @@ func _ready():
 	update_hp_bar()
 	
 	game_controller.unit_count += 1
+	player.unit_count += 1
 
 	connect("unit_started_idling", handler_unit_started_idling)
 	connect("unit_stopped_idling", handler_unit_stopped_idling)
@@ -564,7 +566,7 @@ func _ready():
 
 
 func _process(delta):
-	var game_state: String = game_controller.get_game_state()
+	var game_state: String = game_controller.game_state
 	
 	if game_state == "combat":
 		combat(delta)
@@ -573,7 +575,7 @@ func _process(delta):
 
 
 func _input(event) -> void:
-	if game_controller.get_game_state() == "combat":
+	if game_controller.game_state == "combat":
 		return
 	
 	if event.is_action_pressed("app_click"):

@@ -149,12 +149,12 @@ func show_collection():
 
 func store_data() -> Dictionary:
 	var data: Dictionary = {
-		"player_id": player.get_player_id(),
-		"player_name": player.get_player_name(),
-		"player_hp": player.get_player_hp(),
-		"player_exp": player.get_player_exp(),
-		"player_gold": player.get_player_gold(),
-		"player_score": player.get_player_score()
+		"player_id": player.player_id,
+		"player_name": player.player_name,
+		"player_hp": player.player_hp,
+		"player_exp": player.player_exp,
+		"player_gold": player.player_gold,
+		"player_score": player.player_score,
 	}
 	
 	return data

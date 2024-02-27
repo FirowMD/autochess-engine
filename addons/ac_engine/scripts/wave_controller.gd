@@ -54,6 +54,7 @@ var wave_generated_template: Dictionary = {
 
 
 signal wctrl_wave_generated
+signal wctrl_wave_ended
 
 
 func get_current_wave() -> int:
@@ -93,10 +94,18 @@ func generate_wave(difficulty: AcTypes.WaveDifficulty) -> Array[Dictionary]:
 		generated_cunits.append(generated_cunit)
 		i += amount
 
-	wave_idx += 1
 	wctrl_wave_generated.emit()
 	
 	return generated_cunits
+
+
+func end_current_wave(goNext: bool = true):
+	time_start = 0
+	time_end = 0
+	if goNext:
+		wave_idx += 1
+	
+	wctrl_wave_ended.emit()
 
 
 func update_time():

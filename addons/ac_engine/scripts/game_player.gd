@@ -6,15 +6,44 @@ extends Node
 
 
 @export_group("General")
-@export var player_name: String = "player_name"
+@export var player_name: String = "player_name":
+	set(new_value):
+		player_name = new_value
+		gameplayer_name_changed.emit()
+	get:
+		return player_name
+
 @export var player_id: int = -1
 @export var player_group: AcGameGroup = null
 
 @export_group("Game Data")
-@export var player_hp: int = 1
-@export var player_exp: int = 0
-@export var player_gold: int = 100
-@export var player_score: int = 0
+@export var player_hp: int = 1:
+	set(new_value):
+		player_hp = new_value
+		gameplayer_hp_changed.emit()
+	get:
+		return player_hp
+
+@export var player_exp: int = 0:
+	set(new_value):
+		player_exp = new_value
+		gameplayer_exp_changed.emit()
+	get:
+		return player_exp
+
+@export var player_gold: int = 100:
+	set(new_value):
+		player_gold = new_value
+		gameplayer_gold_changed.emit()
+	get:
+		return player_gold
+
+@export var player_score: int = 0:
+	set(new_value):
+		player_score = new_value
+		gameplayer_score_changed.emit()
+	get:
+		return player_score
 
 @export_group("Player shop")
 @export var shop_item_count: int = 4
@@ -34,7 +63,15 @@ signal gameplayer_name_changed
 signal gameplayer_shop_items_changed(items: Array[String])
 
 
-var unit_count: int = 0
+var unit_count: int = 0:
+	set(new_value):
+		unit_count = new_value
+		if unit_count == 0:
+			gameplayer_out_of_units.emit()
+		gameplayer_unit_count_changed.emit()
+	get:
+		return unit_count
+	
 ## All available shop items
 var shop_items: Array[String] = []
 ## Currently presented shop items
@@ -55,68 +92,6 @@ func check_setup() -> bool:
 		return false
 	
 	return true
-
-
-func get_player_id() -> int:
-	return player_id
-
-
-func get_player_name() -> String:
-	return player_name
-
-
-func get_player_hp() -> int:
-	return player_hp
-
-
-func get_player_exp() -> int:
-	return player_exp
-
-
-func get_player_gold() -> int:
-	return player_gold
-
-
-func get_player_score() -> int:
-	return player_score
-
-
-func get_unit_count() -> int:
-	return unit_count
-
-
-func get_shop_items() -> Array[String]:
-	return shop_items
-
-
-func set_player_name(name: String):
-	player_name = name
-	gameplayer_name_changed.emit()
-
-
-func set_player_hp(hp: int):
-	player_hp = hp
-	gameplayer_hp_changed.emit()
-
-
-func set_player_exp(exp: int):
-	player_exp = exp
-	gameplayer_exp_changed.emit()
-
-
-func set_player_gold(gold: int):
-	player_gold = gold
-	gameplayer_gold_changed.emit()
-
-
-func set_player_score(score: int):
-	player_score = score
-	gameplayer_score_changed.emit()
-
-
-func set_unit_count(count: int):
-	unit_count = count
-	gameplayer_unit_count_changed.emit()
 
 
 ## Default system for shop items

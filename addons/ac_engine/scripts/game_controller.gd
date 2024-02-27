@@ -27,7 +27,14 @@ const NAME_WAVE_CONTROLLER: String = "WaveController"
 
 @export_group("General")
 @export var game_wave: int = 1
-@export_enum("combat", "preparation") var game_state: String = "preparation"
+@export_enum("combat", "preparation") var game_state: String = "preparation":
+	set(new_value):
+		game_state = new_value
+		if combat_interface != null:
+			print_log("Game state changed", Color(0, 1, 0))
+		gctrl_game_state_changed.emit()
+	get:
+		return game_state
 
 @export_group("Player settings")
 ## Currently active player
@@ -42,9 +49,18 @@ const NAME_WAVE_CONTROLLER: String = "WaveController"
 @export var wave_controller: AcWaveController = null
 
 
+signal gctrl_game_state_changed
+
+
 # var combat_unit: AcCombatUnit = load("res://scenes/combat_units/combat_unit.tscn").instantiate()
 var combat_unit: AcCombatUnit = load("res://addons/ac_engine/nodes/combat_unit.tscn").instantiate()
-var selected_unit: AcCombatUnit = null
+var selected_unit: AcCombatUnit = null:
+	set(new_value):
+		selected_unit = new_value
+		print("Selected: ", selected_unit)
+	get:
+		return selected_unit
+
 ## Amount of units in the game
 var unit_count: int = 0
 
@@ -58,8 +74,6 @@ func create_unit(unit: AcCombatUnit, group: AcGameGroup, pos: Vector2, player: A
 	add_child(unit_instance)
 	unit_instance.add_to_group(group.group_name)
 
-	player.set_unit_count(player.get_unit_count() + 1)
-
 	return unit_instance
 
 
@@ -69,15 +83,6 @@ func create_unit_serialized(this, args) -> Variant:
 
 func get_enemy_groups(your_group) -> Array:
 	return group_manager.get_enemy_groups(your_group)
-
-
-func get_selected_unit() -> AcCombatUnit:
-	return selected_unit
-
-
-func set_selected_unit(unit_id: AcCombatUnit) -> void:
-	selected_unit = unit_id
-	print("Chosen unit: ", selected_unit)
 
 
 func get_current_time() -> String:
@@ -129,14 +134,6 @@ func check_setup() -> bool:
 	return true
 
 
-func set_game_state(state: String) -> void:
-	game_state = state
-
-
-func get_game_state() -> String:
-	return game_state
-
-
 func print_log(text: String, color: Color = Color(1, 1, 1)) -> void:
 	if color == Color(1, 1, 1):
 		combat_interface.combat_logger.print_log(text)
@@ -167,11 +164,30 @@ func wave_start() -> void:
 				create_unit(enemy["combat_unit"], group, pos, player)
 
 
+func handler_gameplayer_out_of_units_winner():
+	wave_controller.end_current_wave(true)
+	game_state = "preparation"
+
+
+func handler_gameplayer_out_of_units_loser():
+	wave_controller.end_current_wave(false)
+	game_state = "preparation"
+
+
+func setup_players() -> void:
+	var player_1 = player_manager.get_player_by_id(0)
+	var player_2 = player_manager.get_player_by_id(1)
+
+	player_1.connect("gameplayer_out_of_units", handler_gameplayer_out_of_units_winner)
+	player_2.connect("gameplayer_out_of_units", handler_gameplayer_out_of_units_loser)
+
+
 func _ready():
 	auto_setup()
 	if not check_setup():
 		push_error("setup is not complete")
 	
+	setup_players()
 	
 	# Create 1 player unit using timer `add_alarm_event` method
 	var player_1 = player_manager.get_player_by_id(0)

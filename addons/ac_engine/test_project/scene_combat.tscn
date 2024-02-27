@@ -12,13 +12,14 @@
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/craft_graph.gd" id="10_spjmg"]
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/wave_controller.gd" id="11_o7d1d"]
 
-[node name="GameController" type="Node" node_paths=PackedStringArray("player_id", "game_timer", "game_map", "group_manager", "combat_interface", "wave_controller")]
+[node name="GameController" type="Node" node_paths=PackedStringArray("player_id", "game_timer", "game_map", "group_manager", "player_manager", "combat_interface", "wave_controller")]
 script = ExtResource("1_8usi3")
 game_state = "combat"
 player_id = NodePath("PlayerManager/PlayerBlue")
 game_timer = NodePath("GameTimer")
 game_map = NodePath("CombatMap")
 group_manager = NodePath("GroupManager")
+player_manager = NodePath("PlayerManager")
 combat_interface = NodePath("CombatInterface")
 wave_controller = NodePath("AcWaveController")
 

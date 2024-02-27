@@ -35,6 +35,8 @@ var time_start: int = 0
 var time_end: int = 0
 
 
+func
+
 func get_current_wave() -> int:
 	return wave_idx
 

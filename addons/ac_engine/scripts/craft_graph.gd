@@ -19,15 +19,15 @@ func add_node(data: Variant, parents: Array[Variant] = []) -> Dictionary:
 	node["data"] = data
 
 	if parents == []:
-		if root_nodes.find(node) == -1:
+		if root_nodes.has(node) == false:
 			root_nodes.append(node)
 	else:
 		for parent in parents:
 			var parent_node = search_node(parent)
-			if parent_node["children"].find(node) == -1:
+			if parent_node["children"].has(node) == false:
 				parent_node["children"].append(node)
 			
-			if node["parents"].find(parent_node) == -1:
+			if node["parents"].has(parent_node) == false:
 				node["parents"].append(parent_node)
 
 	return node
@@ -86,7 +86,9 @@ func print_node(node: Dictionary, level: int) -> void:
 
 
 func print_graph() -> void:
+	print("ROOT NODE COUNT: ", root_nodes.size())
 	for node in root_nodes:
+		print("ROOT: ")
 		print_node(node, 0)
 
 
@@ -94,7 +96,7 @@ func to_json_children(node: Dictionary) -> String:
 	var json = "["
 
 	for i in range(node["children"].size()):
-		json += "{\"data\": " + str(node["children"][i]["data"]) + ", \"children\": " + to_json_children(node["children"][i]) + "}"
+		json += "{\"data\": " + JSON.stringify(node["children"][i]["data"]) + ", \"children\": " + to_json_children(node["children"][i]) + "}"
 		if i < node["children"].size() - 1:
 			json += ", "
 	
@@ -106,7 +108,7 @@ func to_json() -> String:
 	var json = "["
 
 	for i in range(root_nodes.size()):
-		json += "{\"data\": " + str(root_nodes[i]["data"]) + ", \"children\": " + to_json_children(root_nodes[i]) + "}"
+		json += "{\"data\": " + JSON.stringify(root_nodes[i]["data"]) + ", \"children\": " + to_json_children(root_nodes[i]) + "}"
 		if i < root_nodes.size() - 1:
 			json += ", "
 	
@@ -114,10 +116,11 @@ func to_json() -> String:
 	return json
 
 
-func from_json_children(node: Dictionary, json: Array) -> void:
-	for child in json:
-		var new_node = add_node(child["data"])
-		node["children"].append(new_node)
+func from_json_children(node: Dictionary, children: Array) -> void:
+	for child in children:
+		var new_node = add_node(child["data"], [node["data"]])
+		if node["children"].has(new_node) == false:
+			node["children"].append(new_node)
 		from_json_children(new_node, child["children"])
 
 
@@ -125,7 +128,7 @@ func from_json(json: String) -> void:
 	var json_parser = JSON.new()
 	var result = json_parser.parse(json)
 	if result != OK:
-		print("Error parsing JSON")
+		print("cannot parse JSON")
 		return
 	
 	for node in json_parser.data:

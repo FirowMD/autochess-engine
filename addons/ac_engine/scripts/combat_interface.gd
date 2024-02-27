@@ -1,3 +1,4 @@
+# todo: Class name does not match filename
 class_name AcCombatInterface
 extends Node
 ## Combat Interface is a class that provides an opportunity to communicate with
@@ -42,8 +43,9 @@ const NAME_LABEL_DEBUG: String = "LabelDebug"
 @export var game_controller: AcGameController = null
 @export var label_debug: Label = null
 
-
+# todo: remove unused signal
 signal cominterface_hidden
+# todo: remove unused signal
 signal cominterface_shown
 
 
@@ -116,19 +118,26 @@ func hide_container():
 func show_container():
 	data_container.show()
 
-
+# todo: Reference [hide_shop] not found
+# todo: remove unused method
 func hide_shop():
 	combat_shop.hide_shop()
 
 
+# todo: Reference [show_shop] not found
+# todo: remove unused method
 func show_shop():
 	combat_shop.show_shop()
 
 
+# todo: Reference [hide_collection] not found
+# todo: remove unused method
 func hide_collection():
 	combat_collection.hide_collection()
 
 
+# todo: Reference [show_collection] not found
+# todo: remove unused method
 func show_collection():
 	combat_collection.show_collection()
 
@@ -219,12 +228,13 @@ func set_unit_selection_color(color: Color):
 
 
 func set_unit_selection_pos(pos: Vector2):
-	var align_size = game_controller.game_map.get_tile_size()
+	var align_size: Vector2i = game_controller.game_map.get_tile_size()
 	unit_selection.set_position(pos - Vector2(align_size / 2))
 
 
+# todo: remove unused method
 func get_unit_selection_pos() -> Vector2:
-	var align_size = game_controller.game_map.get_tile_size()
+	var align_size: Vector2i = game_controller.game_map.get_tile_size()
 	return unit_selection.get_position() + Vector2(align_size / 2)
 
 
@@ -241,7 +251,7 @@ func _ready():
 	init_data_container()
 	show_container()
 
-
+# todo: remove unused parameter
 func _process(delta):
 	if show_fps:
 		label_debug.text = "FPS: " + str(Engine.get_frames_per_second())

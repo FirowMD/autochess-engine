@@ -38,7 +38,7 @@ func take_map_place(pos) -> bool:
 	return true
 
 
-func free_map_place(pos):
+func free_map_place(pos) -> bool:
 	var was_solid: bool = map_2d.is_point_solid(Vector2i(pos.x, pos.y))
 	map_2d.set_point_solid(Vector2i(pos.x, pos.y), false)
 
@@ -68,7 +68,7 @@ func move_map_place(start, end) -> bool:
 
 func find_map_path(start: Vector2i, end: Vector2i) -> Array[Variant]:
 	var res_path: Array[Variant] = []
-	var is_end_solid = free_map_place(end)
+	var is_end_solid: bool = free_map_place(end)
 
 	for point in map_2d.get_point_path(start, end):
 		if (point.x == start.x and point.y == start.y or
@@ -82,11 +82,11 @@ func find_map_path(start: Vector2i, end: Vector2i) -> Array[Variant]:
 	return res_path
 
 
-func find_map_path_full_scale(start: Vector2i, end: Vector2i):
-	var map_start = convert_to_map_pos(start)
-	var map_end = convert_to_map_pos(end)
+func find_map_path_full_scale(start: Vector2i, end: Vector2i) -> Array[Variant]:
+	var map_start: Vector2i = convert_to_map_pos(start)
+	var map_end: Vector2i = convert_to_map_pos(end)
 
-	var res_path = find_map_path(map_start, map_end)
+	var res_path: Array[Variant] = find_map_path(map_start, map_end)
 
 	for i in range(res_path.size()):
 		res_path[i] = convert_from_map_pos(res_path[i])
@@ -98,13 +98,15 @@ func find_map_path_full_scale(start: Vector2i, end: Vector2i):
 # General
 #
 
-func get_atlas_tiles(id):
+func get_atlas_tiles(id) -> Array[Variant]:
 	var atlas_source: TileSetSource = tile_set.get_source(id)
+	# todo: Reference [get_atlas_grid_size] not found
 	var atlas_grid_size = atlas_source.get_atlas_grid_size()
 	var res: Array[Variant] = []
 
 	for x in range(atlas_grid_size.x):
 		for y in range(atlas_grid_size.y):
+			# todo: Reference [get_tile_at_coords] not found
 			var tile = atlas_source.get_tile_at_coords(Vector2i(x, y))
 			if tile != Vector2i(-1, -1):
 				res.append(tile) 
@@ -136,8 +138,9 @@ func get_random_free_place() -> Vector2i:
 
 #! Just a test function
 #! You have to use your own one
+# todo: remove unused method
 func generate_random_map():
-	var acells = get_atlas_tiles(0)
+	var acells: Array[Variant] = get_atlas_tiles(0)
 
 	for x in range(map_width):
 		for y in range(map_height):
@@ -145,9 +148,10 @@ func generate_random_map():
 			set_cell(0, Vector2(x, y), 0, acell, 0)
 
 
+# todo: remove unused method
 func generate_default_map():
 	# Black & white board for chess
-	var acells = get_atlas_tiles(0)
+	var acells: Array[Variant] = get_atlas_tiles(0)
 	
 	for x in range(map_width):
 		for y in range(map_height):
@@ -167,6 +171,6 @@ func _ready():
 
 	init_map()
 
-
+# todo: remove unused parameter
 func _process(delta):
 	pass

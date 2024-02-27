@@ -1,3 +1,4 @@
+# todo: class name does not match filename
 class_name AcGamePlayer
 extends Node
 ## Class which represents the player in the game
@@ -22,8 +23,9 @@ extends Node
 @export_group("Advanced")
 @export var game_controller: AcGameController = null
 
-
+# todo: fix unused signal
 signal gameplayer_out_of_units
+# todo: fix unused signal
 signal gameplayer_out_of_hp
 signal gameplayer_unit_count_changed
 signal gameplayer_hp_changed
@@ -84,31 +86,37 @@ func get_player_score() -> int:
 func get_unit_count() -> int:
 	return unit_count
 
-
+# todo: fix unused method
 func get_shop_items() -> Array[String]:
 	return shop_items
 
 
+# todo: fix unused method
 func set_player_name(name: String):
 	player_name = name
 	gameplayer_name_changed.emit()
 
 
+# todo: fix unused method
 func set_player_hp(hp: int):
 	player_hp = hp
 	gameplayer_hp_changed.emit()
 
-
+# todo: fix unused method
+# todo: fix unused parameter [exp]
 func set_player_exp(exp: int):
+	# todo: Cannot assign int = Callable
 	player_exp = exp
 	gameplayer_exp_changed.emit()
 
 
+# todo: fix unused method
 func set_player_gold(gold: int):
 	player_gold = gold
 	gameplayer_gold_changed.emit()
 
 
+# todo: fix unused method
 func set_player_score(score: int):
 	player_score = score
 	gameplayer_score_changed.emit()
@@ -128,6 +136,7 @@ func setup_shop_items():
 
 ## Generate random shop items (took from the shop_items array)
 ## count - how many items to generate
+# todo: fix unused method
 func set_random_shop_items(count: int):
 	var items: Array[Variant] = []
 	for i in range(count):

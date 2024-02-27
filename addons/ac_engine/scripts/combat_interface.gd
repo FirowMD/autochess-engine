@@ -206,10 +206,10 @@ func setup_combat_logger():
 
 
 func setup_unit_selection():
-	var align_size = game_controller.game_map.get_tile_size()
+	var align_size: Vector2i = game_controller.game_map.get_tile_size()
 	unit_selection.scale = Vector2(align_size) / unit_selection.get_size()
 
-	var group_color = player.player_group.get_group_color()
+	var group_color: Color = player.player_group.get_group_color()
 	unit_selection.modulate = group_color
 
 	unit_selection.hide()

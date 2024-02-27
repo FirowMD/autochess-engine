@@ -1,3 +1,4 @@
+# todo: class name does not match filename
 class_name AcGameController
 extends Node
 ## Class for controlling the game state and game flow
@@ -59,6 +60,7 @@ func create_unit(unit: AcCombatUnit, group: AcGameGroup, pos: Vector2, player: A
 	return unit_instance
 
 
+# todo: fix unused parameter [this]
 func create_unit_serialized(this, args) -> Variant:
 	return create_unit(args[0], args[1], args[2], args[3])
 
@@ -120,6 +122,7 @@ func check_setup() -> bool:
 	return true
 
 
+# todo: fix unused method
 func set_game_state(state: String) -> void:
 	game_state = state
 
@@ -162,6 +165,7 @@ func _ready():
 	
 
 #! Test function
+# todo: fix unused parameter [this, args]
 func generate_units(this, args) -> void:
 	var count: int = 2
 	for i in range(count):

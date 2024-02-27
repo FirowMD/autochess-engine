@@ -1,3 +1,5 @@
+# todo: class name does not match filename
+# todo: unused class
 class_name AcWaveController
 extends Node
 ## Class for controlling waves of enemies
@@ -35,12 +37,14 @@ var time_start: int = 0
 var time_end: int = 0
 
 
+#todo: fix unused method
 func get_current_wave() -> int:
 	return wave_idx
 
 
 ## Returns dictionary of combat units and their count
 ## Example: {"combat_unit_A": 5, "combat_unit_B": 3}
+#todo: fix unused method
 func generate_wave(difficulty: AcTypes.WaveDifficulty) -> Array[Variant]:
 	var cunits: Array[String] = AcPctrl.get_combat_unit_list_all()
 	var chosen_cunits: Array[Variant] = []
@@ -57,7 +61,7 @@ func generate_wave(difficulty: AcTypes.WaveDifficulty) -> Array[Variant]:
 	
 	return generated_cunits
 
-
+#todo: fix unused method
 func update_time():
 	time_start = game_controller.game_timer.get_time()
 	time_end = time_start + wave_duration
@@ -68,7 +72,8 @@ func auto_setup():
 		game_controller = AcPctrl.get_game_controller(get_tree())
 	else:
 		push_error("not inside tree")
-	
+
+	#todo: fix unused method
 	var game_groups: Array[Variant] = game_controller.group_manager.get_groups_by_type(
 		AcTypes.GameGroupType.NEUTRAL)
 

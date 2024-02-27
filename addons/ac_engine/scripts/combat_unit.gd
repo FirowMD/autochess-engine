@@ -2,9 +2,9 @@ class_name AcCombatUnit
 extends Node2D
 
 
-const NAME_SPRITE = "UnitAnisprite"
-const NAME_TIMER = "UnitTimer"
-const NAME_HP_BAR = "UnitHpBar"
+const NAME_SPRITE: String = "UnitAnisprite"
+const NAME_TIMER: String = "UnitTimer"
+const NAME_HP_BAR: String = "UnitHpBar"
 
 const ATTACK_SPEED_MAX: int = 2000
 
@@ -76,17 +76,17 @@ var move_path: Array = []
 var enemy_groups: Array[Variant] = []
 
 
-func check_sprite():
-	var sframes = sprite.sprite_frames
+func check_sprite() -> bool:
+	var sframes: SpriteFrames = sprite.sprite_frames
 	if sframes == null:
 		push_error("sprite_frames is not set")
 		return false
 	else:
-		var aninames = sframes.get_animation_names()
+		var aninames: PackedStringArray = sframes.get_animation_names()
 		if len(aninames) < 3:
 			push_error("sprite_frames should have at least 3 animation names: idle, walk, attack")
 		
-		var need_names = ["idle", "walk", "attack"]
+		var need_names: Array[Variant] = ["idle", "walk", "attack"]
 		for need_name in need_names:
 			if not aninames.has(need_name):
 				push_error("sprite_frames should have animation name: " + need_name)
@@ -169,16 +169,18 @@ func can_attack_target(target: AcCombatUnit) -> bool:
 	if has_wrong_pos():
 		return false
 	
-	var distance = unit_pos.distance_to(target.unit_pos)
+	var distance: float = unit_pos.distance_to(target.unit_pos)
 	if distance <= attack_range and target.state != AcTypes.CombatUnitState.WALK:
 		return true
 	
 	return false
 
+	return false
+
 
 func sprite_animation_finished():
 	if state == AcTypes.CombatUnitState.ATTACK:
-		var log = base_name + " dealt " + str(damage) + " damage to " + target_unit.base_name
+		var log: String = base_name + " dealt " + str(damage) + " damage to " + target_unit.base_name
 		game_controller.print_log(log)
 		
 		target_unit.deal_damage(damage)
@@ -186,7 +188,7 @@ func sprite_animation_finished():
 		unit_started_idling.emit()
 
 
-func idle():
+func idle() -> void:
 	if state != AcTypes.CombatUnitState.IDLE:
 		return
 	
@@ -195,14 +197,14 @@ func idle():
 	timer.set_paused(true)
 
 
-func walk():
+func walk() -> void:
 	if state != AcTypes.CombatUnitState.WALK:
 		return
 	
 	sprite.play(AcTypes.CombatUnitStateNames[state])
 
 
-func attack():
+func attack() -> void:
 	if state != AcTypes.CombatUnitState.ATTACK:
 		return
 	
@@ -231,13 +233,13 @@ func change_map_pos(new_pos):
 
 ## Start moving to target_position
 ## Returns true if unit can move to target_position
-func move_to(target_position, delta):
+func move_to(target_position, delta) -> bool:
 	if state != AcTypes.CombatUnitState.WALK:
 		move_path = game_controller.game_map.find_map_path_full_scale(get_position(), target_position)
 		if len(move_path) == 0:
 			return false
 
-		var dest_map_pos = game_controller.game_map.convert_to_map_pos(move_path[0])
+		var dest_map_pos: Vector2i = game_controller.game_map.convert_to_map_pos(move_path[0])
 		if game_controller.game_map.is_map_place_free(dest_map_pos) == false:
 			return false
 
@@ -245,8 +247,8 @@ func move_to(target_position, delta):
 		unit_started_moving.emit(delta)
 		
 
-	var dest_pos = Vector2(move_path[0])
-	var direction = dest_pos - position
+	var dest_pos: Vector2 = Vector2(move_path[0])
+	var direction: Vector2 = dest_pos - position
 	var velocity = move_speed * delta
 	adjust_sprite_direction(direction)
 	position = position.move_toward(dest_pos, velocity)
@@ -279,7 +281,7 @@ func setup_position():
 
 	align_size = game_controller.game_map.tile_size
 	# var real_pos = unit_pos * align_size + game_controller.game_map.get_position()
-	var real_pos = game_controller.game_map.convert_from_map_pos(unit_pos)
+	var real_pos: Vector2i = game_controller.game_map.convert_from_map_pos(unit_pos)
 	set_position(real_pos)
 	game_controller.game_map.take_map_place(unit_pos)
 
@@ -296,7 +298,7 @@ func setup_group():
 			AcPctrl.AcGameGroup.neutral)
 
 	#! Change color according to group unit is assigned to
-	var group_color = group.get_group_color()
+	var group_color: Color = group.get_group_color()
 	
 	hp_bar.modulate = group_color
 
@@ -317,15 +319,15 @@ func update_attack_timer(attack_time):
 	timer.start()
 
 
-func get_anisprite_size():
-	var res_size = Vector2(0, 0)
-	var sframes = sprite.sprite_frames
-	var aninames = sframes.get_animation_names()
+func get_anisprite_size() -> Vector2:
+	var res_size: Vector2 = Vector2(0, 0)
+	var sframes: SpriteFrames = sprite.sprite_frames
+	var aninames: PackedStringArray = sframes.get_animation_names()
 	if len(aninames) > 0:
 		for aniname in aninames:
-			var frame_count = sframes.get_frame_count(aniname)
+			var frame_count: int = sframes.get_frame_count(aniname)
 			if frame_count > 0:
-				var texture = sframes.get_frame_texture(aniname, 0)
+				var texture: Texture2D = sframes.get_frame_texture(aniname, 0)
 				res_size = Vector2(texture.get_size().x, texture.get_size().y)
 				
 				return res_size
@@ -335,17 +337,17 @@ func get_anisprite_size():
 
 ## Returns `ImageTexture` for combat shop
 ## `scale_to_size` is Vector2i with required size of image
-func get_image_for_shop(scale_to_size):
-	var sframes = sprite.sprite_frames
-	var aninames = sframes.get_animation_names()
+func get_image_for_shop(scale_to_size) -> ImageTexture:
+	var sframes: SpriteFrames = sprite.sprite_frames
+	var aninames: PackedStringArray = sframes.get_animation_names()
 	if len(aninames) > 0:
 		for aniname in aninames:
-			var frame_count = sframes.get_frame_count(aniname)
+			var frame_count: int = sframes.get_frame_count(aniname)
 			if frame_count > 0:
-				var texture = sframes.get_frame_texture(aniname, 0)
-				var texture_size = texture.get_size()
-				var scale_to = Vector2(scale_to_size.x / texture_size.x, scale_to_size.y / texture_size.y)
-				var extracted_image = texture.get_image()
+				var texture: Texture2D = sframes.get_frame_texture(aniname, 0)
+				var texture_size: Vector2 = texture.get_size()
+				var scale_to: Vector2 = Vector2(scale_to_size.x / texture_size.x, scale_to_size.y / texture_size.y)
+				var extracted_image: Image = texture.get_image()
 				extracted_image.resize(texture_size.x * scale_to.x, texture_size.y * scale_to.y)
 				
 				# Convert `Image` to `ImageTexture`
@@ -355,7 +357,7 @@ func get_image_for_shop(scale_to_size):
 	return null
 
 
-func setup_sprite():
+func setup_sprite() -> void:
 	if check_sprite() == false:
 		return
 	
@@ -370,7 +372,7 @@ func auto_setup():
 	else:
 		push_error("not inside tree")
 	
-	var children = get_children()
+	var children: Array[Node] = get_children()
 	for child in children:
 		if child.name == NAME_SPRITE:
 			sprite = child
@@ -380,7 +382,7 @@ func auto_setup():
 			hp_bar = child
 
 
-func check_setup():
+func check_setup() -> bool:
 	if sprite == null:
 		push_error("sprite is not set")
 		return false
@@ -403,7 +405,7 @@ func check_setup():
 	return true
 
 ## Situation when unit stops between cells
-func has_wrong_pos():
+func has_wrong_pos() -> bool:
 	return Vector2i(get_position()) != game_controller.game_map.convert_from_map_pos(unit_pos)
 
 
@@ -416,7 +418,7 @@ func adjust_pos_instanly():
 	position = game_controller.game_map.convert_from_map_pos(unit_pos)
 
 
-func handler_unit_started_idling():
+func handler_unit_started_idling() -> void:
 	if state == AcTypes.CombatUnitState.IDLE:
 		return
 
@@ -428,7 +430,7 @@ func handler_unit_stopped_idling():
 	update_state(AcTypes.CombatUnitState.UNKNOWN)
 
 
-func handler_unit_started_moving(delta):
+func handler_unit_started_moving(delta) -> void:
 	if state == AcTypes.CombatUnitState.WALK:
 		return
 	
@@ -440,7 +442,7 @@ func handler_unit_stopped_moving():
 	update_state(AcTypes.CombatUnitState.UNKNOWN)
 
 
-func handler_unit_started_attacking():
+func handler_unit_started_attacking() -> void:
 	if state == AcTypes.CombatUnitState.ATTACK:
 		return
 	
@@ -460,12 +462,12 @@ func handler_unit_stopped_being_attacked():
 	pass
 
 
-func is_path_to_target_free(target_position):
+func is_path_to_target_free(target_position) -> bool:
 	var path = game_controller.game_map.find_map_path_full_scale(get_position(), target_position)
 	if len(path) == 0:
 		return false
 
-	var dest_map_pos = game_controller.game_map.convert_to_map_pos(path[0])
+	var dest_map_pos: Vector2i = game_controller.game_map.convert_to_map_pos(path[0])
 	if game_controller.game_map.is_map_place_free(dest_map_pos) == false:
 		return false
 
@@ -502,7 +504,7 @@ func drop_unit():
 	position.x = adjust_drop_pos(position.x, align_size.x)
 	position.y = adjust_drop_pos(position.y, align_size.y)
 
-	var new_pos = game_controller.game_map.convert_to_map_pos(get_position())
+	var new_pos: Vector2i = game_controller.game_map.convert_to_map_pos(get_position())
 	if game_controller.game_map.is_map_place_free(new_pos):
 		change_map_pos(new_pos)
 		position = game_controller.game_map.convert_from_map_pos(new_pos)
@@ -527,7 +529,7 @@ func preparation():
 		game_controller.combat_interface.set_unit_selection_pos(get_position())
 
 	if is_dragging:
-		var mouse_pos = get_viewport().get_mouse_position()
+		var mouse_pos: Vector2 = get_viewport().get_mouse_position()
 		position = mouse_pos
 	elif has_wrong_pos():
 		adjust_pos_instanly()
@@ -558,7 +560,7 @@ func _ready():
 
 
 func _process(delta):
-	var game_state = game_controller.get_game_state()
+	var game_state: String = game_controller.get_game_state()
 	
 	if game_state == "combat":
 		combat(delta)
@@ -566,12 +568,12 @@ func _process(delta):
 		preparation()
 
 
-func _input(event):
+func _input(event) -> void:
 	if game_controller.get_game_state() == "combat":
 		return
 	
 	if event.is_action_pressed("app_click"):
-		var rect = Rect2(position - align_size / 2, align_size)
+		var rect: Rect2 = Rect2(position - align_size / 2, align_size)
 		if rect.has_point(event.position):
 			if is_selected != true:
 				is_selected = true

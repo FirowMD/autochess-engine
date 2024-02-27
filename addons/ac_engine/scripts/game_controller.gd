@@ -141,15 +141,6 @@ func print_log(text: String, color: Color = Color(1, 1, 1)) -> void:
 		combat_interface.combat_logger.print_log_ext(text, color)
 
 
-# var wave_generated_template: Dictionary = {
-# 	"combat_unit": null, # AcCombatUnit
-# 	"amount": 0
-# }
-
-# ## Returns array of `wave_generated_template`s
-# ## Each template contains info about combat unit node and amount to generate
-# func generate_wave(difficulty: AcTypes.WaveDifficulty) -> Array[Dictionary]:
-
 func wave_start() -> void:
 	var enemies = wave_controller.generate_wave(game_wave)
 	print("Wave start:\n", JSON.stringify(enemies))

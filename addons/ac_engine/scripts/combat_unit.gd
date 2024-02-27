@@ -98,6 +98,7 @@ func check_sprite() -> bool:
 func instantiate():
 	var unit = duplicate(0xf)
 	unit.hp = base_hp
+	unit.damage = base_damage
 	unit.move_speed = base_move_speed
 	unit.attack_speed = base_attack_speed
 	unit.attack_timer_max = 60.0 / base_attack_speed
@@ -109,8 +110,9 @@ func instantiate():
 
 func destroy():
 	game_controller.game_map.free_map_place(unit_pos)
-	queue_free()
+	game_controller.unit_count -= 1
 	game_controller.print_log(base_name + " has been killed", Color(1, 0, 0))
+	queue_free()
 
 
 func update_hp_bar():
@@ -546,6 +548,8 @@ func _ready():
 		push_error("setup is not complete")
 
 	update_hp_bar()
+	
+	game_controller.unit_count += 1
 
 	connect("unit_started_idling", handler_unit_started_idling)
 	connect("unit_stopped_idling", handler_unit_stopped_idling)

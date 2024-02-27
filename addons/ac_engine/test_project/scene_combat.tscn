@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c4g6ym5fs0b0i"]
+[gd_scene load_steps=12 format=3 uid="uid://c4g6ym5fs0b0i"]
 
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/game_controller.gd" id="1_8usi3"]
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/game_timer.gd" id="2_3ydk0"]
@@ -10,13 +10,17 @@
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/game_group.gd" id="8_lqeeu"]
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/craft_system.gd" id="9_eyi1c"]
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/craft_graph.gd" id="10_spjmg"]
+[ext_resource type="Script" path="res://addons/ac_engine/scripts/wave_controller.gd" id="11_o7d1d"]
 
-[node name="GameController" type="Node" node_paths=PackedStringArray("player_id", "game_map", "combat_interface")]
+[node name="GameController" type="Node" node_paths=PackedStringArray("player_id", "game_timer", "game_map", "group_manager", "combat_interface", "wave_controller")]
 script = ExtResource("1_8usi3")
 game_state = "combat"
 player_id = NodePath("PlayerManager/PlayerBlue")
+game_timer = NodePath("GameTimer")
 game_map = NodePath("CombatMap")
+group_manager = NodePath("GroupManager")
 combat_interface = NodePath("CombatInterface")
+wave_controller = NodePath("AcWaveController")
 
 [node name="CombatMap" parent="." instance=ExtResource("2_33xyj")]
 position = Vector2(32, 32)
@@ -76,3 +80,6 @@ craft_graph = NodePath("CraftGraph")
 
 [node name="CraftGraph" type="Node" parent="CraftSystem"]
 script = ExtResource("10_spjmg")
+
+[node name="AcWaveController" type="Node" parent="."]
+script = ExtResource("11_o7d1d")

@@ -3,14 +3,16 @@ extends Node
 
 
 const NAME_TIMER: String = "Timer"
-const NAME_LABEL: String = "Label"
 
 
 @export var game_time_sec: int = 0
 @export var timer: Timer = null
-@export var label: Label = null
 
 var alarm_list: Array = []
+
+
+signal gametimer_updated
+
 
 func setup_counting_up() -> void:
 	timer.connect("timeout", update_time)
@@ -40,12 +42,13 @@ func get_time() -> int:
 
 func update_time() -> void:
 	game_time_sec += 1
-	label.text = get_pretty_time_string_minutes()
 
 	for alarm in alarm_list:
 		if alarm["time"] == game_time_sec:
 			alarm["function"].call(alarm["object"], alarm["args"])
 			alarm_list.erase(alarm)
+	
+	gametimer_updated.emit()
 
 
 # Pass `foo` - function, and `time` - how many seconds to wait to call `foo`
@@ -64,15 +67,10 @@ func auto_setup() -> void:
 		# Check names instead of types
 		if child.name == NAME_TIMER:
 			timer = child
-		elif child.name == NAME_LABEL:
-			label = child
 
 func check_setup() -> bool:
 	if timer == null:
 		push_error("timer is not set")
-		return false
-	if label == null:
-		push_error("label is not set")
 		return false
 	
 	return true

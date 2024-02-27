@@ -22,6 +22,7 @@ const NAME_GROUP_MANAGER: String = "GroupManager"
 const NAME_GAME_TIMER: String = "GameTimer"
 const NAME_COMBAT_MAP: String = "CombatMap"
 const NAME_COMBAT_INTERFACE: String = "CombatInterface"
+const NAME_WAVE_CONTROLLER: String = "WaveController"
 
 
 @export_group("General")
@@ -38,11 +39,14 @@ const NAME_COMBAT_INTERFACE: String = "CombatInterface"
 @export var group_manager: AcGroupManager = null
 @export var player_manager: AcPlayerManager = null
 @export var combat_interface: AcCombatInterface = null
+@export var wave_controller: AcWaveController = null
 
 
 # var combat_unit: AcCombatUnit = load("res://scenes/combat_units/combat_unit.tscn").instantiate()
 var combat_unit: AcCombatUnit = load("res://addons/ac_engine/nodes/combat_unit.tscn").instantiate()
 var selected_unit: AcCombatUnit = null
+## Amount of units in the game
+var unit_count: int = 0
 
 
 func create_unit(unit: AcCombatUnit, group: AcGameGroup, pos: Vector2, player: AcGamePlayer) -> Variant:
@@ -98,6 +102,8 @@ func auto_setup() -> void:
 			player_manager = child
 		elif child.name == NAME_COMBAT_INTERFACE:
 			combat_interface = child
+		elif child.name == NAME_WAVE_CONTROLLER:
+			wave_controller = child
 
 
 func check_setup() -> bool:
@@ -115,6 +121,9 @@ func check_setup() -> bool:
 		return false
 	if combat_interface == null:
 		push_error("combat_interface is not set")
+		return false
+	elif wave_controller == null:
+		push_error("wave_controller is not set")
 		return false
 	
 	return true
@@ -135,6 +144,29 @@ func print_log(text: String, color: Color = Color(1, 1, 1)) -> void:
 		combat_interface.combat_logger.print_log_ext(text, color)
 
 
+# var wave_generated_template: Dictionary = {
+# 	"combat_unit": null, # AcCombatUnit
+# 	"amount": 0
+# }
+
+# ## Returns array of `wave_generated_template`s
+# ## Each template contains info about combat unit node and amount to generate
+# func generate_wave(difficulty: AcTypes.WaveDifficulty) -> Array[Dictionary]:
+
+func wave_start() -> void:
+	var enemies = wave_controller.generate_wave(game_wave)
+	print("Wave start:\n", JSON.stringify(enemies))
+	for enemy in enemies:
+		for i in range(enemy["amount"]):
+			var player = player_manager.get_player_by_id(1)
+			var group = group_manager.get_groups_by_type(1)[0]
+			var pos: Vector2i = game_map.get_random_free_place()
+
+			if pos != Vector2i(-1, -1):
+				print("Spawn enemy unit at: ", pos)
+				create_unit(enemy["combat_unit"], group, pos, player)
+
+
 func _ready():
 	auto_setup()
 	if not check_setup():
@@ -152,13 +184,15 @@ func _ready():
 	# game_timer.add_alarm_event(self, create_unit_serialized, 1, [combat_unit, group_player, Vector2(1, 0), player_1])
 	# game_timer.add_alarm_event(self, create_unit_serialized, 2, [combat_unit, group_enemy, Vector2(6, 6), player_2])
 
-	create_unit_serialized(self, [combat_unit, group_player, Vector2(1, 0), player_1])
-	create_unit_serialized(self, [combat_unit, group_enemy, Vector2(6, 6), player_2])
+	create_unit_serialized(self, [combat_unit, group_player, Vector2(2, 2), player_1])
+	# create_unit_serialized(self, [combat_unit, group_enemy, Vector2(6, 6), player_2])
 
-	# var all_comunits = AcPctrl.get_combat_unit_list_all()
+	# var all_comunits = AcPctrl.get_combat_unit_paths()
 	# print(all_comunits)
 
-	game_timer.add_alarm_event(self, generate_units, 2, [])
+	# game_timer.add_alarm_event(self, generate_units, 2, [])
+	
+	wave_start()
 	
 
 #! Test function

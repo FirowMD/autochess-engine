@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b7xqhbpbpiay1" path="res://addons/ac_engine/nodes/combat_esc.tscn" id="4_mfhxk"]
 [ext_resource type="PackedScene" uid="uid://bl562x8ra7asn" path="res://addons/ac_engine/nodes/combat_logger.tscn" id="6_x2t30"]
 
-[node name="CombatInterface" type="Node" node_paths=PackedStringArray("user_interface", "data_container", "combat_shop", "combat_collection", "combat_logger", "combat_esc", "unit_selection")]
+[node name="CombatInterface" type="Node" node_paths=PackedStringArray("user_interface", "data_container", "combat_shop", "combat_collection", "combat_logger", "combat_esc", "unit_selection", "label_debug", "label_timer", "label_wave")]
 script = ExtResource("1_5kmid")
 user_interface = NodePath("UserInterface")
 data_container = NodePath("UserInterface/ColorRect/MarginContainer/Panel/DataContainer")
@@ -17,6 +17,9 @@ combat_logger = NodePath("UserInterface/ColorRect/MarginContainer/CombatLogger")
 combat_esc = NodePath("UserInterface/ColorRect/MarginContainer/CombatEsc")
 unit_selection = NodePath("UserInterface/ColorRect/UnitSelection")
 show_fps = true
+label_debug = NodePath("LabelDebug")
+label_timer = NodePath("UserInterface/ColorRect/LabelTimer")
+label_wave = NodePath("UserInterface/ColorRect/LabelWave")
 
 [node name="LabelDebug" type="Label" parent="."]
 offset_left = 8.0
@@ -36,6 +39,22 @@ color = Color(1, 1, 1, 0)
 [node name="UnitSelection" parent="UserInterface/ColorRect" instance=ExtResource("2_211sb")]
 visible = false
 layout_mode = 0
+
+[node name="LabelWave" type="Label" parent="UserInterface/ColorRect"]
+layout_mode = 2
+offset_left = 704.0
+offset_right = 832.0
+offset_bottom = 32.0
+text = "WAVE NUMBER"
+vertical_alignment = 1
+
+[node name="LabelTimer" type="Label" parent="UserInterface/ColorRect"]
+layout_mode = 0
+offset_right = 832.0
+offset_bottom = 32.0
+text = "00:00"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="UserInterface/ColorRect"]
 layout_mode = 2

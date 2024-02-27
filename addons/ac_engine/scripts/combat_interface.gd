@@ -14,6 +14,8 @@ const NAME_COMBAT_LOGGER: String = "CombatLogger"
 const NAME_COMBAT_ESC: String = "CombatEsc"
 const NAME_UNIT_SELECTION: String= "UnitSelection"
 const NAME_LABEL_DEBUG: String = "LabelDebug"
+const NAME_LABEL_TIMER: String = "LabelTimer"
+const NAME_LABEL_WAVE: String = "LabelWave"
 
 
 @export_group("General")
@@ -41,6 +43,8 @@ const NAME_LABEL_DEBUG: String = "LabelDebug"
 @export_group("Advanced")
 @export var game_controller: AcGameController = null
 @export var label_debug: Label = null
+@export var label_timer: Label = null
+@export var label_wave: Label = null
 
 
 signal cominterface_hidden
@@ -72,6 +76,10 @@ func auto_setup():
 			unit_selection = child
 		elif child.name == NAME_LABEL_DEBUG:
 			label_debug = child
+		elif child.name == NAME_LABEL_TIMER:
+			label_timer = child
+		elif child.name == NAME_LABEL_WAVE:
+			label_wave = child
 
 
 func check_setup() -> bool:
@@ -104,6 +112,12 @@ func check_setup() -> bool:
 		return false
 	elif label_debug == null:
 		push_error("label_debug not set")
+		return false
+	elif label_timer == null:
+		push_error("label_timer not set")
+		return false
+	elif label_wave == null:
+		push_error("label_wave not set")
 		return false
 	
 	return true
@@ -206,6 +220,14 @@ func setup_unit_selection():
 	unit_selection.hide()
 
 
+func setup_wave_controller():
+	game_controller.wave_controller.connect("wctrl_wave_generated", handler_wctrl_wave_generated)
+
+
+func setup_gametimer():
+	game_controller.game_timer.connect("gametimer_updated", handler_gametimer_updated)
+
+
 func show_unit_selection():
 	unit_selection.show()
 
@@ -228,6 +250,23 @@ func get_unit_selection_pos() -> Vector2:
 	return unit_selection.get_position() + Vector2(align_size / 2)
 
 
+func handler_wctrl_wave_generated():
+	if label_wave != null:
+		var tmp_text = "Wave: {current}/{total}".format({
+			"current": game_controller.wave_controller.get_current_wave(),
+			"total": game_controller.wave_controller.get_wave_count()})
+
+		label_wave.text = tmp_text
+
+
+func handler_gametimer_updated():
+	if label_timer != null:
+		var tmp_text = "{time}".format({
+			"time": game_controller.game_timer.get_pretty_time_string_minutes()})
+		
+		label_timer.text = tmp_text
+
+
 func _ready():
 	auto_setup()
 	if not check_setup():
@@ -237,6 +276,8 @@ func _ready():
 	setup_combat_collection()
 	setup_combat_logger()
 	setup_unit_selection()
+	setup_wave_controller()
+	setup_gametimer()
 
 	init_data_container()
 	show_container()

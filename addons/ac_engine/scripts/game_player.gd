@@ -122,7 +122,7 @@ func set_unit_count(count: int):
 ## Default system for shop items
 ## It will fill the shop with all available items (1 piece of each kind)
 func setup_shop_items():
-	shop_items = AcPctrl.get_combat_unit_list_all().duplicate()
+	shop_items = AcPctrl.get_combat_unit_paths().duplicate()
 	set_shop_items(shop_items)
 
 

@@ -1,7 +1,8 @@
 class_name AcWaveController
 extends Node
 ## Class for controlling waves of enemies
-## 
+## This class keeps info about passed waves
+## And generates new waves according to known info
 
 
 @export_group("General")
@@ -9,10 +10,17 @@ extends Node
 @export var wave_idx: int = 1
 ## How much waves are there in total
 @export var wave_count: int = 10
+## Maximum number of enemies that can be spawned at once
+@export var max_enemies: int = 10
 
 @export_group("Current wave")
 @export var wave_type: AcTypes.WaveType = AcTypes.WaveType.DEFAULT
+## How many time `combat` stage will last
+## If enemies are not defeated in this time
+## You can add some effects like losing health, penalties, etc.
 @export var wave_duration: float = 60
+## How many time `preparation` stage will last
+@export var wave_wait_time: float = 20
 ## This number will affect on how many enemies will spawn
 ## And how strong they will be
 @export var wave_difficulty: AcTypes.WaveDifficulty = AcTypes.WaveDifficulty.EASY
@@ -34,28 +42,59 @@ extends Node
 var time_start: int = 0
 var time_end: int = 0
 
+var wave_template: Dictionary = {
+	"name": "",
+	"count": 0
+}
 
-func
+var wave_generated_template: Dictionary = {
+	"combat_unit": null, # AcCombatUnit
+	"amount": 0
+}
+
+
+signal wctrl_wave_generated
+
 
 func get_current_wave() -> int:
 	return wave_idx
 
 
-## Returns dictionary of combat units and their count
-## Example: {"combat_unit_A": 5, "combat_unit_B": 3}
-func generate_wave(difficulty: AcTypes.WaveDifficulty) -> Array[Variant]:
-	var cunits: Array[String] = AcPctrl.get_combat_unit_list_all()
-	var chosen_cunits: Array[Variant] = []
-	var generated_cunits: Array[Variant] = []
-	var max_amount_per_unit: int = 5
+func get_wave_count() -> int:
+	return wave_count
 
+
+func set_wave_count(count: int):
+	wave_count = count
+
+
+## Returns array of `wave_generated_template`s
+## Each template contains info about combat unit node and amount to generate
+func generate_wave(difficulty: AcTypes.WaveDifficulty) -> Array[Dictionary]:
+	var cunits: Array[AcCombatUnit] = AcPctrl.get_combat_units()
+	var chosen_cunits: Array[Variant] = []
+	var generated_cunits: Array[Dictionary] = []
+	var total_count: int = randi_range(1, max_enemies)
+
+	# Choose combat units
+	# That can be spawned in this wave
 	for cunit in cunits:
-		if cunit.difficulty == difficulty:
-			chosen_cunits.append(cunit)
+		chosen_cunits.append(cunit)
 	
-	for cunit in chosen_cunits:
-		var num: int = randi() % max_amount_per_unit
-		generated_cunits.append({cunit: num})
+	var i = 0
+	while i < total_count:
+		var possible_amount = total_count - i
+		var amount = randi_range(0, possible_amount)
+		var cunit: AcCombatUnit = chosen_cunits[randi() % chosen_cunits.size()]
+		var generated_cunit: Dictionary = {
+			"combat_unit": cunit,
+			"amount": amount
+		}
+		generated_cunits.append(generated_cunit)
+		i += amount
+
+	wave_idx += 1
+	wctrl_wave_generated.emit()
 	
 	return generated_cunits
 

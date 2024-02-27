@@ -84,5 +84,38 @@ func load_combat_units():
 			combat_units.append(item)
 
 
-func get_combat_unit_list_all() -> Array[String]:
+func get_combat_unit_paths() -> Array[String]:
 	return combat_units
+
+
+func get_combat_unit_names() -> Array[String]:
+	var res: Array[String] = []
+	for path in combat_units:
+		var packed_scene = load(path)
+		var scene = packed_scene.instantiate()
+		if scene is AcCombatUnit:
+			res.append(scene.base_name)
+	
+	return res
+
+
+func get_combat_unit_by_name(name) -> AcCombatUnit:
+	for path in combat_units:
+		var packed_scene = load(path)
+		var scene = packed_scene.instantiate()
+		if scene is AcCombatUnit:
+			if scene.base_name == name:
+				return scene
+	
+	return null
+
+
+func get_combat_units() -> Array[AcCombatUnit]:
+	var res: Array[AcCombatUnit] = []
+	for path in combat_units:
+		var packed_scene = load(path)
+		var scene = packed_scene.instantiate()
+		if scene is AcCombatUnit:
+			res.append(scene)
+	
+	return res

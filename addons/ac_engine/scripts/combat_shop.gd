@@ -29,11 +29,11 @@ func update_container() -> void:
 		new_item._ready()
 		new_item.set_item_name(item.base_name)
 		new_item.set_item_price(item.base_cost)
-		var stats: String = "HP: {}\nDMG: {}\nAS: {}\nMS: {}".format([
-			item.base_hp,
-			item.base_damage,
-			item.base_attack_speed,
-			item.base_move_speed])
+		var stats: String = "HP: {hp}\nDMG: {dmg}\nAS: {as}\nMS: {ms}".format({
+			"hp": item.base_hp,
+			"dmg": item.base_damage,
+			"as": item.base_attack_speed,
+			"ms": item.base_move_speed})
 		new_item.set_item_description(stats)
 		new_item.change_icon_animated(item.sprite)
 		container.add_child(new_item)

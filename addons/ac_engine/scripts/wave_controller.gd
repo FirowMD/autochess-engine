@@ -118,7 +118,8 @@ func auto_setup():
 		game_controller = AcPctrl.get_game_controller(get_tree())
 	else:
 		push_error("not inside tree")
-	
+
+	#todo: fix unused method
 	var game_groups: Array[Variant] = game_controller.group_manager.get_groups_by_type(
 		AcTypes.GameGroupType.NEUTRAL)
 

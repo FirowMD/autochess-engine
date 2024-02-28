@@ -77,6 +77,7 @@ func create_unit(unit: AcCombatUnit, group: AcGameGroup, pos: Vector2, player: A
 	return unit_instance
 
 
+# todo: fix unused parameter [this]
 func create_unit_serialized(this, args) -> Variant:
 	return create_unit(args[0], args[1], args[2], args[3])
 
@@ -203,10 +204,11 @@ func _ready():
 	
 
 #! Test function
+# todo: fix unused parameter [this, args]
 func generate_units(this, args) -> void:
 	var count: int = 2
 	for i in range(count):
-		var player = player_manager.get_player_by_id(0)
+		var player: AcGamePlayer = player_manager.get_player_by_id(0)
 		var group = group_manager.get_groups_by_type(2)[0]
 		var pos: Vector2i = game_map.get_random_free_place()
 
@@ -215,7 +217,7 @@ func generate_units(this, args) -> void:
 			create_unit(combat_unit, group, pos, player)
 	
 	for i in range(count):
-		var player = player_manager.get_player_by_id(1)
+		var player: AcGamePlayer = player_manager.get_player_by_id(1)
 		var group = group_manager.get_groups_by_type(1)[0]
 		var pos: Vector2i = game_map.get_random_free_place()
 

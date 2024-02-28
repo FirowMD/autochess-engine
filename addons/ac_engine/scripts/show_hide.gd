@@ -1,3 +1,4 @@
+# todo: class name does not match filename
 class_name AcShowHide
 extends Node
 
@@ -70,6 +71,7 @@ func check_setup() -> bool:
 func hide_if_click_outside(event) -> void:
 	if event.is_action_released("app_click"):
 		if (user_interface.is_visible() and
+			# todo: fix reference [get_global_rect] not found
 			not user_interface.get_global_rect().has_point(event.global_position)):
 
 			hide()

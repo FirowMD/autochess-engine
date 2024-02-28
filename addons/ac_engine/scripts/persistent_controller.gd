@@ -1,3 +1,4 @@
+@tool
 extends Node
 ## A singleton node that stores persistent data and functions.
 ## This node is used to store data that needs to be accessed from multiple scenes.
@@ -13,7 +14,9 @@ const NAME_GAME_CONTROLLER: String = "GameController"
 ]
 
 
-var combat_units: Array[String] = []
+@export var combat_units: Array[String] = []
+@export var combat_unit_names: Array[String] = []
+@export var combat_unit_instances: Array[AcCombatUnit] = []
 
 
 # Called when the node enters the scene tree for the first time
@@ -21,6 +24,7 @@ func _ready():
 	print("Persistent controller initializing...")
 	load_combat_units()
 	print("Combat units loaded: ", combat_units)
+	print("Combat unit names: ", combat_unit_names)
 
 
 func get_game_controller(scn_tree) -> Node:
@@ -83,39 +87,28 @@ func load_combat_units():
 		for item in lst:
 			combat_units.append(item)
 
+			var packed_scene = load(item)
+			var scene = packed_scene.instantiate()
+			if scene is AcCombatUnit:
+				combat_unit_names.append(scene.base_name)
+				combat_unit_instances.append(scene)
+
 
 func get_combat_unit_paths() -> Array[String]:
 	return combat_units
 
 
 func get_combat_unit_names() -> Array[String]:
-	var res: Array[String] = []
-	for path in combat_units:
-		var packed_scene = load(path)
-		var scene = packed_scene.instantiate()
-		if scene is AcCombatUnit:
-			res.append(scene.base_name)
-	
-	return res
+	return combat_unit_names
 
 
 func get_combat_unit_by_name(name) -> AcCombatUnit:
-	for path in combat_units:
-		var packed_scene = load(path)
-		var scene = packed_scene.instantiate()
-		if scene is AcCombatUnit:
-			if scene.base_name == name:
-				return scene
+	for unit in combat_unit_instances:
+		if unit.base_name == name:
+			return unit
 	
 	return null
 
 
 func get_combat_units() -> Array[AcCombatUnit]:
-	var res: Array[AcCombatUnit] = []
-	for path in combat_units:
-		var packed_scene = load(path)
-		var scene = packed_scene.instantiate()
-		if scene is AcCombatUnit:
-			res.append(scene)
-	
-	return res
+	return combat_unit_instances

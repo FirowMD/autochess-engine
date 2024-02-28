@@ -46,6 +46,18 @@ func save_data_to_file(fpath: String = "") -> void:
 func add_craft_item(item: Variant, parts: Array[Variant]) -> void:
 	var item_node = craft_graph.add_node(item, parts)
 
+## Load craft system from directory containing `Combat Unit`s
+## Generates a graph based on `Combat Unit`'s properties:
+## `base_power` - crafting level of the unit
+## `base_crafting` - units necessary to craft the unit
+func load_from_comunit_dir():
+	var combat_units: Array[AcCombatUnit] = AcPctrl.get_combat_units()
+
+	for level_power in range(AcTypes.CombatUnitPowerSize):
+		for comunit in combat_units:
+			if comunit.base_power == level_power:
+				add_craft_item(comunit.base_name, comunit.base_crafting)
+	
 
 ## An example of how to add items to the craft system
 func test_data_load():
@@ -66,4 +78,6 @@ func _ready():
 	# save_data_to_file()
 	# load_data_from_file()
 	# craft_graph.print_graph()
+	load_from_comunit_dir()
+	craft_graph.print_graph()
 	pass

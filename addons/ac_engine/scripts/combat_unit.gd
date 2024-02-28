@@ -32,6 +32,9 @@ const ATTACK_SPEED_MAX: int = 2000
 ## Which can be used to identify type of the unit
 @export var base_labels: Array[AcTypes.CombatUnitLabel] = []
 @export var base_power: AcTypes.CombatUnitPower = AcTypes.CombatUnitPower.STANDARD
+## Which combat units you need to build this one
+## You can see available list of combat units in `persistent_controller.tscn` (Also known as `AcPctrl`)
+@export var base_crafting: Array[String] = []
 
 @export_group("Advanced")
 @export var sprite: AnimatedSprite2D = null

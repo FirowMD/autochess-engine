@@ -86,9 +86,7 @@ func print_node(node: Dictionary, level: int) -> void:
 
 
 func print_graph() -> void:
-	print("ROOT NODE COUNT: ", root_nodes.size())
 	for node in root_nodes:
-		print("ROOT: ")
 		print_node(node, 0)
 
 

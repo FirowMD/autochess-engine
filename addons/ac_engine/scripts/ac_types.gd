@@ -37,6 +37,8 @@ enum CombatUnitPower {
 	LEGENDARY = 4,
 }
 
+const CombatUnitPowerSize: int = 5
+
 enum CombatUnitState {
 	UNKNOWN = -1,
 	IDLE = 0,

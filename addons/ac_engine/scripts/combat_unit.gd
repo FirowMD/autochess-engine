@@ -57,6 +57,9 @@ signal unit_selected
 signal unit_unselected
 signal unit_dragging
 signal unit_dropped
+signal unit_destroyed
+signal unit_target_changed
+signal unit_target_destroyed
 
 
 var hp: int = base_hp
@@ -68,7 +71,24 @@ var attack_range: float = base_attack_range
 var game_controller: AcGameController = null
 ## Also known as game board
 var align_size: Vector2 = Vector2(128, 128)
-var target_unit: AcCombatUnit = null
+var target_unit: AcCombatUnit = null:
+	set(new_value):
+		if new_value == target_unit:
+			return
+		
+		var prev_target = target_unit
+		target_unit = new_value
+		
+		if prev_target != null:
+			prev_target.disconnect("unit_destroyed", handler_target_unit_destroyed)
+		
+		if target_unit != null:
+			target_unit.connect("unit_destroyed", handler_target_unit_destroyed)
+
+		unit_target_changed.emit()
+	get:
+		return target_unit
+
 ## If you click on the unit, it will be chosen
 ## Then you can move it on the game board
 var is_selected: bool = false
@@ -116,6 +136,8 @@ func destroy():
 	game_controller.unit_count -= 1
 	game_controller.print_log(base_name + " has been killed", Color(1, 0, 0))
 	player.unit_count -= 1
+	unit_destroyed.emit()
+
 	queue_free()
 
 
@@ -148,13 +170,59 @@ func change_group(group_to):
 	setup_enemy_groups()
 
 
+func handler_target_unit_destroyed():
+	if target_unit != null:
+		if target_unit.hp <= 0:
+			target_unit = null
+			break_attack()
+			unit_target_destroyed.emit()
+
+
+func break_attack():
+	if state == AcTypes.CombatUnitState.ATTACK:
+		timer.stop()
+		unit_stopped_attacking.emit()
+		unit_started_idling.emit()
+
+
 func get_enemy_groups() -> Array:
 	return game_controller.get_enemy_groups(group)
 
 
-func get_next_target() -> Variant:
-	var target: AcCombatUnit = null
+func get_next_target() -> AcCombatUnit:
+	var possible_targets = find_targets_in_attack_range()
+	if len(possible_targets) == 0:
+		return find_nearest_target()
+
+	var result = null
+	# Find target which doesn't move
+	for target in possible_targets:
+		result = target
+		if target.state != AcTypes.CombatUnitState.WALK:
+			return target
+
+	return result
+
+
+func find_nearest_target() -> AcCombatUnit:
 	var min_distance: float = 1000000.0
+	var target: AcCombatUnit = null
+	for egroup in enemy_groups:
+		var egroup_name = egroup.get_group_name()
+		var all_egroup_nodes: Array[Variant] = get_tree().get_nodes_in_group(egroup_name)
+
+		for node in all_egroup_nodes:
+			if node is AcCombatUnit:
+				var distance = (node.unit_pos - unit_pos).length()
+				if distance < min_distance:
+					min_distance = distance
+					target = node
+
+	return target
+
+
+func find_targets_in_attack_range() -> Array[AcCombatUnit]:
+	var targets: Array[AcCombatUnit] = []
 	for egroup in enemy_groups:
 		var egroup_name = egroup.get_group_name()
 		var all_egroup_nodes: Array[Variant] = get_tree().get_nodes_in_group(egroup_name)
@@ -163,12 +231,9 @@ func get_next_target() -> Variant:
 			if node is AcCombatUnit:
 				var distance = (node.unit_pos - unit_pos).length()
 				if distance <= attack_range:
-					return node
-				elif distance < min_distance:
-					min_distance = distance
-					target = node
+					targets.append(node)
 
-	return target
+	return targets
 
 
 func can_attack_target(target: AcCombatUnit) -> bool:
@@ -181,11 +246,14 @@ func can_attack_target(target: AcCombatUnit) -> bool:
 	
 	return false
 
-	return false
-
 
 func sprite_animation_finished():
 	if state == AcTypes.CombatUnitState.ATTACK:
+		if target_unit == null:
+			unit_stopped_attacking.emit()
+			unit_started_idling.emit()
+			return
+
 		var log: String = base_name + " dealt " + str(damage) + " damage to " + target_unit.base_name
 		game_controller.print_log(log)
 		
@@ -199,8 +267,6 @@ func idle() -> void:
 		return
 	
 	sprite.play(AcTypes.CombatUnitStateNames[state])
-	timer.stop()
-	timer.set_paused(true)
 
 
 func walk() -> void:
@@ -215,6 +281,12 @@ func attack() -> void:
 		return
 	
 	adjust_sprite_direction(get_position().direction_to(target_unit.position))
+	if timer.time_left == 0:
+		start_attack()
+	cooldown_attack()
+
+
+func cooldown_attack():
 	timer.wait_time = attack_timer_max
 	timer.set_paused(false)
 	timer.stop()
@@ -222,6 +294,9 @@ func attack() -> void:
 
 
 func start_attack():
+	if state != AcTypes.CombatUnitState.ATTACK:
+		return
+	
 	sprite.play(AcTypes.CombatUnitStateNames[state])
 
 
@@ -531,6 +606,10 @@ func combat(delta):
 
 
 func preparation():
+	# Start idling
+	if state != AcTypes.CombatUnitState.IDLE:
+		unit_started_idling.emit()
+
 	if is_selected:
 		game_controller.combat_interface.set_unit_selection_pos(get_position())
 

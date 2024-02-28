@@ -1,4 +1,3 @@
-# todo: Class name does not match filename
 class_name AcCombatCollectionButton
 extends Button
 ## This is a button that will be used in the shop
@@ -26,7 +25,6 @@ const NAME_ICON_STATIC: String = "IconStatic"
 @export var icon_static: Sprite2D = null
 
 
-# todo: remove unused method
 func update_custom_min_size():
 	custom_minimum_size = button_size
 
@@ -76,13 +74,11 @@ func setup_name():
 	label_name.text = item_name
 
 
-# todo: remove unused method
 func change_icon_animated(anisprite: AnimatedSprite2D):
 	icon_animated = anisprite
 	setup_icon()
 
 
-# todo: remove unused method
 func change_icon_static(sprite: Sprite2D):
 	icon_static = sprite
 	setup_icon()

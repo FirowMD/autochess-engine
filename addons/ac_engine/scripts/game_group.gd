@@ -1,4 +1,3 @@
-# todo: class name does not match filename
 class_name AcGameGroup
 extends Node
 
@@ -8,7 +7,6 @@ extends Node
 @export var group_color: Color = Color(1, 1, 1, 1)
 
 
-# todo: fix unused method
 func get_group_name() -> String:
 	return group_name
 

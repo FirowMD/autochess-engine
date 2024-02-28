@@ -27,7 +27,6 @@ func get_game_controller(scn_tree) -> Node:
 	return scn_tree.get_root().get_node(NAME_GAME_CONTROLLER)
 
 
-# todo: fix unused method
 func get_scene_list(scr_dir) -> Array[Variant]:
 	var res_lst: Array[Variant] = []
 	var dir: DirAccess = DirAccess.open(scr_dir)
@@ -69,7 +68,6 @@ func get_combat_unit_list(dir_path) -> Array[Variant]:
 func scene_has_combat_unit(scene_path) -> bool:
 	var packed_scene = load(scene_path)
 	var scene = packed_scene.instantiate()
-	# todo: fix unused var
 	var children = scene.get_children()
 
 	if scene is AcCombatUnit:

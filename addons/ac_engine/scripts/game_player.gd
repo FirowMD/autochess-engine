@@ -51,9 +51,8 @@ extends Node
 @export_group("Advanced")
 @export var game_controller: AcGameController = null
 
-# todo: fix unused signal
+
 signal gameplayer_out_of_units
-# todo: fix unused signal
 signal gameplayer_out_of_hp
 signal gameplayer_unit_count_changed
 signal gameplayer_hp_changed
@@ -104,7 +103,6 @@ func setup_shop_items():
 
 ## Generate random shop items (took from the shop_items array)
 ## count - how many items to generate
-# todo: fix unused method
 func set_random_shop_items(count: int):
 	var items: Array[Variant] = []
 	for i in range(count):

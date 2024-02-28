@@ -28,7 +28,6 @@ const NAME_ICON_STATIC: String = "IconStatic"
 @export var icon_static: Sprite2D = null
 
 
-# todo: fix unused method
 func update_custom_min_size():
 	custom_minimum_size = button_size
 
@@ -87,51 +86,42 @@ func setup_price():
 	label_price.text = str(item_price)
 
 
-# todo: fix unused method
 func change_icon_animated(anisprite: AnimatedSprite2D):
 	icon_animated = anisprite
 	setup_icon()
 
 
-# todo: fix unused method
 func change_icon_static(sprite: Sprite2D):
 	icon_static = sprite
 	setup_icon()
 
 
-# todo: fix unused method
 func set_item_name(name: String):
 	item_name = name
 	setup_name()
 
 
-# todo: fix unused method
 func set_item_price(price: int):
 	item_price = price
 	setup_price()
 
 
-# todo: fix unused method
 func set_item_description(description: String):
 	item_description = description
 
 
-# todo: fix unused method
 func get_item_name() -> String:
 	return item_name
 
 
-# todo: fix unused method
 func get_item_price() -> int:
 	return item_price
 
 
-# todo: fix unused method
 func get_item_description() -> String:
 	return item_description
 
 
-# todo: fix unused method
 func get_use_animated_icon() -> bool:
 	return use_animated_icon
 

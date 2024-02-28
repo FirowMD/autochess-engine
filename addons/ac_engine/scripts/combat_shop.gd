@@ -1,4 +1,3 @@
-# todo: fix class name does not match filename
 class_name AcCombatShop
 extends AcShowHide
 
@@ -12,7 +11,7 @@ extends AcShowHide
 var combat_current_items: Array[Node] = []
 var combat_previous_items: Array[Node] = []
 
-# todo: fix unused method
+
 func check_shop_setup() -> bool:
 	if item_button == null:
 		push_error("item_button not set")

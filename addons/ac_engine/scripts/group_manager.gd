@@ -1,4 +1,3 @@
-# todo: class name does not match filename
 class_name AcGroupManager
 extends Node
 ## Group manager handles game groups and determines who is who's enemy

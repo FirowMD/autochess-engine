@@ -100,13 +100,11 @@ func find_map_path_full_scale(start: Vector2i, end: Vector2i) -> Array[Variant]:
 
 func get_atlas_tiles(id) -> Array[Variant]:
 	var atlas_source: TileSetSource = tile_set.get_source(id)
-	# todo: Reference [get_atlas_grid_size] not found
 	var atlas_grid_size = atlas_source.get_atlas_grid_size()
 	var res: Array[Variant] = []
 
 	for x in range(atlas_grid_size.x):
 		for y in range(atlas_grid_size.y):
-			# todo: Reference [get_tile_at_coords] not found
 			var tile = atlas_source.get_tile_at_coords(Vector2i(x, y))
 			if tile != Vector2i(-1, -1):
 				res.append(tile) 
@@ -138,7 +136,6 @@ func get_random_free_place() -> Vector2i:
 
 #! Just a test function
 #! You have to use your own one
-# todo: remove unused method
 func generate_random_map():
 	var acells: Array[Variant] = get_atlas_tiles(0)
 
@@ -148,7 +145,6 @@ func generate_random_map():
 			set_cell(0, Vector2(x, y), 0, acell, 0)
 
 
-# todo: remove unused method
 func generate_default_map():
 	# Black & white board for chess
 	var acells: Array[Variant] = get_atlas_tiles(0)
@@ -171,6 +167,5 @@ func _ready():
 
 	init_map()
 
-# todo: remove unused parameter
 func _process(delta):
 	pass

@@ -1,4 +1,3 @@
-# todo: does not match filename
 class_name AcCombatEsc
 extends Node
 ## Class that represents the escape menu

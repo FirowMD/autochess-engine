@@ -1,4 +1,3 @@
-# todo: fix class name does not match filename
 class_name AcCombatUnit
 extends Node2D
 
@@ -44,15 +43,12 @@ const ATTACK_SPEED_MAX: int = 2000
 
 
 signal unit_started_idling
-# todo: fix unused signal
 signal unit_stopped_idling
 signal unit_started_moving(delta)
 signal unit_stopped_moving
 signal unit_started_attacking
 signal unit_stopped_attacking
-# todo: fix unused signal
 signal unit_started_being_attacked
-# todo: fix unused signal
 signal unit_stopped_being_attacked
 signal unit_selected
 signal unit_unselected
@@ -137,7 +133,6 @@ func deal_damage(dmg):
 		destroy()
 
 
-# todo: fix unused method
 func change_attack_speed(att_speed):
 	if attack_speed > ATTACK_SPEED_MAX:
 		attack_speed = ATTACK_SPEED_MAX
@@ -145,7 +140,6 @@ func change_attack_speed(att_speed):
 	update_attack_timer(60.0 / attack_speed / get_attack_animation_time())
 
 
-# todo: fix unused method
 func change_group(group_to):
 	group = group_to
 	setup_enemy_groups()
@@ -189,7 +183,6 @@ func can_attack_target(target: AcCombatUnit) -> bool:
 
 func sprite_animation_finished():
 	if state == AcTypes.CombatUnitState.ATTACK:
-		# todo: fix unused var
 		var log: String = base_name + " dealt " + str(damage) + " damage to " + target_unit.base_name
 		game_controller.print_log(log)
 		
@@ -304,9 +297,7 @@ func setup_attack_timer():
 
 func setup_group():
 	if group == null:
-		# todo: reference [group_manager] not found
 		group = game_controller.group_manager.get_group_by_type(
-			# todo: reference [AcGameGroup] not found
 			AcPctrl.AcGameGroup.neutral)
 
 	#! Change color according to group unit is assigned to
@@ -318,9 +309,8 @@ func setup_group():
 func setup_enemy_groups():
 	enemy_groups = get_enemy_groups()
 
-# todo: fix return type []
+
 func get_attack_animation_time():
-	# todo: reference [frames] not found
 	var anim_fps = sprite.frames.get_animation_speed("attack")
 	return 1.0 / anim_fps
 
@@ -350,7 +340,6 @@ func get_anisprite_size() -> Vector2:
 
 ## Returns `ImageTexture` for combat shop
 ## `scale_to_size` is Vector2i with required size of image
-# todo: fix unused method
 func get_image_for_shop(scale_to_size) -> ImageTexture:
 	var sframes: SpriteFrames = sprite.sprite_frames
 	var aninames: PackedStringArray = sframes.get_animation_names()
@@ -444,7 +433,6 @@ func handler_unit_stopped_idling():
 	update_state(AcTypes.CombatUnitState.UNKNOWN)
 
 
-# todo: fix unused method
 func handler_unit_started_moving(delta) -> void:
 	if state == AcTypes.CombatUnitState.WALK:
 		return
@@ -477,7 +465,6 @@ func handler_unit_stopped_being_attacked():
 	pass
 
 
-# todo: fix unused method
 func is_path_to_target_free(target_position) -> bool:
 	var path: Array[Variant] = game_controller.game_map.find_map_path_full_scale(get_position(), target_position)
 	if len(path) == 0:
@@ -506,7 +493,7 @@ func handler_unit_unselected():
 		game_controller.unset_selected_unit()
 		game_controller.combat_interface.hide_unit_selection()
 
-# todo: fix return type []
+
 func adjust_drop_pos(pos, align_sz):
 	align_sz = int(align_sz)
 	var remainder = int(pos) % align_sz

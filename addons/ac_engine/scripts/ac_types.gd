@@ -1,4 +1,3 @@
-# todo: remove unused class
 extends Node
 ## Singleton that defines all the types used in the game
 ## This is a good place to define your own enums, dictionaries, etc.

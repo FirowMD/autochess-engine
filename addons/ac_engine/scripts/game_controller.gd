@@ -77,7 +77,6 @@ func create_unit(unit: AcCombatUnit, group: AcGameGroup, pos: Vector2, player: A
 	return unit_instance
 
 
-# todo: fix unused parameter [this]
 func create_unit_serialized(this, args) -> Variant:
 	return create_unit(args[0], args[1], args[2], args[3])
 
@@ -204,7 +203,6 @@ func _ready():
 	
 
 #! Test function
-# todo: fix unused parameter [this, args]
 func generate_units(this, args) -> void:
 	var count: int = 2
 	for i in range(count):

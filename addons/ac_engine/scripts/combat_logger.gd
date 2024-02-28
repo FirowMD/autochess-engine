@@ -1,4 +1,3 @@
-# todo: Class name does not match filename
 class_name AcCombatLogger
 extends AcShowHide
 ## Combat Logger
@@ -25,7 +24,7 @@ func print_log_ext(text: String, color: Color) -> void:
 	log_label.text += text
 	log_label.text += "[/color]\n"
 
-# todo: remove unused method
+
 func clear_log() -> void:
 	log_label.clear()
 

@@ -591,6 +591,16 @@ func drop_unit():
 		position = game_controller.game_map.convert_from_map_pos(new_pos)
 
 
+func drop_unit_selection():
+	var pos_aligned: Vector2 = get_position()
+	pos_aligned.x = adjust_drop_pos(pos_aligned.x, align_size.x)
+	pos_aligned.y = adjust_drop_pos(pos_aligned.y, align_size.y)
+
+	pos_aligned = game_controller.game_map.convert_to_map_pos(pos_aligned)
+	pos_aligned = game_controller.game_map.convert_from_map_pos(pos_aligned)
+	game_controller.combat_interface.set_unit_selection_pos(pos_aligned)
+
+
 func combat(delta):
 	target_unit  = get_next_target()
 	if target_unit != null:
@@ -611,7 +621,7 @@ func preparation():
 		unit_started_idling.emit()
 
 	if is_selected:
-		game_controller.combat_interface.set_unit_selection_pos(get_position())
+		drop_unit_selection()
 
 	if is_dragging:
 		var mouse_pos: Vector2 = get_viewport().get_mouse_position()

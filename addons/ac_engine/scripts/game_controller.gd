@@ -192,7 +192,9 @@ func _ready():
 	# game_timer.add_alarm_event(self, create_unit_serialized, 2, [combat_unit, group_enemy, Vector2(6, 6), player_2])
 
 	create_unit_serialized(self, [combat_unit, group_player, Vector2(2, 2), player_1])
-	# create_unit_serialized(self, [combat_unit, group_enemy, Vector2(6, 6), player_2])
+	create_unit_serialized(self, [combat_unit, group_player, Vector2(6, 6), player_1])
+	create_unit_serialized(self, [combat_unit, group_player, Vector2(5, 6), player_1])
+	create_unit_serialized(self, [combat_unit, group_player, Vector2(4, 6), player_1])
 
 	# var all_comunits = AcPctrl.get_combat_unit_paths()
 	# print(all_comunits)

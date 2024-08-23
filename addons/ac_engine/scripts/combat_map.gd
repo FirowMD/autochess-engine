@@ -1,5 +1,5 @@
 class_name AcCombatMap
-extends TileMap
+extends TileMapLayer
 
 
 @export var map_width: int = 12
@@ -142,7 +142,7 @@ func generate_random_map():
 	for x in range(map_width):
 		for y in range(map_height):
 			var acell = acells[randi() % acells.size()]
-			set_cell(0, Vector2(x, y), 0, acell, 0)
+			set_cell(Vector2(x, y), 0, acell, 0)
 
 
 func generate_default_map():
@@ -152,7 +152,7 @@ func generate_default_map():
 	for x in range(map_width):
 		for y in range(map_height):
 			var acell = acells[(x + y) % 2]
-			set_cell(0, Vector2(x, y), 0, acell, 0)
+			set_cell(Vector2(x, y), 0, acell, 0)
 
 
 func _ready():

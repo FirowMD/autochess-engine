@@ -27,7 +27,7 @@ text = "COMBAT LOGGER"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BtnMenu" type="Button" parent="UserInterface/Panel"]
+[node name="BtnMenu" type="MenuButton" parent="UserInterface/Panel"]
 layout_mode = 0
 offset_left = 264.0
 offset_top = 8.0

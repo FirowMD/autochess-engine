@@ -2,13 +2,37 @@ class_name AcCombatLogger
 extends AcShowHide
 ## Combat Logger
 
-const NAME_SCROLL_CONTAINER: String = "ScrollContainer"
+const NAME_LOG_TEXT: String = "LogText"
+## Used for menu button with following:
+## "Clear" - Clear logs
+## "Copy" - Copy logs to clipboard
+const NAME_BTN_MENU: String = "BtnMenu"
 
 
 ## BBCode must be enabled in the RichTextLabel node
 @export var log_label: RichTextLabel = null
+## Menu button for log
+@export var btn_menu: MenuButton = null
 ## Maximum number of lines to be printed in the log
 @export var max_printed_lines: int = 100
+
+
+func get_all_children(node: Node) -> Array[Node]:
+	var children: Array[Node] = []
+	for child in node.get_children():
+		children.append(child)
+		children += get_all_children(child)
+	
+	return children
+
+
+func auto_setup_logger() -> void:
+	var children = get_all_children(self)
+	for child in children:
+		if child.name == NAME_LOG_TEXT:
+			log_label = child
+		elif child.name == NAME_BTN_MENU:
+			btn_menu = child
 
 
 func print_log(text: String) -> void:
@@ -39,7 +63,28 @@ func clear_first_line() -> void:
 	log_label.text = log_label.text.substr(log_label.text.find("\n") + 1)
 
 
+func copy_log_to_clipboard() -> void:
+	DisplayServer.clipboard_set(log_label.text)
+
+
+func init_menu() -> void:
+	btn_menu.get_popup().add_item("Clear", 0)
+	btn_menu.get_popup().add_separator("", 1)
+	btn_menu.get_popup().add_item("Copy", 2)
+
+	btn_menu.get_popup().connect("id_pressed", handler_menu_id_pressed)
+
+
+func handler_menu_id_pressed(id) -> void:
+	if id == 0:
+		clear_log()
+	elif id == 2:
+		copy_log_to_clipboard()
+
+
 func _ready():
 	ac_show_hide_ready()
+	auto_setup_logger()
+	init_menu()
 
 	log_label.bbcode_enabled = true

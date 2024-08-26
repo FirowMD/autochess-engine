@@ -500,39 +500,27 @@ func adjust_pos_instanly():
 
 
 func handler_unit_started_idling() -> void:
-	if state == AcTypes.CombatUnitState.IDLE:
-		return
-
 	update_state(AcTypes.CombatUnitState.IDLE)
-	idle()
 
 
 func handler_unit_stopped_idling():
-	update_state(AcTypes.CombatUnitState.UNKNOWN)
+	state = AcTypes.CombatUnitState.UNKNOWN
 
 
 func handler_unit_started_moving(delta) -> void:
-	if state == AcTypes.CombatUnitState.WALK:
-		return
-	
 	update_state(AcTypes.CombatUnitState.WALK)
-	walk()
 
 
 func handler_unit_stopped_moving():
-	update_state(AcTypes.CombatUnitState.UNKNOWN)
+	state = AcTypes.CombatUnitState.UNKNOWN
 
 
 func handler_unit_started_attacking() -> void:
-	if state == AcTypes.CombatUnitState.ATTACK:
-		return
-	
 	update_state(AcTypes.CombatUnitState.ATTACK)
-	attack()
 
 
 func handler_unit_stopped_attacking():
-	update_state(AcTypes.CombatUnitState.UNKNOWN)
+	state = AcTypes.CombatUnitState.UNKNOWN
 
 
 func handler_unit_started_being_attacked():
@@ -556,7 +544,25 @@ func is_path_to_target_free(target_position) -> bool:
 
 
 func update_state(current_state):
+	if state == current_state:
+		return
+	
+	match state:
+		AcTypes.CombatUnitState.IDLE:
+			unit_stopped_idling.emit()
+		AcTypes.CombatUnitState.WALK:
+			unit_stopped_moving.emit()
+		AcTypes.CombatUnitState.ATTACK:
+			unit_stopped_attacking.emit()
+
 	state = current_state
+	match state:
+		AcTypes.CombatUnitState.IDLE:
+			idle()
+		AcTypes.CombatUnitState.WALK:
+			walk()
+		AcTypes.CombatUnitState.ATTACK:
+			attack()
 
 
 func handler_unit_selected():

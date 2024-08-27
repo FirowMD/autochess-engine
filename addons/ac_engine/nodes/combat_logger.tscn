@@ -2,9 +2,10 @@
 
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_logger.gd" id="1_yj5hl"]
 
-[node name="CombatLogger" type="Node" node_paths=PackedStringArray("log_label", "user_interface", "btn_show", "btn_hide", "container")]
+[node name="CombatLogger" type="Node" node_paths=PackedStringArray("log_label", "btn_menu", "user_interface", "btn_show", "btn_hide", "container")]
 script = ExtResource("1_yj5hl")
 log_label = NodePath("UserInterface/Panel/Panel/ScrollContainer/VBoxContainer/LogText")
+btn_menu = NodePath("UserInterface/Panel/BtnMenu")
 user_interface = NodePath("UserInterface")
 btn_show = NodePath("BtnShow")
 btn_hide = NodePath("UserInterface/Panel/BtnHide")

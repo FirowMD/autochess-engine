@@ -17,17 +17,8 @@ const NAME_BTN_MENU: String = "BtnMenu"
 @export var max_printed_lines: int = 100
 
 
-func get_all_children(node: Node) -> Array[Node]:
-	var children: Array[Node] = []
-	for child in node.get_children():
-		children.append(child)
-		children += get_all_children(child)
-	
-	return children
-
-
 func auto_setup_logger() -> void:
-	var children = get_all_children(self)
+	var children = get_children()
 	for child in children:
 		if child.name == NAME_LOG_TEXT:
 			log_label = child

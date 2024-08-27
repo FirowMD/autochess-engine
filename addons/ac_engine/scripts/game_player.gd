@@ -61,6 +61,8 @@ signal gameplayer_gold_changed
 signal gameplayer_score_changed
 signal gameplayer_name_changed
 signal gameplayer_shop_items_changed(items: Array[String])
+signal gameplayer_shop_items_bought(item: Array[String])
+signal gameplayer_collection_items_changed(items: Array[String])
 
 
 var unit_count: int = 0:
@@ -77,6 +79,9 @@ var shop_items: Array[String] = []
 ## Currently presented shop items
 var current_shop_items: Array[String] = []
 var previous_shop_items: Array[String] = []
+## All available collection items
+var current_collection_items: Array[String] = []
+var previous_collection_items: Array[String] = []
 
 
 func auto_setup():
@@ -116,6 +121,21 @@ func set_shop_items(items: Array[String]):
 	previous_shop_items = current_shop_items
 	current_shop_items = items
 	gameplayer_shop_items_changed.emit(items)
+
+
+func set_collection_items(items: Array[String]):
+	previous_collection_items = current_collection_items
+	current_collection_items = items
+	gameplayer_collection_items_changed.emit(items)
+
+
+func buy_shop_item(item: String):
+	## Check if the item is in the shop
+	if current_shop_items.find(item) == -1:
+		push_error("item is not in the shop")
+		return
+
+	gameplayer_shop_items_bought.emit(item)
 
 
 func _ready():

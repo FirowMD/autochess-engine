@@ -35,6 +35,17 @@ func auto_setup_logger() -> void:
 			btn_menu = child
 
 
+func check_setup_logger() -> bool:
+	if log_label == null:
+		push_error("log_label not set")
+		return false
+	elif btn_menu == null:
+		push_error("btn_menu not set")
+		return false
+
+	return true
+
+
 func print_log(text: String) -> void:
 	adjust_line_number_if_need()
 	log_label.text += "[" + game_controller.get_current_time() + "] "
@@ -85,6 +96,8 @@ func handler_menu_id_pressed(id) -> void:
 func _ready():
 	ac_show_hide_ready()
 	auto_setup_logger()
+	if not check_setup_logger():
+		push_error("setup is not complete (logger)")
 	init_menu()
 
 	log_label.bbcode_enabled = true

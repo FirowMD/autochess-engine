@@ -67,3 +67,23 @@ enum WaveDifficulty {
 	NORMAL = 1,
 	HARD = 2,
 }
+
+
+#
+# Common methods
+#
+
+## Convert list of scene paths to list of scene nodes (root of those scenes)
+func scnpaths_to_scnnodes(paths: Array[String]) -> Array[Node]:
+	var tmp_lst: Array[PackedScene] = []
+	for path in paths:
+		var scene = load(path)
+		tmp_lst.append(scene)
+	
+	# instantiate scenes to get the root nodes
+	var root_nodes: Array[Node] = []
+	for scene in tmp_lst:
+		var root = scene.instantiate()
+		root_nodes.append(root)
+	
+	return root_nodes

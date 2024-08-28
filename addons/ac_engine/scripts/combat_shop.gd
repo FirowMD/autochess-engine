@@ -7,11 +7,6 @@ extends AcShowHide
 @export var item_button: PackedScene = null
 
 
-## Current items in shop
-var combat_current_items: Array[Node] = []
-var combat_previous_items: Array[Node] = []
-
-
 func check_shop_setup() -> bool:
 	if item_button == null:
 		push_error("item_button not set")
@@ -21,10 +16,10 @@ func check_shop_setup() -> bool:
 
 
 ## Update item container according to the current items
-func update_container() -> void:
+func update_container(current_items: Array[Node]) -> void:
 	clear_container()
 
-	for item in combat_current_items:
+	for item in current_items:
 		var new_item = item_button.instantiate()
 		new_item._ready()
 		new_item.set_item_name(item.base_name)
@@ -39,26 +34,9 @@ func update_container() -> void:
 		container.add_child(new_item)
 
 
-func extract_roots_from_items(items: Array[String]) -> Array[Node]:
-	var tmp_lst: Array[PackedScene] = []
-	for item in items:
-		var scene = load(item)
-		tmp_lst.append(scene)
-	
-	# instantiate scenes to get the root nodes
-	var root_nodes: Array[Node] = []
-	for scene in tmp_lst:
-		var root = scene.instantiate()
-		root_nodes.append(root)
-	
-	return root_nodes
-
-
 func update_shop_items(items: Array[String]) -> void:
-	combat_previous_items = combat_current_items
-	combat_current_items = extract_roots_from_items(items)
-
-	update_container()
+	var item_paths = combat_interface.player.current_shop_items
+	update_container(AcTypes.scnpaths_to_scnnodes(item_paths))
 
 
 func _ready():

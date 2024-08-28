@@ -46,7 +46,10 @@ extends Node
 		return player_score
 
 @export_group("Player shop")
-@export var shop_item_count: int = 4
+@export var current_shop_items: Array[String] = []
+
+@export_group("Player collection")
+@export var current_collection_items: Array[String] = []
 
 @export_group("Advanced")
 @export var game_controller: AcGameController = null
@@ -76,11 +79,7 @@ var unit_count: int = 0:
 	
 ## All available shop items
 var shop_items: Array[String] = []
-## Currently presented shop items
-var current_shop_items: Array[String] = []
 var previous_shop_items: Array[String] = []
-## All available collection items
-var current_collection_items: Array[String] = []
 var previous_collection_items: Array[String] = []
 
 

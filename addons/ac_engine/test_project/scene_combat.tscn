@@ -25,6 +25,7 @@ wave_controller = NodePath("AcWaveController")
 
 [node name="CombatMap" parent="." instance=ExtResource("2_33xyj")]
 position = Vector2(32, 32)
+areas = []
 
 [node name="CombatInterface" parent="." node_paths=PackedStringArray("player") instance=ExtResource("8_258om")]
 player = NodePath("../PlayerManager/PlayerBlue")

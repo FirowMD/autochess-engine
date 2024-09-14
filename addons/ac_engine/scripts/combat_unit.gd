@@ -578,18 +578,15 @@ func handler_unit_unselected():
 		game_controller.combat_interface.hide_unit_selection()
 
 
-func adjust_drop_pos(pos, align_sz):
-	align_sz = int(align_sz)
-	var remainder = int(pos) % align_sz
-	if remainder > align_sz / 2:
-		return pos + align_sz - remainder
-	else:
-		return pos - remainder
+func adjust_drop_coord(coord: float, align_sz: float) -> int:
+	var res = coord / align_sz
+	res = res * align_sz + align_sz / 2
+	return res
 
 
 func drop_unit():
-	position.x = adjust_drop_pos(position.x, align_size.x)
-	position.y = adjust_drop_pos(position.y, align_size.y)
+	position.x = adjust_drop_coord(position.x, align_size.x)
+	position.y = adjust_drop_coord(position.y, align_size.y)
 
 	var new_pos: Vector2i = game_controller.game_map.convert_to_map_pos(get_position())
 	if game_controller.game_map.is_map_place_free(new_pos):
@@ -599,8 +596,8 @@ func drop_unit():
 
 func drop_unit_selection():
 	var pos_aligned: Vector2 = get_position()
-	pos_aligned.x = adjust_drop_pos(pos_aligned.x, align_size.x)
-	pos_aligned.y = adjust_drop_pos(pos_aligned.y, align_size.y)
+	pos_aligned.x = adjust_drop_coord(pos_aligned.x, align_size.x)
+	pos_aligned.y = adjust_drop_coord(pos_aligned.y, align_size.y)
 
 	pos_aligned = game_controller.game_map.convert_to_map_pos(pos_aligned)
 	pos_aligned = game_controller.game_map.convert_from_map_pos(pos_aligned)
@@ -622,7 +619,6 @@ func combat(delta):
 
 
 func preparation():
-	# Start idling
 	if state != AcTypes.CombatUnitState.IDLE:
 		unit_started_idling.emit()
 
@@ -631,6 +627,18 @@ func preparation():
 
 	if is_dragging:
 		var mouse_pos: Vector2 = get_viewport().get_mouse_position()
+
+		# Keep unit inside the game board
+		mouse_pos.x = clamp(
+			mouse_pos.x,
+			game_controller.game_map.position.x + 1,
+			game_controller.game_map.position.x + game_controller.game_map.map_width * align_size.x - 1)
+		
+		mouse_pos.y = clamp(
+			mouse_pos.y,
+			game_controller.game_map.position.y + 1,
+			game_controller.game_map.position.y + game_controller.game_map.map_height * align_size.y - 1)
+
 		position = mouse_pos
 	elif has_wrong_pos():
 		adjust_pos_instanly()

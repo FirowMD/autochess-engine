@@ -3,12 +3,13 @@
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/combat_collection.gd" id="1_2cbwg"]
 [ext_resource type="PackedScene" uid="uid://c04py050tw8lj" path="res://addons/ac_engine/nodes/combat_collection_button.tscn" id="2_s7n2p"]
 
-[node name="CombatCollection" type="Node" node_paths=PackedStringArray("user_interface", "btn_show", "btn_hide")]
+[node name="CombatCollection" type="Node" node_paths=PackedStringArray("user_interface", "btn_show", "btn_hide", "container")]
 script = ExtResource("1_2cbwg")
 item_button = ExtResource("2_s7n2p")
 user_interface = NodePath("UserInterface")
 btn_show = NodePath("BtnShow")
 btn_hide = NodePath("UserInterface/Panel/BtnHide")
+container = NodePath("UserInterface/Panel/ScrollContainer/ItemContainer")
 
 [node name="UserInterface" type="MarginContainer" parent="."]
 offset_left = 832.0

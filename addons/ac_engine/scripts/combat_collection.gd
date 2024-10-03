@@ -33,9 +33,8 @@ func update_container(current_items: Array[Node]) -> void:
 		container.add_child(new_item)
 
 
-func update_collection_items(items: Array[String]) -> void:
-	var item_paths = combat_interface.player.current_collection_items
-	update_container(AcTypes.scnpaths_to_scnnodes(item_paths))
+func update_collection_items(items: Array[Node]) -> void:
+	update_container(items)
 
 
 func _ready():

@@ -16,6 +16,8 @@ const ATTACK_SPEED_MAX: int = 2000
 @export var group: AcGameGroup = null
 ## Position on the game board
 @export var unit_pos: Vector2 = Vector2(0, 0)
+## Item ID that used to identify the unit, for example, in the shop
+@export var item_id: int = -1
 
 @export_group("Base stats")
 @export var base_name: String = "Unit"

@@ -22,6 +22,7 @@ func update_container(current_items: Array[Node]) -> void:
 	for item in current_items:
 		var new_item = item_button.instantiate()
 		new_item._ready()
+		new_item.item_id = item.item_id
 		new_item.set_item_name(item.base_name)
 		new_item.set_item_price(item.base_cost)
 		var stats: String = "HP: {hp}\nDMG: {dmg}\nAS: {as}\nMS: {ms}".format({
@@ -34,9 +35,8 @@ func update_container(current_items: Array[Node]) -> void:
 		container.add_child(new_item)
 
 
-func update_shop_items(items: Array[String]) -> void:
-	var item_paths = combat_interface.player.current_shop_items
-	update_container(AcTypes.scnpaths_to_scnnodes(item_paths))
+func update_shop_items(items: Array[Node]) -> void:
+	update_container(items)
 
 
 func _ready():

@@ -11,6 +11,7 @@ const NAME_ICON_STATIC: String = "IconStatic"
 
 
 @export_group("General")
+@export var item_id: int = -1
 @export var item_name: String = ""
 @export var item_price: int = 0
 @export var item_description: String = ""
@@ -22,11 +23,11 @@ const NAME_ICON_STATIC: String = "IconStatic"
 @export var button_size: Vector2 = Vector2(304, 192)
 
 @export_group("Advanced")
+@export var combat_shop: AcCombatShop = null
 @export var label_name: Label = null
 @export var label_price: Label = null
 @export var icon_animated: AnimatedSprite2D = null
 @export var icon_static: Sprite2D = null
-
 
 func update_custom_min_size():
 	custom_minimum_size = button_size
@@ -110,20 +111,9 @@ func set_item_description(description: String):
 	item_description = description
 
 
-func get_item_name() -> String:
-	return item_name
-
-
-func get_item_price() -> int:
-	return item_price
-
-
-func get_item_description() -> String:
-	return item_description
-
-
-func get_use_animated_icon() -> bool:
-	return use_animated_icon
+func btn_buy_down():
+	var game_controller = AcPctrl.get_game_controller(get_tree())
+	game_controller.player_id.buy_shop_item(item_id)
 
 
 func _ready():
@@ -134,3 +124,5 @@ func _ready():
 	setup_icon()
 	setup_name()
 	setup_price()
+
+	connect("button_down", btn_buy_down)

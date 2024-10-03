@@ -153,9 +153,13 @@ func store_data() -> Dictionary:
 	return data
 
 
-func init_data_container():
+func update_data_container():
 	# Add labels to the data container
 	var data: Dictionary = store_data()
+
+	# Remove previous labels if they exist
+	for child in data_container.get_children():
+		data_container.remove_child(child)
 
 	for key in data:
 		var label: Label = Label.new()
@@ -272,10 +276,11 @@ func _ready():
 	setup_wave_controller()
 	setup_gametimer()
 
-	init_data_container()
+	update_data_container()
 	show_container()
 
 func _process(delta):
+	update_data_container()
 	if show_fps:
 		label_debug.text = "FPS: " + str(Engine.get_frames_per_second())
 	else:

@@ -84,6 +84,15 @@ func change_icon_static(sprite: Sprite2D):
 	setup_icon()
 
 
+func set_item_name(name: String):
+	item_name = name
+	setup_name()
+
+
+func set_item_description(description: String):
+	item_description = description
+
+
 func _ready():
 	auto_setup()
 	if not check_setup():

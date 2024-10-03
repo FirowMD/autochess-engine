@@ -83,6 +83,8 @@ animations = [{
 }]
 
 [node name="CombatCollectionButton" type="Button"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 192)
 offset_right = 304.0
 offset_bottom = 192.0
 script = ExtResource("1_i8m3y")

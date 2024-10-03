@@ -46,10 +46,10 @@ extends Node
 		return player_score
 
 @export_group("Player shop")
-@export var current_shop_items: Array[String] = []
+@export var current_shop_items: Array[Node] = []
 
 @export_group("Player collection")
-@export var current_collection_items: Array[String] = []
+@export var current_collection_items: Array[Node] = []
 
 @export_group("Advanced")
 @export var game_controller: AcGameController = null
@@ -63,9 +63,9 @@ signal gameplayer_exp_changed
 signal gameplayer_gold_changed
 signal gameplayer_score_changed
 signal gameplayer_name_changed
-signal gameplayer_shop_items_changed(items: Array[String])
-signal gameplayer_shop_items_bought(item: Array[String])
-signal gameplayer_collection_items_changed(items: Array[String])
+signal gameplayer_shop_items_changed(items: Array[Node])
+signal gameplayer_shop_items_bought(item: Array[Node])
+signal gameplayer_collection_items_changed(items: Array[Node])
 
 
 var unit_count: int = 0:
@@ -78,9 +78,9 @@ var unit_count: int = 0:
 		return unit_count
 	
 ## All available shop items
-var shop_items: Array[String] = []
-var previous_shop_items: Array[String] = []
-var previous_collection_items: Array[String] = []
+var shop_items: Array[Node] = []
+var previous_shop_items: Array[Node] = []
+var previous_collection_items: Array[Node] = []
 
 
 func auto_setup():
@@ -101,14 +101,14 @@ func check_setup() -> bool:
 ## Default system for shop items
 ## It will fill the shop with all available items (1 piece of each kind)
 func setup_shop_items():
-	shop_items = AcPctrl.get_combat_unit_paths().duplicate()
+	shop_items = AcTypes.scnpaths_to_scnnodes(AcPctrl.get_combat_unit_paths())
 	set_shop_items(shop_items)
 
 
 ## Generate random shop items (took from the shop_items array)
 ## count - how many items to generate
 func set_random_shop_items(count: int):
-	var items: Array[Variant] = []
+	var items: Array[Node] = []
 	for i in range(count):
 		var index: int = randi() % shop_items.size()
 		items.append(shop_items[index])
@@ -116,25 +116,39 @@ func set_random_shop_items(count: int):
 	set_shop_items(items)
 
 
-func set_shop_items(items: Array[String]):
+func set_shop_items(items: Array[Node]):
 	previous_shop_items = current_shop_items
 	current_shop_items = items
 	gameplayer_shop_items_changed.emit(items)
 
 
-func set_collection_items(items: Array[String]):
+func set_collection_items(items: Array[Node]):
 	previous_collection_items = current_collection_items
 	current_collection_items = items
 	gameplayer_collection_items_changed.emit(items)
 
 
-func buy_shop_item(item: String):
-	## Check if the item is in the shop
-	if current_shop_items.find(item) == -1:
-		push_error("item is not in the shop")
+func find_shop_item(item_id: int) -> Node:
+	for item in current_shop_items:
+		if item.item_id == item_id:
+			return item
+	
+	return null
+
+
+func buy_shop_item(item_id: int) -> void:
+	var found_item = find_shop_item(item_id)
+	if found_item == null:
+		push_error("item not found")
 		return
 
-	gameplayer_shop_items_bought.emit(item)
+	if player_gold < found_item.base_cost:
+		return
+	
+	player_gold -= found_item.base_cost
+	current_collection_items.append(found_item)
+	set_collection_items(current_collection_items)
+	gameplayer_shop_items_bought.emit(found_item)
 
 
 func _ready():

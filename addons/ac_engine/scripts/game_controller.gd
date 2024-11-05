@@ -231,23 +231,18 @@ func generate_units(this, args) -> void:
 
 func add_combat_unit_to_player(item_id: int) -> bool:
 	if game_state != "preparation":
-		print_log("Cannot add units outside of preparation phase!", Color(1, 0, 0))
 		return false
 	
 	if player_id == null:
-		print_log("No active player selected!", Color(1, 0, 0))
 		return false
 		
 	var player_group = group_manager.get_groups_by_type(AcTypes.GameGroupType.ALLIE)[0]
-	
 	var unit_scene = AcPctrl.get_combat_unit_by_id(item_id)
 	if not unit_scene:
-		print_log("Invalid unit ID: " + str(item_id), Color(1, 0, 0))
 		return false
 	
 	var map_pos = game_map.get_random_free_place()
 	if map_pos == Vector2i(-1, -1):
-		print_log("No valid position available for unit placement!", Color(1, 0, 0))
 		return false
 	
 	create_unit(unit_scene, player_group, map_pos, player_id)

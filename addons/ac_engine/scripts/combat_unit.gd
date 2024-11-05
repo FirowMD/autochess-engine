@@ -499,6 +499,7 @@ func adjust_pos(delta):
 
 func adjust_pos_instanly():
 	position = game_controller.game_map.convert_from_map_pos(unit_pos)
+	change_map_pos(unit_pos)
 
 
 func handler_unit_started_idling() -> void:

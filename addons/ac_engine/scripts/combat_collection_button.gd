@@ -10,6 +10,7 @@ const NAME_ICON_STATIC: String = "IconStatic"
 
 
 @export_group("General")
+@export var item_id: int = -1
 @export var item_name: String = ""
 @export var item_description: String = ""
 @export var use_animated_icon: bool = true
@@ -100,3 +101,13 @@ func _ready():
 	
 	setup_icon()
 	setup_name()
+
+
+func _pressed():
+	# Get the mouse position in world coordinates
+	var mouse_pos = get_viewport().get_mouse_position()
+	
+	# Try to add the unit at the mouse position
+	var game_controller = AcPctrl.get_game_controller(get_tree())
+	var success = game_controller.add_combat_unit_to_player(item_id)
+		

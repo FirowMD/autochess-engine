@@ -112,3 +112,10 @@ func get_combat_unit_by_name(name) -> AcCombatUnit:
 
 func get_combat_units() -> Array[AcCombatUnit]:
 	return combat_unit_instances
+
+
+func get_combat_unit_by_id(id: int) -> AcCombatUnit:
+	# Ensure id is within valid range
+	if id >= 0 and id < combat_unit_instances.size():
+		return combat_unit_instances[id]
+	return null

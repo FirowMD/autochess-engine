@@ -22,6 +22,7 @@ func update_container(current_items: Array[Node]) -> void:
 	for item in current_items:
 		var new_item = item_button.instantiate()
 		new_item._ready()
+		new_item.item_id = item.item_id
 		new_item.set_item_name(item.base_name)
 		var stats: String = "HP: {hp}\nDMG: {dmg}\nAS: {as}\nMS: {ms}".format({
 			"hp": item.base_hp,

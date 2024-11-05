@@ -45,6 +45,21 @@ func free_map_place(pos) -> bool:
 	return was_solid
 
 
+func print_map_places() -> void:
+	var result: Array[Array] = []
+
+	for y in range(map_height):
+		var row: Array[int] = []
+		for x in range(map_width):
+			if map_2d.is_point_solid(Vector2i(x, y)):
+				row.append(1)
+			else:
+				row.append(0)
+		result.append(row)
+
+	print(result)
+
+
 func convert_to_map_pos(pos) -> Vector2i:
 	var tmp_pos: Vector2 = Vector2(pos) - (position + Vector2(tile_size.x / 2, tile_size.y / 2))
 	var ret: Vector2i = Vector2i(floor(tmp_pos.x / tile_size.x), floor(tmp_pos.y / tile_size.y))
@@ -121,17 +136,12 @@ func setup_tile_size():
 
 
 func get_random_free_place() -> Vector2i:
-	var empty_places: Array[Variant] = []
-
-	for x in range(map_width):
-		for y in range(map_height):
-			if !map_2d.is_point_solid(Vector2i(x, y)):
-				empty_places.append(Vector2i(x, y))
+	for y in range(map_height):
+		for x in range(map_width):
+			if is_map_place_free(Vector2i(x, y)):
+				return Vector2i(x, y)
 	
-	if empty_places.size() == 0:
-		return Vector2i(-1, -1)
-	
-	return empty_places[randi() % empty_places.size()]
+	return Vector2i(-1, -1)
 
 
 #! Just a test function

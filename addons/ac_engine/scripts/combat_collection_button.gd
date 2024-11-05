@@ -110,4 +110,5 @@ func _pressed():
 	# Try to add the unit at the mouse position
 	var game_controller = AcPctrl.get_game_controller(get_tree())
 	var success = game_controller.add_combat_unit_to_player(item_id)
-		
+	if success:
+		queue_free()

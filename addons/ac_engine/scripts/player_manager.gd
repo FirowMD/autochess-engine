@@ -8,7 +8,19 @@ extends Node
 @export var game_players: Array[AcGamePlayer] = []
 
 
-func auto_setup():
+func _ready() -> void:
+	setup_references()
+	setup_players()
+	check_setup()
+
+
+func setup_references() -> void:
+	if not is_inside_tree():
+		push_error("not inside tree")
+		return
+
+
+func setup_players() -> void:
 	for child in get_children():
 		if child is AcGamePlayer:
 			game_players.append(child)
@@ -30,8 +42,3 @@ func check_setup() -> bool:
 		return false
 	
 	return true
-
-
-func _ready():
-	auto_setup()
-	check_setup()

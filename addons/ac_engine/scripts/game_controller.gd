@@ -94,23 +94,6 @@ func unset_selected_unit() -> void:
 	print("Unset chosen unit")
 
 
-func auto_setup() -> void:
-	var children: Array[Node] = get_children()
-	for child in children:
-		if child.name == NAME_GAME_TIMER:
-			game_timer = child
-		elif child.name == NAME_COMBAT_MAP:
-			game_map = child
-		elif child.name == NAME_GROUP_MANAGER:
-			group_manager = child
-		elif child.name == NAME_PLAYER_MANAGER:
-			player_manager = child
-		elif child.name == NAME_COMBAT_INTERFACE:
-			combat_interface = child
-		elif child.name == NAME_WAVE_CONTROLLER:
-			wave_controller = child
-
-
 func check_setup() -> bool:
 	if game_timer == null:
 		push_error("game_timer is not set")
@@ -173,36 +156,60 @@ func setup_players() -> void:
 	player_2.connect("gameplayer_out_of_units", handler_gameplayer_out_of_units_loser)
 
 
-func _ready():
-	auto_setup()
+func _ready() -> void:
+	setup_references()
+	setup_game()
+	setup_signals()
+	initialize_state()
+
+
+func setup_references() -> void:
+	setup_child_nodes()
+
+
+func setup_child_nodes() -> void:
+	const NODE_MAPPINGS = {
+		NAME_PLAYER_MANAGER: "player_manager",
+		NAME_GROUP_MANAGER: "group_manager",
+		NAME_GAME_TIMER: "game_timer",
+		NAME_COMBAT_MAP: "game_map",
+		NAME_COMBAT_INTERFACE: "combat_interface",
+		NAME_WAVE_CONTROLLER: "wave_controller"
+	}
+	
+	for node in get_children():
+		if node.name in NODE_MAPPINGS:
+			set(NODE_MAPPINGS[node.name], node)
+
+
+func setup_game() -> void:
 	if not check_setup():
 		push_error("setup is not complete")
+		return
 	
 	setup_players()
-	
-	# Create 1 player unit using timer `add_alarm_event` method
+
+
+func setup_signals() -> void:
+	# Connect player signals
 	var player_1 = player_manager.get_player_by_id(0)
 	var player_2 = player_manager.get_player_by_id(1)
-	var allies = group_manager.get_groups_by_type(2)
-	var enemies = group_manager.get_groups_by_type(1)
-	var group_player = allies[0]
-	var group_enemy = enemies[0]
+	player_1.connect("gameplayer_out_of_units", handler_gameplayer_out_of_units_winner)
+	player_2.connect("gameplayer_out_of_units", handler_gameplayer_out_of_units_loser)
 
-	# game_timer.add_alarm_event(self, create_unit_serialized, 1, [combat_unit, group_player, Vector2(1, 0), player_1])
-	# game_timer.add_alarm_event(self, create_unit_serialized, 2, [combat_unit, group_enemy, Vector2(6, 6), player_2])
 
+func initialize_state() -> void:
+	# Create initial player units
+	var player_1 = player_manager.get_player_by_id(0)
+	var group_player = group_manager.get_groups_by_type(2)[0]
+	
 	create_unit_serialized(self, [combat_unit, group_player, Vector2(2, 2), player_1])
 	create_unit_serialized(self, [combat_unit, group_player, Vector2(6, 6), player_1])
 	create_unit_serialized(self, [combat_unit, group_player, Vector2(5, 6), player_1])
 	create_unit_serialized(self, [combat_unit, group_player, Vector2(4, 6), player_1])
-
-	# var all_comunits = AcPctrl.get_combat_unit_paths()
-	# print(all_comunits)
-
-	# game_timer.add_alarm_event(self, generate_units, 2, [])
 	
 	wave_start()
-	
+
 
 #! Test function
 func generate_units(this, args) -> void:

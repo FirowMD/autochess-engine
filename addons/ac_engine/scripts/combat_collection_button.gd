@@ -30,16 +30,27 @@ func update_custom_min_size():
 	custom_minimum_size = button_size
 
 
-func auto_setup():
-	var children: Array[Node] = get_children()
+func setup_references() -> void:
+	setup_controllers()
+	setup_child_nodes()
 
-	for child in children:
-		if child.name == NAME_LABEL_NAME:
-			label_name = child
-		elif child.name == NAME_ICON_ANIMATED:
-			icon_animated = child
-		elif child.name == NAME_ICON_STATIC:
-			icon_static = child
+
+func setup_controllers() -> void:
+	if not is_inside_tree():
+		push_error("not inside tree")
+		return
+
+
+func setup_child_nodes() -> void:
+	const NODE_MAPPINGS = {
+		NAME_LABEL_NAME: "label_name",
+		NAME_ICON_ANIMATED: "icon_animated",
+		NAME_ICON_STATIC: "icon_static"
+	}
+	
+	for node in get_children():
+		if node.name in NODE_MAPPINGS:
+			set(NODE_MAPPINGS[node.name], node)
 
 
 func check_setup() -> bool:
@@ -95,7 +106,12 @@ func set_item_description(description: String):
 
 
 func _ready():
-	auto_setup()
+	setup_references()
+	setup_collection_button()
+
+
+func setup_collection_button() -> void:
+	update_custom_min_size()
 	if not check_setup():
 		push_error("setup is not complete")
 	

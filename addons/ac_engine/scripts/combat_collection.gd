@@ -38,8 +38,12 @@ func update_collection_items(items: Array[Node]) -> void:
 	update_container(items)
 
 
+func _validate_setup() -> bool:
+	return super._validate_setup() and check_collection_setup()
+
+
 func _ready():
-	ac_show_hide_ready()
+	super._ready()
 
 	game_controller.player_id.connect(
 		"gameplayer_collection_items_changed",

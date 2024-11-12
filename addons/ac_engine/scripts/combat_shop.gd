@@ -39,9 +39,13 @@ func update_shop_items(items: Array[Node]) -> void:
 	update_container(items)
 
 
-func _ready():
-	ac_show_hide_ready()
+func _validate_setup() -> bool:
+	return super._validate_setup() and check_shop_setup()
 
+
+func _ready() -> void:
+	super._ready()
+	
 	game_controller.player_id.connect(
 		"gameplayer_shop_items_changed",
 		update_shop_items)

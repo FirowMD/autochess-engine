@@ -31,25 +31,51 @@ const NAME_CONTAINER: String = "Container"
 @export var game_controller: AcGameController = null
 
 
-func auto_setup():
-	if is_inside_tree():
-		game_controller = AcPctrl.get_game_controller(get_tree())
-	else:
-		push_error("not inside tree")
-	
-	var child_nodes: Array[Node] = get_children()
+func _ready() -> void:
+	setup_references()
+	setup_escape_menu()
+	setup_signals()
+	initialize_state()
 
-	for node in child_nodes:
-		if node.name == NAME_UI:
-			user_interface = node
-		if node.name == NAME_BTN_ESC:
-			btn_esc = node
-		elif node.name == NAME_BTN_RESUME:
-			btn_resume = node
-		elif node.name == NAME_BTN_EXIT:
-			btn_exit = node
-		elif node.name == NAME_CONTAINER:
-			container = node
+func setup_references() -> void:
+	setup_controllers()
+	setup_child_nodes()
+
+func setup_controllers() -> void:
+	if not is_inside_tree():
+		push_error("not inside tree")
+		return
+	
+	game_controller = AcPctrl.get_game_controller(get_tree())
+
+func setup_child_nodes() -> void:
+	const NODE_MAPPINGS = {
+		NAME_UI: "user_interface",
+		NAME_BTN_ESC: "btn_esc",
+		NAME_BTN_RESUME: "btn_resume",
+		NAME_BTN_EXIT: "btn_exit",
+		NAME_CONTAINER: "container"
+	}
+	
+	for node in get_children():
+		if node.name in NODE_MAPPINGS:
+			set(NODE_MAPPINGS[node.name], node)
+
+func setup_escape_menu() -> void:
+	if not check_setup():
+		push_error("setup is not complete")
+	
+	if auto_z_index:
+		change_z_index_if_need()
+
+func setup_signals() -> void:
+	btn_esc.connect("button_down", btn_esc_down)
+	btn_resume.connect("button_down", btn_resume_down)
+	btn_exit.connect("button_down", btn_exit_down)
+
+func initialize_state() -> void:
+	set_process_mode(Node.PROCESS_MODE_ALWAYS)
+	init_visibility()
 
 
 func check_setup() -> bool:
@@ -105,20 +131,6 @@ func init_visibility():
 func change_z_index_if_need():
 	if auto_z_index:
 		user_interface.set_z_index(100)
-
-
-func _ready():
-	auto_setup()
-	if not check_setup():
-		push_error("setup is not complete")
-	
-	set_process_mode(Node.PROCESS_MODE_ALWAYS)
-	init_visibility()
-	change_z_index_if_need()
-
-	btn_esc.connect("button_down", btn_esc_down)
-	btn_resume.connect("button_down", btn_resume_down)
-	btn_exit.connect("button_down", btn_exit_down)
 
 
 func _input(event):

@@ -50,36 +50,65 @@ signal cominterface_hidden
 signal cominterface_shown
 
 
-func auto_setup():
-	if is_inside_tree():
-		game_controller = AcPctrl.get_game_controller(get_tree())
-	else:
-		push_error("not inside tree")
-	
-	var children: Array[Node] = get_children()
-	
-	for child in children:
-		if child.name == NAME_UI:
-			user_interface = child
-		elif child.name == NAME_DATA_CONTAINER:
-			data_container = child
-		elif child.name == NAME_COMBAT_SHOP:
-			combat_shop = child	
-		elif child.name == NAME_COMBAT_COLLECTION:
-			combat_collection = child
-		elif child.name == NAME_COMBAT_LOGGER:
-			combat_logger = child
-		elif child.name == NAME_COMBAT_ESC:
-			combat_esc = child
-		elif child.name == NAME_UNIT_SELECTION:
-			unit_selection = child
-		elif child.name == NAME_LABEL_DEBUG:
-			label_debug = child
-		elif child.name == NAME_LABEL_TIMER:
-			label_timer = child
-		elif child.name == NAME_LABEL_WAVE:
-			label_wave = child
+func _ready() -> void:
+	setup_references()
+	setup_interface()
+	setup_signals()
+	initialize_state()
 
+func setup_references() -> void:
+	setup_controllers()
+	setup_child_nodes()
+
+func setup_controllers() -> void:
+	if not is_inside_tree():
+		push_error("not inside tree")
+		return
+	
+	game_controller = AcPctrl.get_game_controller(get_tree())
+
+func setup_child_nodes() -> void:
+	const NODE_MAPPINGS = {
+		NAME_UI: "user_interface",
+		NAME_DATA_CONTAINER: "data_container",
+		NAME_COMBAT_SHOP: "combat_shop",
+		NAME_COMBAT_COLLECTION: "combat_collection",
+		NAME_COMBAT_LOGGER: "combat_logger",
+		NAME_COMBAT_ESC: "combat_esc",
+		NAME_UNIT_SELECTION: "unit_selection",
+		NAME_LABEL_DEBUG: "label_debug",
+		NAME_LABEL_TIMER: "label_timer",
+		NAME_LABEL_WAVE: "label_wave"
+	}
+	
+	for node in get_children():
+		if node.name in NODE_MAPPINGS:
+			set(NODE_MAPPINGS[node.name], node)
+
+func setup_interface() -> void:
+	if not check_setup():
+		push_error("setup is not complete")
+	
+	setup_combat_shop()
+	setup_combat_collection()
+	setup_combat_logger()
+	setup_unit_selection()
+	setup_wave_controller()
+	setup_gametimer()
+	update_data_container()
+
+func setup_signals() -> void:
+	combat_shop.connect("ui_shown", handler_comshop_shown)
+	combat_shop.connect("ui_hidden", handler_com_hidden)
+	combat_collection.connect("ui_shown", handler_comcollection_shown)
+	combat_collection.connect("ui_hidden", handler_com_hidden)
+	combat_logger.connect("ui_shown", handler_comlogger_shown)
+	combat_logger.connect("ui_hidden", handler_com_hidden)
+	game_controller.wave_controller.connect("wctrl_wave_generated", handler_wctrl_wave_generated)
+	game_controller.game_timer.connect("gametimer_updated", handler_gametimer_updated)
+
+func initialize_state() -> void:
+	show_container()
 
 func check_setup() -> bool:
 	if user_interface == null:
@@ -263,21 +292,6 @@ func handler_gametimer_updated():
 		
 		label_timer.text = tmp_text
 
-
-func _ready():
-	auto_setup()
-	if not check_setup():
-		push_error("setup is not complete")
-	
-	setup_combat_shop()
-	setup_combat_collection()
-	setup_combat_logger()
-	setup_unit_selection()
-	setup_wave_controller()
-	setup_gametimer()
-
-	update_data_container()
-	show_container()
 
 func _process(delta):
 	update_data_container()

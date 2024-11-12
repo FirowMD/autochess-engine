@@ -17,13 +17,23 @@ const NAME_BTN_MENU: String = "BtnMenu"
 @export var max_printed_lines: int = 100
 
 
-func auto_setup_logger() -> void:
-	var children = get_children()
-	for child in children:
-		if child.name == NAME_LOG_TEXT:
-			log_label = child
-		elif child.name == NAME_BTN_MENU:
-			btn_menu = child
+func setup_child_nodes() -> void:
+	const NODE_MAPPINGS = {
+		NAME_LOG_TEXT: "log_label",
+		NAME_BTN_MENU: "btn_menu"
+	}
+	
+	for node in get_children():
+		if node.name in NODE_MAPPINGS:
+			set(NODE_MAPPINGS[node.name], node)
+
+
+func setup_logger() -> void:
+	if not check_setup_logger():
+		push_error("setup is not complete (logger)")
+		return
+	init_menu()
+	log_label.bbcode_enabled = true
 
 
 func check_setup_logger() -> bool:
@@ -84,9 +94,14 @@ func handler_menu_id_pressed(id) -> void:
 		copy_log_to_clipboard()
 
 
-func _ready():
-	ac_show_hide_ready()
-	auto_setup_logger()
+func _validate_setup() -> bool:
+	return super._validate_setup() and check_setup_logger()
+
+
+func _ready() -> void:
+	super._ready()
+
+	setup_child_nodes()
 	if not check_setup_logger():
 		push_error("setup is not complete (logger)")
 	init_menu()

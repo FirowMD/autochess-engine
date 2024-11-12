@@ -29,7 +29,19 @@ func get_groups_by_type(gtype) -> Array[Variant]:
 	return groups
 
 
-func auto_setup():
+func _ready() -> void:
+	setup_references()
+	setup_groups()
+	check_setup()
+
+
+func setup_references() -> void:
+	if not is_inside_tree():
+		push_error("not inside tree")
+		return
+
+
+func setup_groups() -> void:
 	for child in get_children():
 		if child is AcGameGroup:
 			game_groups.append(child)
@@ -43,8 +55,3 @@ func check_setup() -> bool:
 		return false
 	
 	return true
-
-
-func _ready():
-	auto_setup()
-	check_setup()

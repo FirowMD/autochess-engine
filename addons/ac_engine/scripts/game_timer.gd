@@ -61,12 +61,41 @@ func add_alarm_event(obj: Object, foo: Callable, wait_time: int, args: Array = [
 	alarm_list.append(alarm)
 
 
-func auto_setup() -> void:
-	var children: Array[Node] = get_children()
-	for child in children:
-		# Check names instead of types
-		if child.name == NAME_TIMER:
-			timer = child
+func _ready() -> void:
+	setup_references()
+	setup_timer()
+	setup_signals()
+	initialize_state()
+
+
+func setup_references() -> void:
+	setup_child_nodes()
+
+
+func setup_child_nodes() -> void:
+	const NODE_MAPPINGS = {
+		NAME_TIMER: "timer"
+	}
+	
+	for node in get_children():
+		if node.name in NODE_MAPPINGS:
+			set(NODE_MAPPINGS[node.name], node)
+
+
+func setup_timer() -> void:
+	if not check_setup():
+		push_error("setup is not complete")
+		return
+
+
+func setup_signals() -> void:
+	timer.connect("timeout", update_time)
+	timer.start()
+
+
+func initialize_state() -> void:
+	game_time_sec = 0
+
 
 func check_setup() -> bool:
 	if timer == null:
@@ -74,10 +103,3 @@ func check_setup() -> bool:
 		return false
 	
 	return true
-
-
-func _ready():
-	auto_setup()
-	if not check_setup():
-		push_error("setup is not complete")
-	setup_counting_up()

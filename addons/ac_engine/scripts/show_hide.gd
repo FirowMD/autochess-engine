@@ -27,24 +27,58 @@ signal ui_shown
 signal ui_hidden
 
 
-func auto_setup() -> void:
-	if is_inside_tree():
-		game_controller = AcPctrl.get_game_controller(get_tree())
-		combat_interface = game_controller.combat_interface
-	else:
-		push_error("not inside tree")
-	
-	var child_nodes: Array[Node] = get_children()
+func _ready() -> void:
+	ac_show_hide_ready()
 
-	for node in child_nodes:
-		if node.name == NAME_UI:
-			user_interface = node
-		elif node.name == NAME_BTN_SHOW:
-			btn_show = node
-		elif node.name == NAME_BTN_HIDE:
-			btn_hide = node
-		elif node.name == NAME_CONTAINER:
-			container = node
+func ac_show_hide_ready() -> void:
+	setup_references()
+	
+	if not _validate_setup():
+		push_error("Setup validation failed")
+		return
+	
+	setup_interface()
+	setup_signals()
+	initialize_state()
+
+# Virtual method for child classes to implement their validation
+func _validate_setup() -> bool:
+	return check_setup()
+
+func setup_references() -> void:
+	setup_controllers()
+	setup_child_nodes()
+
+func setup_controllers() -> void:
+	if not is_inside_tree():
+		push_error("not inside tree")
+		return
+	game_controller = AcPctrl.get_game_controller(get_tree())
+	combat_interface = game_controller.combat_interface
+
+func setup_child_nodes() -> void:
+	const NODE_MAPPINGS = {
+		NAME_UI: "user_interface",
+		NAME_BTN_SHOW: "btn_show",
+		NAME_BTN_HIDE: "btn_hide",
+		NAME_CONTAINER: "container"
+	}
+	
+	for node in get_children():
+		if node.name in NODE_MAPPINGS:
+			set(NODE_MAPPINGS[node.name], node)
+
+func setup_interface() -> void:
+	if not check_setup():
+		push_error("setup is not complete")
+		return
+
+func setup_signals() -> void:
+	setup_btn_show()
+	setup_btn_hide()
+
+func initialize_state() -> void:
+	hide()  # Initialize as hidden
 
 
 func check_setup() -> bool:
@@ -108,24 +142,8 @@ func clear_container() -> void:
 		child.queue_free()
 
 
-func ac_show_hide_ready() -> void:
-	auto_setup()
-	if not check_setup():
-		push_error("setup is not complete")
-
-	setup_btn_show()
-	setup_btn_hide()
-
-	# Initialize as hidden
-	hide()
-
-
 func ac_show_hide_input(event: InputEvent) -> void:
 	hide_if_click_outside(event)
-
-
-func _ready():
-	ac_show_hide_ready()
 
 
 func _input(event):

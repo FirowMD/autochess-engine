@@ -113,15 +113,36 @@ func update_time():
 	time_end = time_start + wave_duration
 
 
-func auto_setup():
-	if is_inside_tree():
-		game_controller = AcPctrl.get_game_controller(get_tree())
-	else:
-		push_error("not inside tree")
+func setup_references() -> void:
+	setup_controllers()
+	setup_groups()
 
-	#todo: fix unused method
+
+func setup_controllers() -> void:
+	if not is_inside_tree():
+		push_error("not inside tree")
+		return
+	game_controller = AcPctrl.get_game_controller(get_tree())
+
+
+func setup_groups() -> void:
 	var game_groups: Array[Variant] = game_controller.group_manager.get_groups_by_type(
 		AcTypes.GameGroupType.NEUTRAL)
+	group_neutral = game_groups[0] if game_groups.size() > 0 else null
+
+
+func setup_wave() -> void:
+	if not check_setup():
+		push_error("setup is not complete")
+		return
+	
+	update_time()
+
+
+func initialize_state() -> void:
+	time_start = 0
+	time_end = 0
+	wave_idx = 1
 
 
 func check_setup() -> bool:
@@ -132,7 +153,7 @@ func check_setup() -> bool:
 	return true
 
 
-func _ready():
-	auto_setup()
-	if not check_setup():
-		push_error("setup is not complete")
+func _ready() -> void:
+	setup_references()
+	setup_wave()
+	initialize_state()

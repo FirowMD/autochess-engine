@@ -456,17 +456,28 @@ func _ready() -> void:
 
 
 func setup_references() -> void:
-	if is_inside_tree():
-		game_controller = AcPctrl.get_game_controller(get_tree())
-	else:
+	setup_controllers()
+	setup_child_nodes()
+
+
+func setup_controllers() -> void:
+	if not is_inside_tree():
 		push_error("not inside tree")
+		return
 	
-	# Find child nodes
-	for child in get_children():
-		match child.name:
-			NAME_SPRITE: sprite = child
-			NAME_TIMER: timer = child
-			NAME_HP_BAR: hp_bar = child
+	game_controller = AcPctrl.get_game_controller(get_tree())
+
+
+func setup_child_nodes() -> void:
+	const NODE_MAPPINGS = {
+		NAME_SPRITE: "sprite",
+		NAME_TIMER: "timer",
+		NAME_HP_BAR: "hp_bar"
+	}
+	
+	for node in get_children():
+		if node.name in NODE_MAPPINGS:
+			set(NODE_MAPPINGS[node.name], node)
 
 
 func setup_unit() -> void:

@@ -83,20 +83,28 @@ var previous_shop_items: Array[Node] = []
 var previous_collection_items: Array[Node] = []
 
 
-func auto_setup():
-	if is_inside_tree():
-		game_controller = AcPctrl.get_game_controller(get_tree())
-	else:
-		push_error("not inside tree")
-
-
-func check_setup() -> bool:
-	if game_controller == null:
-		push_error("game_controller not set")
-		return false
+func _ready() -> void:
+	setup_references()
+	setup_player()
 	
-	return true
+	if not check_setup():
+		push_error("Game player setup failed")
+		return
 
+func setup_references() -> void:
+	setup_controllers()
+
+func setup_controllers() -> void:
+	if not is_inside_tree():
+		push_error("Cannot setup game player: Node is not inside scene tree")
+		return
+	
+	game_controller = AcPctrl.get_game_controller(get_tree())
+	if game_controller == null:
+		push_error("Cannot setup game player: Failed to get game controller")
+
+func setup_player() -> void:
+	setup_shop_items()
 
 ## Default system for shop items
 ## It will fill the shop with all available items (1 piece of each kind)
@@ -104,6 +112,12 @@ func setup_shop_items():
 	shop_items = AcTypes.scnpaths_to_scnnodes(AcPctrl.get_combat_unit_paths())
 	set_shop_items(shop_items)
 
+func check_setup() -> bool:
+	if game_controller == null:
+		push_error("game_controller not set")
+		return false
+	
+	return true
 
 ## Generate random shop items (took from the shop_items array)
 ## count - how many items to generate
@@ -115,18 +129,15 @@ func set_random_shop_items(count: int):
 	
 	set_shop_items(items)
 
-
 func set_shop_items(items: Array[Node]):
 	previous_shop_items = current_shop_items
 	current_shop_items = items
 	gameplayer_shop_items_changed.emit(items)
 
-
 func set_collection_items(items: Array[Node]):
 	previous_collection_items = current_collection_items
 	current_collection_items = items
 	gameplayer_collection_items_changed.emit(items)
-
 
 func find_shop_item(item_id: int) -> Node:
 	for item in current_shop_items:
@@ -134,7 +145,6 @@ func find_shop_item(item_id: int) -> Node:
 			return item
 	
 	return null
-
 
 func buy_shop_item(item_id: int) -> void:
 	var found_item = find_shop_item(item_id)
@@ -149,11 +159,3 @@ func buy_shop_item(item_id: int) -> void:
 	current_collection_items.append(found_item)
 	set_collection_items(current_collection_items)
 	gameplayer_shop_items_bought.emit(found_item)
-
-
-func _ready():
-	auto_setup()
-	if not check_setup():
-		push_error("setup is not complete")
-	
-	setup_shop_items()

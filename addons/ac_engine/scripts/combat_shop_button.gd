@@ -29,23 +29,40 @@ const NAME_ICON_STATIC: String = "IconStatic"
 @export var icon_animated: AnimatedSprite2D = null
 @export var icon_static: Sprite2D = null
 
-func update_custom_min_size():
-	custom_minimum_size = button_size
+func _ready():
+	setup_references()
+	setup_shop_button()
+	connect("button_down", btn_buy_down)
 
+func setup_references() -> void:
+	setup_controllers()
+	setup_child_nodes()
 
-func auto_setup():
-	var children: Array[Node] = get_children()
+func setup_controllers() -> void:
+	if not is_inside_tree():
+		push_error("not inside tree")
+		return
 
-	for child in children:
-		if child.name == NAME_LABEL_NAME:
-			label_name = child
-		elif child.name == NAME_LABEL_PRICE:
-			label_price = child
-		elif child.name == NAME_ICON_ANIMATED:
-			icon_animated = child
-		elif child.name == NAME_ICON_STATIC:
-			icon_static = child
+func setup_child_nodes() -> void:
+	const NODE_MAPPINGS = {
+		NAME_LABEL_NAME: "label_name",
+		NAME_LABEL_PRICE: "label_price",
+		NAME_ICON_ANIMATED: "icon_animated",
+		NAME_ICON_STATIC: "icon_static"
+	}
+	
+	for node in get_children():
+		if node.name in NODE_MAPPINGS:
+			set(NODE_MAPPINGS[node.name], node)
 
+func setup_shop_button() -> void:
+	update_custom_min_size()
+	if not check_setup():
+		push_error("setup is not complete")
+	
+	setup_icon()
+	setup_name()
+	setup_price()
 
 func check_setup() -> bool:
 	if label_name == null:
@@ -60,8 +77,10 @@ func check_setup() -> bool:
 	elif icon_static == null:
 		push_error("icon_static not set")
 		return false
-
 	return true
+
+func update_custom_min_size():
+	custom_minimum_size = button_size
 
 
 func setup_icon() -> void:
@@ -114,15 +133,3 @@ func set_item_description(description: String):
 func btn_buy_down():
 	var game_controller = AcPctrl.get_game_controller(get_tree())
 	game_controller.player_id.buy_shop_item(item_id)
-
-
-func _ready():
-	auto_setup()
-	if not check_setup():
-		push_error("setup is not complete")
-	
-	setup_icon()
-	setup_name()
-	setup_price()
-
-	connect("button_down", btn_buy_down)

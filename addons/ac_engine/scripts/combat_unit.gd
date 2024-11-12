@@ -436,7 +436,6 @@ func get_image_for_shop(scale_to_size) -> ImageTexture:
 				# Convert `Image` to `ImageTexture`
 				return ImageTexture.create_from_image(extracted_image)
 	
-
 	return null
 
 
@@ -449,20 +448,70 @@ func setup_sprite() -> void:
 	sprite.connect("animation_finished", sprite_animation_finished)
 
 
-func auto_setup():
+func _ready() -> void:
+	setup_references()
+	setup_unit()
+	setup_signals()
+	initialize_state()
+
+
+func setup_references() -> void:
 	if is_inside_tree():
 		game_controller = AcPctrl.get_game_controller(get_tree())
 	else:
 		push_error("not inside tree")
 	
-	var children: Array[Node] = get_children()
-	for child in children:
-		if child.name == NAME_SPRITE:
-			sprite = child
-		elif child.name == NAME_TIMER:
-			timer = child
-		elif child.name == NAME_HP_BAR:
-			hp_bar = child
+	# Find child nodes
+	for child in get_children():
+		match child.name:
+			NAME_SPRITE: sprite = child
+			NAME_TIMER: timer = child
+			NAME_HP_BAR: hp_bar = child
+
+
+func setup_unit() -> void:
+	setup_position()
+	setup_sprite()
+	setup_group()
+	setup_enemy_groups()
+	setup_attack_timer()
+	
+	if not check_setup():
+		push_error("setup is not complete")
+
+	update_hp_bar()
+	
+	# Update counters
+	game_controller.unit_count += 1
+	player.unit_count += 1
+
+
+func setup_signals() -> void:
+	# Combat signals
+	connect("unit_started_idling", handler_unit_started_idling)
+	connect("unit_stopped_idling", handler_unit_stopped_idling)
+	connect("unit_started_moving", handler_unit_started_moving)
+	connect("unit_stopped_moving", handler_unit_stopped_moving)
+	connect("unit_started_attacking", handler_unit_started_attacking)
+	connect("unit_stopped_attacking", handler_unit_stopped_attacking)
+	connect("unit_started_being_attacked", handler_unit_started_being_attacked)
+	connect("unit_stopped_being_attacked", handler_unit_stopped_being_attacked)
+	
+	# Selection signals
+	connect("unit_selected", handler_unit_selected)
+	connect("unit_unselected", handler_unit_unselected)
+
+	# Sprite signals
+	sprite.connect("animation_finished", sprite_animation_finished)
+	
+	# Timer signals
+	timer.connect("timeout", start_attack)
+
+
+func initialize_state() -> void:
+	timer.wait_time = attack_timer_max
+	timer.set_paused(true)
+	sprite.play("idle")
 
 
 func check_setup() -> bool:
@@ -645,33 +694,6 @@ func preparation():
 		position = mouse_pos
 	elif has_wrong_pos():
 		adjust_pos_instanly()
-
-
-func _ready():
-	auto_setup()
-	setup_position()
-	setup_sprite()
-	setup_group()
-	setup_enemy_groups()
-	setup_attack_timer()
-	if not check_setup():
-		push_error("setup is not complete")
-
-	update_hp_bar()
-	
-	game_controller.unit_count += 1
-	player.unit_count += 1
-
-	connect("unit_started_idling", handler_unit_started_idling)
-	connect("unit_stopped_idling", handler_unit_stopped_idling)
-	connect("unit_started_moving", handler_unit_started_moving)
-	connect("unit_stopped_moving", handler_unit_stopped_moving)
-	connect("unit_started_attacking", handler_unit_started_attacking)
-	connect("unit_stopped_attacking", handler_unit_stopped_attacking)
-	connect("unit_started_being_attacked", handler_unit_started_being_attacked)
-	connect("unit_stopped_being_attacked", handler_unit_stopped_being_attacked)
-	connect("unit_selected", handler_unit_selected)
-	connect("unit_unselected", handler_unit_unselected)
 
 
 func _process(delta):

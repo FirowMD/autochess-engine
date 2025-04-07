@@ -23,8 +23,6 @@ func _ready() -> void:
 	setup_references()
 	setup_waves()
 
-	start_wave()
-
 
 func setup_references() -> void:
 	if not is_inside_tree():

@@ -18,6 +18,13 @@ extends Node2D
 @export var base_reward: int = 5
 ## Reward per enemy defeated
 @export var enemy_reward: int = 1
+## Choose current wave state. If set to "combat", the wave will start immediately
+@export_enum("combat", "preparation") var wave_state: String = "preparation":
+	set(new_value):
+		wave_state = new_value
+		wave_state_changed.emit(new_value)
+	get:
+		return wave_state
 
 @export_group("Enemy Spawning")
 ## Maximum enemies that can be spawned
@@ -36,6 +43,7 @@ var enemies_defeated: int = 0
 
 signal wave_started
 signal wave_completed
+signal wave_state_changed(state: String)
 signal wave_failed
 signal wave_enemy_defeated
 
@@ -60,6 +68,7 @@ func start() -> void:
 	enemies_spawned = 0
 	enemies_defeated = 0
 	wave_started.emit()
+	wave_state_changed.emit(wave_state)
 
 func end(completed: bool = true) -> void:
 	is_active = false

@@ -454,6 +454,8 @@ func _ready() -> void:
 	setup_signals()
 	initialize_state()
 
+	hp = base_hp
+
 
 func setup_references() -> void:
 	setup_controllers()

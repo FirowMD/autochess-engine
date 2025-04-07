@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://c4g6ym5fs0b0i"]
+[gd_scene load_steps=19 format=3 uid="uid://c4g6ym5fs0b0i"]
 
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/game_controller.gd" id="1_8usi3"]
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/game_timer.gd" id="2_3ydk0"]
@@ -12,9 +12,12 @@
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/craft_graph.gd" id="10_spjmg"]
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/wave_controller.gd" id="11_o7d1d"]
 [ext_resource type="Script" path="res://addons/ac_engine/scripts/wave.gd" id="12_01ux7"]
+[ext_resource type="PackedScene" uid="uid://difla42x06e6a" path="res://addons/ac_engine/test_project/combat_units/comunit_golem_air.tscn" id="13_1fgi1"]
+[ext_resource type="PackedScene" uid="uid://bd2b6jtk54ogm" path="res://addons/ac_engine/test_project/combat_units/comunit_golem_earth.tscn" id="13_o67su"]
 [ext_resource type="PackedScene" uid="uid://t10trhsj0g5u" path="res://addons/ac_engine/test_project/combat_units/comunit_golem_fire.tscn" id="13_vk3cp"]
 [ext_resource type="PackedScene" uid="uid://b24pogyy0lkcu" path="res://addons/ac_engine/test_project/combat_units/comunit_golem_supreme.tscn" id="14_1sf0b"]
 [ext_resource type="PackedScene" uid="uid://dq2vr23l4724c" path="res://addons/ac_engine/test_project/combat_units/comunit_golem_water.tscn" id="15_1dwq6"]
+[ext_resource type="PackedScene" uid="uid://ciypi15dv8mi5" path="res://addons/ac_engine/test_project/combat_units/comunit_golem_ancient.tscn" id="18_xo5t6"]
 
 [node name="GameController" type="Node" node_paths=PackedStringArray("player_id", "game_timer", "game_map", "group_manager", "player_manager", "combat_interface", "wave_controller")]
 script = ExtResource("1_8usi3")
@@ -97,6 +100,15 @@ game_controller = NodePath("..")
 script = ExtResource("12_01ux7")
 prep_time = 3.0
 
+[node name="ComunitGolemEarth" parent="AcWaveController/AcWave" node_paths=PackedStringArray("player", "group") instance=ExtResource("13_o67su")]
+player = NodePath("../../../PlayerManager/PlayerRed")
+group = NodePath("../../../GroupManager/GroupEnemy")
+unit_pos = Vector2(1, 0)
+
+[node name="ComunitGolemAir" parent="AcWaveController/AcWave" node_paths=PackedStringArray("player", "group") instance=ExtResource("13_1fgi1")]
+player = NodePath("../../../PlayerManager/PlayerRed")
+group = NodePath("../../../GroupManager/GroupEnemy")
+
 [node name="ComunitGolemFire" parent="AcWaveController/AcWave" node_paths=PackedStringArray("player", "group") instance=ExtResource("13_vk3cp")]
 player = NodePath("../../../PlayerManager/PlayerRed")
 group = NodePath("../../../GroupManager/GroupEnemy")
@@ -111,3 +123,8 @@ unit_pos = Vector2(1, 2)
 player = NodePath("../../../PlayerManager/PlayerRed")
 group = NodePath("../../../GroupManager/GroupEnemy")
 unit_pos = Vector2(2, 1)
+
+[node name="ComunitGolemAncient" parent="AcWaveController/AcWave" node_paths=PackedStringArray("player", "group") instance=ExtResource("18_xo5t6")]
+player = NodePath("../../../PlayerManager/PlayerRed")
+group = NodePath("../../../GroupManager/GroupEnemy")
+unit_pos = Vector2(0, 1)

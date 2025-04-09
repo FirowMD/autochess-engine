@@ -47,14 +47,54 @@ signal wave_state_changed(state: String)
 signal wave_failed
 signal wave_enemy_defeated
 
+
 func _ready() -> void:
 	if not is_inside_tree():
 		return
 	game_controller = AcPctrl.get_game_controller(get_tree())
+	game_controller.game_timer.connect("gametimer_updated", handler_gametimer_updated)
+	disable_wave()
+
+
+func disable_wave():
+	var children = get_children()
+	for child in children:
+		if child is AcCombatUnit:
+			child.set_process(false)
+			child.set_process_input(false)
+			child.set_physics_process(false)
+			child.set_visible(false)
+
+
+func enable_wave():
+	var children = get_children()
+	for child in children:
+		if child is AcCombatUnit:
+			child.set_process(true)
+			child.set_process_input(true)
+			child.set_physics_process(true)
+			child.set_visible(true)
+
+
+func handler_gametimer_updated() -> void:
+	if not is_active:
+		return
+	
+	if time_remaining <= 0:
+		if wave_state == "preparation":
+			time_remaining = duration
+			wave_state = "combat"
+			wave_state_changed.emit(wave_state)
+			enable_wave()
+		else:
+			end(false)
+		
+		return
+
+	time_remaining -= 1
 
 
 func autofill_spawn_data() -> void:
-	# Take child nodes
 	var children = get_children()
 	var spawn_data = []
 	for child in children:
@@ -64,11 +104,15 @@ func autofill_spawn_data() -> void:
 
 func start() -> void:
 	is_active = true
-	time_remaining = duration
+	if wave_state == "preparation":
+		time_remaining = prep_time
+	else:
+		time_remaining = duration
 	enemies_spawned = 0
 	enemies_defeated = 0
 	wave_started.emit()
 	wave_state_changed.emit(wave_state)
+
 
 func end(completed: bool = true) -> void:
 	is_active = false
@@ -77,8 +121,10 @@ func end(completed: bool = true) -> void:
 	else:
 		wave_failed.emit()
 
+
 func get_spawn_data() -> Array[AcCombatUnit]:
 	return spawn_data
+
 
 func add_enemy_defeated() -> void:
 	enemies_defeated += 1

@@ -146,6 +146,7 @@ func _ready() -> void:
 	setup_references()
 	setup_game()
 	setup_signals()
+	setup_wctrl()
 	initialize_state()
 
 
@@ -184,6 +185,14 @@ func setup_signals() -> void:
 	player_2.connect("gameplayer_out_of_units", handler_gameplayer_out_of_units_loser)
 
 
+func setup_wctrl() -> void:
+	wave_controller.connect("wctrl_state_changed", handler_wctrl_state_changed)
+
+
+func handler_wctrl_state_changed(state) -> void:
+	game_state = state
+
+
 func initialize_state() -> void:
 	# Create initial player units
 	var player_1 = player_manager.get_player_by_id(0)
@@ -193,6 +202,8 @@ func initialize_state() -> void:
 	create_unit_serialized(self, [combat_unit, group_player, Vector2(6, 6), player_1])
 	create_unit_serialized(self, [combat_unit, group_player, Vector2(5, 6), player_1])
 	create_unit_serialized(self, [combat_unit, group_player, Vector2(4, 6), player_1])
+
+	wave_controller.start_wave()
 
 
 #! Test function

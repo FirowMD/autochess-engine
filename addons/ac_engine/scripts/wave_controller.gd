@@ -17,6 +17,7 @@ var current_wave: AcWave = null
 
 signal wctrl_wave_generated(enemies)
 signal wctrl_wave_ended(is_victory)
+signal wctrl_state_changed(state)
 
 
 func _ready() -> void:
@@ -36,6 +37,7 @@ func setup_waves() -> void:
 		if wave is AcWave:
 			wave.wave_completed.connect(handler_wave_completed)
 			wave.wave_failed.connect(handler_wave_failed)
+			wave.wave_state_changed.connect(handler_wave_state_changed)
 
 
 func get_current_wave() -> int:
@@ -81,3 +83,7 @@ func handler_wave_failed() -> void:
 	wave_idx += 1
 	current_wave = null
 	wctrl_wave_ended.emit(false)
+
+
+func handler_wave_state_changed(state) -> void:
+	wctrl_state_changed.emit(state)

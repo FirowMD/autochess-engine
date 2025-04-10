@@ -7,8 +7,8 @@ extends Node
 @export_group("General")
 ## Current wave index (starting from 1)
 @export var wave_idx: int = 1
-## How much waves are there in total
-@export var wave_count: int = 10
+## You have to add waves manually. They will appear in specified order
+@export var waves: Array[PackedScene]
 
 @export_group("Advanced")
 @export var game_controller: AcGameController = null
@@ -45,19 +45,19 @@ func get_current_wave() -> int:
 
 
 func get_wave_count() -> int:
-	return wave_count
+	return waves.size()
 
 
 func start_wave() -> void:
 	if current_wave != null and current_wave.is_active:
 		return
-		
-	var waves = get_children().filter(func(node): return node is AcWave)
+	
 	if wave_idx > waves.size():
 		push_error("no more waves")
 		return
-		
-	current_wave = waves[wave_idx - 1]
+	
+	current_wave = waves[wave_idx - 1].instantiate()
+	add_child(current_wave)
 	current_wave.start()
 	wctrl_wave_generated.emit(current_wave.get_spawn_data())
 

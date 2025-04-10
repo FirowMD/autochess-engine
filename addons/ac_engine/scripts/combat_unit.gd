@@ -715,9 +715,6 @@ func preparation():
 func _process(delta):
 	var game_state: String = game_controller.game_state
 
-	if str(base_name) == "Unit":
-		print("UNIT: " + str(base_name) + " STATE: " + str(state) + " GAME STATE: " + str(game_state) + "")
-
 	if game_state == "combat":
 		combat(delta)
 	elif game_state == "preparation":

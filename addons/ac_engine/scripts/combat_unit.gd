@@ -137,7 +137,8 @@ func destroy():
 	game_controller.game_map.free_map_place(unit_pos)
 	game_controller.unit_count -= 1
 	game_controller.print_log(base_name + " has been killed", Color(1, 0, 0))
-	player.unit_count -= 1
+	if player != null:
+		player.unit_count -= 1
 	unit_destroyed.emit()
 
 	queue_free()
@@ -377,8 +378,10 @@ func setup_attack_timer():
 
 func setup_group():
 	if group == null:
-		group = game_controller.group_manager.get_group_by_type(
-			AcPctrl.AcGameGroup.neutral)
+		var neutral_groups = game_controller.group_manager.get_groups_by_type(
+			AcTypes.GameGroupType.NEUTRAL)
+		if neutral_groups.size() > 0:
+			group = neutral_groups[0]
 
 	add_to_group(group.get_group_name(), false)
 	
@@ -499,7 +502,8 @@ func setup_unit() -> void:
 	
 	# Update counters
 	game_controller.unit_count += 1
-	player.unit_count += 1
+	if player != null:
+		player.unit_count += 1
 
 
 func setup_signals() -> void:

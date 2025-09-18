@@ -380,6 +380,8 @@ func setup_group():
 		group = game_controller.group_manager.get_group_by_type(
 			AcPctrl.AcGameGroup.neutral)
 
+	add_to_group(group.get_group_name(), false)
+	
 	#! Change color according to group unit is assigned to
 	var group_color: Color = group.get_group_color()
 	
@@ -452,7 +454,10 @@ func _ready() -> void:
 	setup_references()
 	setup_unit()
 	setup_signals()
+	setup_group()
 	initialize_state()
+
+	hp = base_hp
 
 
 func setup_references() -> void:
@@ -606,8 +611,8 @@ func is_path_to_target_free(target_position) -> bool:
 	return true
 
 
-func update_state(current_state):
-	if state == current_state:
+func update_state(new_state):
+	if state == new_state:
 		return
 	
 	match state:
@@ -618,7 +623,7 @@ func update_state(current_state):
 		AcTypes.CombatUnitState.ATTACK:
 			unit_stopped_attacking.emit()
 
-	state = current_state
+	state = new_state
 	match state:
 		AcTypes.CombatUnitState.IDLE:
 			idle()
@@ -709,7 +714,7 @@ func preparation():
 
 func _process(delta):
 	var game_state: String = game_controller.game_state
-	
+
 	if game_state == "combat":
 		combat(delta)
 	elif game_state == "preparation":

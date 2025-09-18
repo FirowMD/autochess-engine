@@ -276,7 +276,7 @@ func get_unit_selection_pos() -> Vector2:
 	return unit_selection.get_position() + Vector2(align_size / 2)
 
 
-func handler_wctrl_wave_generated():
+func handler_wctrl_wave_generated(enemies: Array[AcCombatUnit]):
 	if label_wave != null:
 		var tmp_text = "Wave: {current}/{total}".format({
 			"current": game_controller.wave_controller.get_current_wave(),

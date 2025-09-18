@@ -124,27 +124,13 @@ func print_log(text: String, color: Color = Color(1, 1, 1)) -> void:
 		combat_interface.combat_logger.print_log_ext(text, color)
 
 
-func wave_start() -> void:
-	var enemies = wave_controller.generate_wave(game_wave)
-	print("Wave start:\n", JSON.stringify(enemies))
-	for enemy in enemies:
-		for i in range(enemy["amount"]):
-			var player = player_manager.get_player_by_id(1)
-			var group = group_manager.get_groups_by_type(1)[0]
-			var pos: Vector2i = game_map.get_random_free_place()
-
-			if pos != Vector2i(-1, -1):
-				print("Spawn enemy unit at: ", pos)
-				create_unit(enemy["combat_unit"], group, pos, player)
-
-
 func handler_gameplayer_out_of_units_winner():
-	wave_controller.end_current_wave(true)
+	wave_controller.end_wave(true)
 	game_state = "preparation"
 
 
 func handler_gameplayer_out_of_units_loser():
-	wave_controller.end_current_wave(false)
+	wave_controller.end_wave(false)
 	game_state = "preparation"
 
 
@@ -160,6 +146,7 @@ func _ready() -> void:
 	setup_references()
 	setup_game()
 	setup_signals()
+	setup_wctrl()
 	initialize_state()
 
 
@@ -198,6 +185,14 @@ func setup_signals() -> void:
 	player_2.connect("gameplayer_out_of_units", handler_gameplayer_out_of_units_loser)
 
 
+func setup_wctrl() -> void:
+	wave_controller.connect("wctrl_state_changed", handler_wctrl_state_changed)
+
+
+func handler_wctrl_state_changed(state) -> void:
+	game_state = state
+
+
 func initialize_state() -> void:
 	# Create initial player units
 	var player_1 = player_manager.get_player_by_id(0)
@@ -207,8 +202,8 @@ func initialize_state() -> void:
 	create_unit_serialized(self, [combat_unit, group_player, Vector2(6, 6), player_1])
 	create_unit_serialized(self, [combat_unit, group_player, Vector2(5, 6), player_1])
 	create_unit_serialized(self, [combat_unit, group_player, Vector2(4, 6), player_1])
-	
-	wave_start()
+
+	wave_controller.start_wave()
 
 
 #! Test function

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c4g6ym5fs0b0i"]
+[gd_scene load_steps=14 format=3 uid="uid://c4g6ym5fs0b0i"]
 
 [ext_resource type="Script" uid="uid://chsqeygri3kac" path="res://addons/ac_engine/scripts/game_controller.gd" id="1_8usi3"]
 [ext_resource type="Script" uid="uid://wtesr86byuhe" path="res://addons/ac_engine/scripts/game_timer.gd" id="2_3ydk0"]
@@ -11,6 +11,8 @@
 [ext_resource type="Script" uid="uid://ccr3hxtvbhrdt" path="res://addons/ac_engine/scripts/craft_system.gd" id="9_eyi1c"]
 [ext_resource type="Script" uid="uid://b2b10mcpmbjvm" path="res://addons/ac_engine/scripts/craft_graph.gd" id="10_spjmg"]
 [ext_resource type="Script" uid="uid://bpvaraudajw8t" path="res://addons/ac_engine/scripts/wave_controller.gd" id="11_o7d1d"]
+[ext_resource type="PackedScene" uid="uid://dc3qfpypwh6ox" path="res://addons/ac_engine/test_project/waves/wave_1.tscn" id="12_yt6p3"]
+[ext_resource type="PackedScene" uid="uid://b0iv83u06frt8" path="res://addons/ac_engine/test_project/waves/wave_2.tscn" id="13_1v286"]
 
 [node name="GameController" type="Node" node_paths=PackedStringArray("player_id", "game_timer", "game_map", "group_manager", "player_manager", "combat_interface", "wave_controller")]
 script = ExtResource("1_8usi3")
@@ -27,8 +29,9 @@ wave_controller = NodePath("AcWaveController")
 position = Vector2(32, 32)
 areas = []
 
-[node name="CombatInterface" parent="." node_paths=PackedStringArray("player") instance=ExtResource("8_258om")]
+[node name="CombatInterface" parent="." node_paths=PackedStringArray("player", "game_controller") instance=ExtResource("8_258om")]
 player = NodePath("../PlayerManager/PlayerBlue")
+game_controller = NodePath("..")
 
 [node name="PlayerManager" type="Node" parent="."]
 script = ExtResource("5_3fs5h")
@@ -83,5 +86,7 @@ craft_graph = NodePath("CraftGraph")
 [node name="CraftGraph" type="Node" parent="CraftSystem"]
 script = ExtResource("10_spjmg")
 
-[node name="AcWaveController" type="Node" parent="."]
+[node name="AcWaveController" type="Node" parent="." node_paths=PackedStringArray("game_controller")]
 script = ExtResource("11_o7d1d")
+waves = Array[PackedScene]([ExtResource("12_yt6p3"), ExtResource("13_1v286")])
+game_controller = NodePath("..")

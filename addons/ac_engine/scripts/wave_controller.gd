@@ -22,7 +22,6 @@ signal wctrl_state_changed(state)
 
 func _ready() -> void:
 	setup_references()
-	setup_waves()
 
 
 func setup_references() -> void:
@@ -32,12 +31,6 @@ func setup_references() -> void:
 	game_controller = AcPctrl.get_game_controller(get_tree())
 
 
-func setup_waves() -> void:
-	for wave in get_children():
-		if wave is AcWave:
-			wave.wave_completed.connect(handler_wave_completed)
-			wave.wave_failed.connect(handler_wave_failed)
-			wave.wave_state_changed.connect(handler_wave_state_changed)
 
 
 func get_current_wave() -> int:
@@ -58,6 +51,11 @@ func start_wave() -> void:
 	
 	current_wave = waves[wave_idx - 1].instantiate()
 	add_child(current_wave)
+	
+	current_wave.wave_completed.connect(handler_wave_completed)
+	current_wave.wave_failed.connect(handler_wave_failed)
+	current_wave.wave_state_changed.connect(handler_wave_state_changed)
+	
 	current_wave.start()
 	wctrl_wave_generated.emit(current_wave.get_spawn_data())
 
@@ -72,6 +70,7 @@ func end_wave(is_victory: bool) -> void:
 func handler_wave_completed() -> void:
 	if current_wave == null:
 		return
+	print("WaveController: Wave completed! Moving from wave ", wave_idx, " to wave ", wave_idx + 1)
 	wave_idx += 1
 	current_wave = null
 	wctrl_wave_ended.emit(true)

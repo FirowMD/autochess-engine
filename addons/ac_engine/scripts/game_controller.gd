@@ -185,27 +185,27 @@ func setup_signals() -> void:
 func setup_wctrl() -> void:
 	wave_controller.connect("wctrl_state_changed", handler_wctrl_state_changed)
 	wave_controller.connect("wctrl_wave_generated", handler_wctrl_wave_generated)
+	wave_controller.connect("wctrl_wave_ended", handler_wctrl_wave_ended)
 
 
 func handler_wctrl_state_changed(state) -> void:
 	game_state = state
 
 
+func handler_wctrl_wave_ended(is_victory: bool) -> void:
+	if is_victory:
+		print_log("Wave completed! Starting next wave...", Color(0, 1, 0))
+		if wave_controller.wave_idx <= wave_controller.get_wave_count():
+			print("GameController: Starting wave ", wave_controller.wave_idx)
+			wave_controller.start_wave()
+		else:
+			print_log("All waves completed! Victory!", Color(1, 1, 0))
+	else:
+		print_log("Wave failed!", Color(1, 0, 0))
+
+
 func handler_wctrl_wave_generated(spawn_data: Array) -> void:
-	var enemy_player = player_manager.get_player_by_id(1)
-	var enemy_group = group_manager.get_groups_by_type(AcTypes.GameGroupType.ENEMY)[0]
-	
-	if spawn_data.is_empty():
-		return
-	
-	for unit_scene in spawn_data:
-		if unit_scene is AcCombatUnit:
-			var pos = game_map.get_random_free_place()
-			if pos != Vector2i(-1, -1):
-				var spawned_unit = create_unit(unit_scene, enemy_group, pos, enemy_player)
-				if wave_controller.current_wave != null:
-					spawned_unit.connect("unit_destroyed", wave_controller.current_wave.add_enemy_defeated)
-					wave_controller.current_wave.enemies_spawned += 1
+	print_log("Wave started with " + str(wave_controller.current_wave.enemies_spawned) + " enemies", Color(0, 1, 1))
 
 
 func initialize_state() -> void:

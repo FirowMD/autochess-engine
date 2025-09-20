@@ -454,13 +454,12 @@ func setup_sprite() -> void:
 
 
 func _ready() -> void:
+	hp = base_hp
 	setup_references()
 	setup_unit()
 	setup_signals()
 	setup_group()
 	initialize_state()
-
-	hp = base_hp
 
 
 func setup_references() -> void:

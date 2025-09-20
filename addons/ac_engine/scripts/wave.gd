@@ -64,6 +64,8 @@ func disable_wave():
 			child.set_process_input(false)
 			child.set_physics_process(false)
 			child.set_visible(false)
+			if child.group != null:
+				child.remove_from_group(child.group.get_group_name())
 
 
 func enable_wave():
@@ -74,6 +76,8 @@ func enable_wave():
 			child.set_process_input(true)
 			child.set_physics_process(true)
 			child.set_visible(true)
+			if child.group != null:
+				child.add_to_group(child.group.get_group_name())
 
 
 func handler_gametimer_updated() -> void:

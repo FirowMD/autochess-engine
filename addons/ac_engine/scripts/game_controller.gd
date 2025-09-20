@@ -178,19 +178,34 @@ func setup_game() -> void:
 
 
 func setup_signals() -> void:
-	# Connect player signals
-	var player_1 = player_manager.get_player_by_id(0)
-	var player_2 = player_manager.get_player_by_id(1)
-	player_1.connect("gameplayer_out_of_units", handler_gameplayer_out_of_units_winner)
-	player_2.connect("gameplayer_out_of_units", handler_gameplayer_out_of_units_loser)
+	# Player signals are already connected in setup_players()
+	pass
 
 
 func setup_wctrl() -> void:
 	wave_controller.connect("wctrl_state_changed", handler_wctrl_state_changed)
+	wave_controller.connect("wctrl_wave_generated", handler_wctrl_wave_generated)
 
 
 func handler_wctrl_state_changed(state) -> void:
 	game_state = state
+
+
+func handler_wctrl_wave_generated(spawn_data: Array) -> void:
+	var enemy_player = player_manager.get_player_by_id(1)
+	var enemy_group = group_manager.get_groups_by_type(AcTypes.GameGroupType.ENEMY)[0]
+	
+	if spawn_data.is_empty():
+		return
+	
+	for unit_scene in spawn_data:
+		if unit_scene is AcCombatUnit:
+			var pos = game_map.get_random_free_place()
+			if pos != Vector2i(-1, -1):
+				var spawned_unit = create_unit(unit_scene, enemy_group, pos, enemy_player)
+				if wave_controller.current_wave != null:
+					spawned_unit.connect("unit_destroyed", wave_controller.current_wave.add_enemy_defeated)
+					wave_controller.current_wave.enemies_spawned += 1
 
 
 func initialize_state() -> void:

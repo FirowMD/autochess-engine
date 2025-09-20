@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://b0iv83u06frt8"]
+[gd_scene load_steps=3 format=3 uid="uid://b0iv83u06frt8"]
 
-[ext_resource type="Script" path="res://addons/ac_engine/scripts/wave.gd" id="1_x7ycv"]
-[ext_resource type="PackedScene" uid="uid://dx81x15tys5g6" path="res://addons/ac_engine/test_project/combat_units/comunit_golem_elemental.tscn" id="2_j4vyv"]
+[ext_resource type="Script" uid="uid://3uns8w262l5w" path="res://addons/ac_engine/scripts/wave.gd" id="1_x7ycv"]
 [ext_resource type="PackedScene" uid="uid://difla42x06e6a" path="res://addons/ac_engine/test_project/combat_units/comunit_golem_air.tscn" id="3_r54oy"]
 
 [node name="AcWave2" type="Node2D"]
@@ -9,12 +8,8 @@ script = ExtResource("1_x7ycv")
 wave_id = 1
 prep_time = 3.0
 
-[node name="ComunitGolemElemental" parent="." node_paths=PackedStringArray("player", "group") instance=ExtResource("2_j4vyv")]
-player = NodePath("")
-group = NodePath("")
-unit_pos = Vector2(0, 6)
+[node name="ComunitGolemAir" parent="." instance=ExtResource("3_r54oy")]
+unit_pos = Vector2(7, 6)
 
-[node name="ComunitGolemAir" parent="." node_paths=PackedStringArray("player", "group") instance=ExtResource("3_r54oy")]
-player = NodePath("")
-group = NodePath("")
-unit_pos = Vector2(1, 6)
+[node name="ComunitGolemAir2" parent="." instance=ExtResource("3_r54oy")]
+unit_pos = Vector2(6, 6)

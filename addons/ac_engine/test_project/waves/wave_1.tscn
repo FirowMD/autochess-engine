@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://dc3qfpypwh6ox"]
+[gd_scene load_steps=7 format=3 uid="uid://dc3qfpypwh6ox"]
 
-[ext_resource type="Script" path="res://addons/ac_engine/scripts/wave.gd" id="1_cpuu3"]
+[ext_resource type="Script" uid="uid://3uns8w262l5w" path="res://addons/ac_engine/scripts/wave.gd" id="1_cpuu3"]
 [ext_resource type="PackedScene" uid="uid://bd2b6jtk54ogm" path="res://addons/ac_engine/test_project/combat_units/comunit_golem_earth.tscn" id="2_qxdek"]
-[ext_resource type="PackedScene" uid="uid://difla42x06e6a" path="res://addons/ac_engine/test_project/combat_units/comunit_golem_air.tscn" id="3_4q4yx"]
 [ext_resource type="PackedScene" uid="uid://t10trhsj0g5u" path="res://addons/ac_engine/test_project/combat_units/comunit_golem_fire.tscn" id="4_j2uib"]
 [ext_resource type="PackedScene" uid="uid://dq2vr23l4724c" path="res://addons/ac_engine/test_project/combat_units/comunit_golem_water.tscn" id="5_jv6of"]
 [ext_resource type="PackedScene" uid="uid://b24pogyy0lkcu" path="res://addons/ac_engine/test_project/combat_units/comunit_golem_supreme.tscn" id="6_6f1et"]
@@ -14,8 +13,6 @@ prep_time = 3.0
 
 [node name="ComunitGolemEarth" parent="." instance=ExtResource("2_qxdek")]
 unit_pos = Vector2(1, 0)
-
-[node name="ComunitGolemAir" parent="." instance=ExtResource("3_4q4yx")]
 
 [node name="ComunitGolemFire" parent="." instance=ExtResource("4_j2uib")]
 unit_pos = Vector2(1, 1)

@@ -72,12 +72,22 @@ func enable_wave():
 	var children = get_children()
 	for child in children:
 		if child is AcCombatUnit:
+			if child.group == null and game_controller.group_manager != null:
+				var enemy_groups = game_controller.group_manager.get_groups_by_type(AcTypes.GameGroupType.ENEMY)
+				if enemy_groups.size() > 0:
+					child.group = enemy_groups[0]
+			if child.player == null and game_controller.player_manager != null:
+				child.player = game_controller.player_manager.get_player_by_id(1)
+			
 			child.set_process(true)
 			child.set_process_input(true)
 			child.set_physics_process(true)
 			child.set_visible(true)
 			if child.group != null:
 				child.add_to_group(child.group.get_group_name())
+			if not child.is_connected("unit_destroyed", add_enemy_defeated):
+				child.connect("unit_destroyed", add_enemy_defeated)
+			enemies_spawned += 1
 
 
 func handler_gametimer_updated() -> void:
@@ -108,12 +118,13 @@ func autofill_spawn_data() -> void:
 
 func start() -> void:
 	is_active = true
+	enemies_spawned = 0
+	enemies_defeated = 0
 	if wave_state == "preparation":
 		time_remaining = prep_time
 	else:
 		time_remaining = duration
-	enemies_spawned = 0
-	enemies_defeated = 0
+		enable_wave()
 	wave_started.emit()
 	wave_state_changed.emit(wave_state)
 

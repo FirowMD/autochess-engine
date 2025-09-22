@@ -106,6 +106,7 @@ func setup_signals() -> void:
 	combat_logger.connect("ui_hidden", handler_com_hidden)
 	game_controller.wave_controller.connect("wctrl_wave_generated", handler_wctrl_wave_generated)
 	game_controller.game_timer.connect("gametimer_updated", handler_gametimer_updated)
+	game_controller.connect("gctrl_game_state_changed", handler_game_state_changed)
 
 func initialize_state() -> void:
 	show_container()
@@ -291,6 +292,14 @@ func handler_gametimer_updated():
 			"time": game_controller.game_timer.get_pretty_time_string_minutes()})
 		
 		label_timer.text = tmp_text
+
+
+func handler_game_state_changed():
+	if game_controller.game_state == "combat":
+		hide_unit_selection()
+		if game_controller.selected_unit != null:
+			game_controller.selected_unit.is_selected = false
+			game_controller.unset_selected_unit()
 
 
 func _process(delta):

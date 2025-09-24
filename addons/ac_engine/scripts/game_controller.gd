@@ -123,6 +123,12 @@ func print_log(text: String, color: Color = Color(1, 1, 1)) -> void:
 	else:
 		combat_interface.combat_logger.print_log_ext(text, color)
 
+func print_log_format(template: String, ...values: Array) -> void:
+	combat_interface.combat_logger.print_log_format.callv([template] + values)
+
+func print_log_format_color(template: String, color: Color, ...values: Array) -> void:
+	combat_interface.combat_logger.print_log_format_color.callv([template, color] + values)
+
 
 func handler_gameplayer_out_of_units_winner():
 	wave_controller.end_wave(true)

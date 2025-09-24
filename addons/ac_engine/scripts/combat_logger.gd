@@ -60,6 +60,18 @@ func print_log_ext(text: String, color: Color) -> void:
 	log_label.text += text
 	log_label.text += "[/color]\n"
 
+func print_log_format(template: String, ...values: Array) -> void:
+	var formatted_text = template
+	for i in range(values.size()):
+		formatted_text = formatted_text.replace("{" + str(i) + "}", str(values[i]))
+	print_log(formatted_text)
+
+func print_log_format_color(template: String, color: Color, ...values: Array) -> void:
+	var formatted_text = template
+	for i in range(values.size()):
+		formatted_text = formatted_text.replace("{" + str(i) + "}", str(values[i]))
+	print_log_ext(formatted_text, color)
+
 
 func clear_log() -> void:
 	log_label.clear()
@@ -100,10 +112,6 @@ func _validate_setup() -> bool:
 
 func _ready() -> void:
 	super._ready()
+	setup_logger()
 
-	setup_child_nodes()
-	if not check_setup_logger():
-		push_error("setup is not complete (logger)")
-	init_menu()
-
-	log_label.bbcode_enabled = true
+	game_controller.connect("controller_log_printed", print_log_ext)

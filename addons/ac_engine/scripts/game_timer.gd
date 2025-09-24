@@ -52,7 +52,7 @@ func update_time() -> void:
 
 
 # Pass `foo` - function, and `time` - how many seconds to wait to call `foo`
-func add_alarm_event(obj: Object, foo: Callable, wait_time: int, args: Array = []) -> void:
+func add_alarm_event(obj: Object, foo: Callable, wait_time: int, ...args: Array) -> void:
 	var alarm: Dictionary = Dictionary()
 	alarm["object"] = obj
 	alarm["function"] = foo
